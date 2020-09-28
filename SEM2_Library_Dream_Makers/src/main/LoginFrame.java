@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
 
 public class LoginFrame extends JFrame {
 
@@ -35,8 +36,12 @@ public class LoginFrame extends JFrame {
 		setBounds(100, 100, 710, 496);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		// add button
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(128, 98, 89, 23);
+		contentPane.add(btnNewButton);
 	}
-
 }
