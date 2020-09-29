@@ -30,15 +30,26 @@ import javax.swing.JPasswordField;
 import java.awt.Cursor;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.BoxLayout;
 
 public class LoginFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JLabel loginImage;
-	private JLabel lock;
-	private JLabel user;
+	private JLabel lockIcon;
+	private JLabel userIcon;
+
+	// Declare variable
+	private String username = null;
+	private String password = null;
+
+	// Declare Frame
+	private ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog();
+
+//	private Image img = new ImageIcon(LoginFrame.class.getResource("data/loginForm/loginImage.png")).getImage()
+//			.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
 
 	/**
 	 * Launch the application.
@@ -101,11 +112,11 @@ public class LoginFrame extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField.setBounds(31, 97, 276, 37);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		usernameField = new JTextField();
+		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		usernameField.setBounds(31, 97, 276, 37);
+		panel_1.add(usernameField);
+		usernameField.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("USERNAME");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -118,40 +129,60 @@ public class LoginFrame extends JFrame {
 		lblNewLabel_1.setBounds(120, 11, 114, 47);
 		panel_1.add(lblNewLabel_1);
 
-		JButton btnNewButton = new JButton("LOGIN");
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setVerifyInputWhenFocusTarget(false);
-		btnNewButton.setDefaultCapable(false);
-		btnNewButton.setBorderPainted(false);
-		btnNewButton.setBackground(new Color(255, 51, 51));
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setFont(new Font("Arial", Font.BOLD, 14));
-		btnNewButton.setBounds(31, 249, 276, 31);
-		panel_1.add(btnNewButton);
+		JButton btnLogin = new JButton("LOGIN");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					btnLogin_actionPerformed(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong!");
+				}
+			}
+		});
+		btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnLogin.setVerifyInputWhenFocusTarget(false);
+		btnLogin.setDefaultCapable(false);
+		btnLogin.setBorderPainted(false);
+		btnLogin.setBackground(new Color(255, 51, 51));
+		btnLogin.setForeground(Color.WHITE);
+		btnLogin.setFont(new Font("Arial", Font.BOLD, 14));
+		btnLogin.setBounds(31, 249, 276, 31);
+		panel_1.add(btnLogin);
 
-		JLabel lblNewLabel_2 = new JLabel("Forgot password? CLick here");
-		lblNewLabel_2.setForeground(Color.BLUE);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblNewLabel_2.setBounds(31, 301, 145, 22);
-		panel_1.add(lblNewLabel_2);
+		JLabel FGPassword = new JLabel("Forgot password? CLick here");
+		FGPassword.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					FGPassword_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong!");
+				}
+			}
+		});
+		FGPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		FGPassword.setForeground(Color.BLUE);
+		FGPassword.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		FGPassword.setBounds(31, 301, 145, 22);
+		panel_1.add(FGPassword);
 
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		passwordField.setBounds(31, 183, 276, 37);
 		panel_1.add(passwordField);
-		
-		user = new JLabel("");
-		user.setBounds(31, 69, 25, 25);
-		panel_1.add(user);
-		
+
+		userIcon = new JLabel("");
+		userIcon.setBounds(31, 69, 25, 25);
+		panel_1.add(userIcon);
+
 		JLabel lblPassword = new JLabel("PASSWORD");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPassword.setBounds(61, 155, 80, 22);
 		panel_1.add(lblPassword);
-		
-		lock = new JLabel("");
-		lock.setBounds(31, 155, 25, 25);
-		panel_1.add(lock);
+
+		lockIcon = new JLabel("");
+		lockIcon.setBounds(31, 155, 25, 25);
+		panel_1.add(lockIcon);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(51, 51, 51));
@@ -159,68 +190,103 @@ public class LoginFrame extends JFrame {
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
 
-		JLabel lblNewLabel_3 = new JLabel("X");
-		lblNewLabel_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblNewLabel_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-					System.exit(0);
-				} catch (Exception e) {
-					showMessenger("Can't close application");
-				}
-			}
-		});
-		lblNewLabel_3.setForeground(Color.RED);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(569, 0, 31, 36);
-		panel_2.add(lblNewLabel_3);
+		JPanel panelMininize = new JPanel();
+		panelMininize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelMininize.setBackground(new Color(51, 51, 51));
+		panelMininize.setBounds(528, 0, 36, 36);
+		panel_2.add(panelMininize);
+		panelMininize.setLayout(null);
 
-		JLabel lblNewLabel_3_1 = new JLabel("_");
-		lblNewLabel_3_1.addFocusListener(new FocusAdapter() {
+		JLabel btnMinimize = new JLabel("_");
+		btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimize.addMouseListener(new MouseAdapter() {
 			@Override
-			// Close JFrame
-			public void focusGained(FocusEvent arg0) {
-				lblNewLabel_3_1.setBackground(Color.BLACK);
-			}
-		});
-		lblNewLabel_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblNewLabel_3_1.addMouseListener(new MouseAdapter() {
-			@Override
-			// Set minimize for JFrame
 			public void mouseClicked(MouseEvent e) {
 				try {
-					setState(LoginFrame.ICONIFIED);
+					btnMinimize_mouseClicked(e);
 				} catch (Exception e2) {
-					showMessenger("Can not minimize application!");
+					showMessenger("Something was wrong!");
 				}
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelMininize.setBackground(new Color(87, 87, 87));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelMininize.setBackground(new Color(51, 51, 51));
+			}
 		});
-		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3_1.setForeground(Color.RED);
-		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_3_1.setBounds(535, 0, 31, 36);
-		panel_2.add(lblNewLabel_3_1);
-		
+		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnMinimize.setForeground(Color.RED);
+		btnMinimize.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMinimize.setBounds(0, 0, 36, 36);
+		panelMininize.add(btnMinimize);
+
+		JPanel panelClose = new JPanel();
+		panelClose.setLayout(null);
+		panelClose.setBackground(new Color(51, 51, 51));
+		panelClose.setBounds(564, 0, 36, 36);
+		panel_2.add(panelClose);
+
+		JLabel btnClose = new JLabel("X");
+		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnClose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnClose_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong!");
+				}
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelClose.setBackground(new Color(87, 87, 87));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelClose.setBackground(new Color(51, 51, 51));
+			}
+		});
+		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
+		btnClose.setForeground(Color.RED);
+		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClose.setBounds(0, 0, 36, 36);
+		panelClose.add(btnClose);
+
 		loadData();
 	}
-	
+
 	private void loadData() {
 		ImageIcon imgLogin = resizeImg("src/data/loginForm/loginImage.png", loginImage);
 		loginImage.setIcon(imgLogin);
-		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", user);
-		user.setIcon(imgUser);
-		ImageIcon imgLock = resizeImg("src/data/loginForm/lock.png", lock);
-		lock.setIcon(imgLock);
+		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
+		userIcon.setIcon(imgUser);
+		ImageIcon imgLock = resizeImg("src/data/loginForm/lock.png", lockIcon);
+		lockIcon.setIcon(imgLock);
 	}
 
-	// Show error message
-	private void showMessenger(String mess) {
-		JOptionPane.showMessageDialog(null, mess);
+	// Login to system
+	private void btnLogin_actionPerformed(ActionEvent e) {
+		username = usernameField.getText().trim();
+		password = String.valueOf(passwordField.getPassword());
+		if (username.isEmpty() || password.isEmpty()) {
+			showMessenger("Please fill out all fields!");
+		} else {
+			// Query account
+		}
 	}
-	
 
+	// Show Forgot Password Dialog
+	private void FGPassword_mouseClicked(MouseEvent e) {
+		forgotPasswordDialog.setVisible(true);
+	}
 
 	// =====Resize Image=====
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
@@ -232,8 +298,24 @@ public class LoginFrame extends JFrame {
 			ImageIcon icon = new ImageIcon(img2);
 			return icon;
 		} else {
-			JOptionPane.showMessageDialog(null, "Image direction not path!");
+			showMessenger("Image direction not path!");
 			return null;
 		}
+	}
+
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
+	}
+
+	// Minimize & Close button
+	// Minimize app
+	private void btnMinimize_mouseClicked(MouseEvent e) {
+		this.setState(LoginFrame.ICONIFIED);
+	}
+	
+	// Close app
+	private void btnClose_mouseClicked(MouseEvent e) {
+		System.exit(0);
 	}
 }
