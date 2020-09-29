@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Cursor;
+import java.awt.event.MouseMotionAdapter;
 
 public class ForgotPasswordDialog extends JDialog {
 
@@ -31,11 +32,13 @@ public class ForgotPasswordDialog extends JDialog {
 	private JLabel userIcon;
 	private JLabel mailIcon;
 	private JLabel lblNewLabel_2;
+	private JLabel btnClose;
+	private JPanel panelClose;
 	
+	// Declare variable
 	private String username = null;
 	private String mail = null;
-	private JPanel panelClose;
-	private JLabel btnClose;
+	private int xPosition, yPosition, mouseX, mouseY;
 
 	/**
 	 * Launch the application.
@@ -88,7 +91,7 @@ public class ForgotPasswordDialog extends JDialog {
 				try {
 					btnSend_actionPerformed(arg0);					
 				} catch (Exception e) {
-					showMessenger("Something was wrong!");
+					showMessenger("Something was wrong! Please try again Please try again");
 				}
 			}
 		});
@@ -125,6 +128,24 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(lblNewLabel_2);
 		
 		JPanel panel = new JPanel();
+		panel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}				
+			}
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}	
+			}
+		});
 		panel.setBackground(new Color(51, 51, 51));
 		panel.setBounds(0, 0, 400, 36);
 		contentPanel.add(panel);
@@ -209,5 +230,17 @@ public class ForgotPasswordDialog extends JDialog {
 	private void btnClose_mouseClicked(MouseEvent e) {
 		this.dispose();
 		this.setVisible(false);
+	}
+	
+	// Drag & move window
+	private void panel_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+	
+	private void panel_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 }

@@ -31,6 +31,7 @@ import java.awt.Cursor;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.BoxLayout;
+import java.awt.event.MouseMotionAdapter;
 
 public class LoginFrame extends JFrame {
 
@@ -44,6 +45,7 @@ public class LoginFrame extends JFrame {
 	// Declare variable
 	private String username = null;
 	private String password = null;
+	private int xPosition, yPosition, mouseX, mouseY;
 
 	// Declare Frame
 	private ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog();
@@ -135,7 +137,7 @@ public class LoginFrame extends JFrame {
 				try {
 					btnLogin_actionPerformed(arg0);
 				} catch (Exception e) {
-					showMessenger("Something was wrong!");
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 		});
@@ -156,7 +158,7 @@ public class LoginFrame extends JFrame {
 				try {
 					FGPassword_mouseClicked(arg0);
 				} catch (Exception e) {
-					showMessenger("Something was wrong!");
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 		});
@@ -185,6 +187,24 @@ public class LoginFrame extends JFrame {
 		panel_1.add(lockIcon);
 
 		JPanel panel_2 = new JPanel();
+		panel_2.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_2_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}				
+			}
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_2_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}	
+			}
+		});
 		panel_2.setBackground(new Color(51, 51, 51));
 		panel_2.setBounds(0, 0, 600, 36);
 		contentPane.add(panel_2);
@@ -205,7 +225,7 @@ public class LoginFrame extends JFrame {
 				try {
 					btnMinimize_mouseClicked(e);
 				} catch (Exception e2) {
-					showMessenger("Something was wrong!");
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 
@@ -239,7 +259,7 @@ public class LoginFrame extends JFrame {
 				try {
 					btnClose_mouseClicked(e);
 				} catch (Exception e2) {
-					showMessenger("Something was wrong!");
+					showMessenger("Something was wrong! Please try again");
 				}
 				
 			}
@@ -317,5 +337,17 @@ public class LoginFrame extends JFrame {
 	// Close app
 	private void btnClose_mouseClicked(MouseEvent e) {
 		System.exit(0);
+	}
+	
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+	
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 }
