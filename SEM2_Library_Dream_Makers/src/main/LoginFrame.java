@@ -9,8 +9,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTabbedPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,13 +26,19 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
+import java.awt.Cursor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class LoginFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
 	private JTextField textField;
-	private JTextField textField_1;
+	private JPasswordField passwordField;
+	private JLabel loginImage;
+	private JLabel lock;
+	private JLabel user;
 
 	/**
 	 * Launch the application.
@@ -51,188 +60,180 @@ public class LoginFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginFrame() {
+		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1062, 680);
+		setBounds(100, 100, 600, 400);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBounds(0, 42, 173, 639);
+		panel.setBackground(new Color(51, 51, 51));
+		panel.setBounds(0, 36, 248, 364);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setIcon(new ImageIcon(LoginFrame.class.getResource("/data/icon/icon_Document.png")));
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_2.setBounds(10, 48, 153, 32);
-		panel.add(btnNewButton_2);
-		
+
+		loginImage = new JLabel("");
+		loginImage.setIcon(null);
+		loginImage.setBounds(26, 36, 190, 179);
+		panel.add(loginImage);
+
+		JLabel lblNewLabel_5 = new JLabel("Monica's Library");
+		lblNewLabel_5.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5.setFont(new Font("Arial", Font.BOLD, 21));
+		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5.setBounds(26, 243, 190, 44);
+		panel.add(lblNewLabel_5);
+
+		JLabel lblNewLabel_4 = new JLabel("---Stay hungry - Stay Foolish---");
+		lblNewLabel_4.setForeground(new Color(255, 255, 255));
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_4.setBounds(10, 286, 228, 22);
+		panel.add(lblNewLabel_4);
+
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.DARK_GRAY);
-		panel_1.setBounds(0, 0, 1064, 43);
+		panel_1.setBackground(new Color(255, 255, 255));
+		panel_1.setBounds(246, 36, 354, 364);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
+
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textField.setBounds(31, 97, 276, 37);
+		panel_1.add(textField);
+		textField.setColumns(10);
+
+		JLabel lblNewLabel = new JLabel("USERNAME");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel.setBounds(61, 69, 80, 22);
+		panel_1.add(lblNewLabel);
+
+		JLabel lblNewLabel_1 = new JLabel("Login");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1.setBounds(120, 11, 114, 47);
+		panel_1.add(lblNewLabel_1);
+
+		JButton btnNewButton = new JButton("LOGIN");
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton.setVerifyInputWhenFocusTarget(false);
+		btnNewButton.setDefaultCapable(false);
+		btnNewButton.setBorderPainted(false);
+		btnNewButton.setBackground(new Color(255, 51, 51));
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setFont(new Font("Arial", Font.BOLD, 14));
+		btnNewButton.setBounds(31, 249, 276, 31);
+		panel_1.add(btnNewButton);
+
+		JLabel lblNewLabel_2 = new JLabel("Forgot password? CLick here");
+		lblNewLabel_2.setForeground(Color.BLUE);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblNewLabel_2.setBounds(31, 301, 145, 22);
+		panel_1.add(lblNewLabel_2);
+
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		passwordField.setBounds(31, 183, 276, 37);
+		panel_1.add(passwordField);
 		
-		JLabel exitApp = new JLabel("X");
-		exitApp.addMouseListener(new MouseAdapter() {
+		user = new JLabel("");
+		user.setBounds(31, 69, 25, 25);
+		panel_1.add(user);
+		
+		JLabel lblPassword = new JLabel("PASSWORD");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblPassword.setBounds(61, 155, 80, 22);
+		panel_1.add(lblPassword);
+		
+		lock = new JLabel("");
+		lock.setBounds(31, 155, 25, 25);
+		panel_1.add(lock);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(51, 51, 51));
+		panel_2.setBounds(0, 0, 600, 36);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
+
+		JLabel lblNewLabel_3 = new JLabel("X");
+		lblNewLabel_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				exitApp_mouseClicked(arg0);
+				try {
+					System.exit(0);
+				} catch (Exception e) {
+					showMessenger("Can't close application");
+				}
 			}
 		});
-		exitApp.setFont(new Font("Tahoma", Font.BOLD, 15));
-		exitApp.setHorizontalAlignment(SwingConstants.CENTER);
-		exitApp.setForeground(Color.RED);
-		exitApp.setBounds(1024, 11, 30, 21);
-		panel_1.add(exitApp);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(171, 42, 893, 639);
-		contentPane.add(panel_2);
-		panel_2.setLayout(new CardLayout(0, 0));
-		
-		JTabbedPane tabCategory = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabCategory, "name_2797975981045000");
-		
-		JPanel panel_3 = new JPanel();
-		tabCategory.addTab("New tab", null, panel_3, null);
-		
-		JTabbedPane tabEmployee = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabEmployee, "name_2797979583462500");
-		
-		JTabbedPane tabAuthor = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabAuthor, "name_2797984222042100");
-		
-		JTabbedPane tabBook = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabBook, "name_2797988939095400");
-		
-		JTabbedPane tabMember = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabMember, "name_2798012403973800");
-		
-		JTabbedPane tabInvoice = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabInvoice, "name_2798014414156100");
-		
-		JTabbedPane tabStatistical = new JTabbedPane(JTabbedPane.TOP);
-		panel_2.add(tabStatistical, "name_2798018378705900");
-		
-		JPanel Dashboard = new JPanel();
-		panel_2.add(Dashboard, "name_2798020492336600");
-		Dashboard.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 235, 873, 393);
-		Dashboard.add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.ORANGE);
-		panel_4.setBounds(299, 11, 287, 84);
-		Dashboard.add(panel_4);
-		panel_4.setLayout(null);
-		
-		JLabel bookNum = new JLabel("Book Num");
-		bookNum.setBounds(131, 11, 131, 62);
-		panel_4.add(bookNum);
-		
-		JPanel panel_4_1 = new JPanel();
-		panel_4_1.setLayout(null);
-		panel_4_1.setBackground(new Color(154, 205, 50));
-		panel_4_1.setBounds(299, 129, 287, 84);
-		Dashboard.add(panel_4_1);
-		
-		JLabel memberNum = new JLabel("Member Num");
-		memberNum.setBounds(131, 11, 131, 62);
-		panel_4_1.add(memberNum);
-		
-		JPanel panel_4_2 = new JPanel();
-		panel_4_2.setLayout(null);
-		panel_4_2.setBackground(new Color(123, 104, 238));
-		panel_4_2.setBounds(596, 11, 287, 84);
-		Dashboard.add(panel_4_2);
-		
-		JLabel borrowNum = new JLabel("Borrow book num");
-		borrowNum.setBounds(131, 11, 131, 62);
-		panel_4_2.add(borrowNum);
-		
-		JPanel lateBookNum = new JPanel();
-		lateBookNum.setLayout(null);
-		lateBookNum.setBackground(new Color(139, 0, 0));
-		lateBookNum.setBounds(596, 129, 287, 84);
-		Dashboard.add(lateBookNum);
-		
-		JLabel lblLateBookNum = new JLabel("Late book Num");
-		lblLateBookNum.setBounds(131, 11, 131, 62);
-		lateBookNum.add(lblLateBookNum);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new TitledBorder(null, "Quick search", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_5.setBounds(10, 11, 279, 202);
-		Dashboard.add(panel_5);
-		panel_5.setLayout(null);
-		
-		JButton btnNewButton = new JButton("Search");
-		btnNewButton.setBackground(new Color(192, 192, 192));
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton.setForeground(new Color(0, 0, 0));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		lblNewLabel_3.setForeground(Color.RED);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setBounds(569, 0, 31, 36);
+		panel_2.add(lblNewLabel_3);
+
+		JLabel lblNewLabel_3_1 = new JLabel("_");
+		lblNewLabel_3_1.addFocusListener(new FocusAdapter() {
+			@Override
+			// Close JFrame
+			public void focusGained(FocusEvent arg0) {
+				lblNewLabel_3_1.setBackground(Color.BLACK);
 			}
 		});
+		lblNewLabel_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel_3_1.addMouseListener(new MouseAdapter() {
+			@Override
+			// Set minimize for JFrame
+			public void mouseClicked(MouseEvent e) {
+				try {
+					setState(LoginFrame.ICONIFIED);
+				} catch (Exception e2) {
+					showMessenger("Can not minimize application!");
+				}
+			}
+		});
+		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_1.setForeground(Color.RED);
+		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_3_1.setBounds(535, 0, 31, 36);
+		panel_2.add(lblNewLabel_3_1);
 		
-		JButton btnNewButton_1 = new JButton("Search");
-		btnNewButton_1.setBackground(new Color(192, 192, 192));
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_1.setForeground(new Color(0, 0, 0));
-		btnNewButton_1.setBounds(185, 53, 84, 25);
-		panel_5.add(btnNewButton_1);
-		btnNewButton.setBounds(185, 155, 84, 25);
-		panel_5.add(btnNewButton);
-		
-		textField = new JTextField();
-		textField.setBounds(10, 155, 177, 25);
-		panel_5.add(textField);
-		textField.setColumns(10);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(new Color(0, 0, 255));
-		panel_6.setBounds(10, 138, 90, 25);
-		panel_5.add(panel_6);
-		panel_6.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Book title");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(0, 0, 90, 14);
-		panel_6.add(lblNewLabel);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(10, 53, 177, 25);
-		panel_5.add(textField_1);
-		
-		JPanel panel_6_1 = new JPanel();
-		panel_6_1.setLayout(null);
-		panel_6_1.setBackground(Color.BLUE);
-		panel_6_1.setBounds(10, 36, 90, 25);
-		panel_5.add(panel_6_1);
-		
-		JLabel lblEmployeeId = new JLabel("Employee ID");
-		lblEmployeeId.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmployeeId.setForeground(Color.WHITE);
-		lblEmployeeId.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblEmployeeId.setBounds(0, 0, 90, 14);
-		panel_6_1.add(lblEmployeeId);
+		loadData();
 	}
 	
-	private void exitApp_mouseClicked(MouseEvent e) {
-		System.exit(0);
+	private void loadData() {
+		ImageIcon imgLogin = resizeImg("src/data/loginForm/loginImage.png", loginImage);
+		loginImage.setIcon(imgLogin);
+		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", user);
+		user.setIcon(imgUser);
+		ImageIcon imgLock = resizeImg("src/data/loginForm/lock.png", lock);
+		lock.setIcon(imgLock);
+	}
+
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
+	}
+	
+
+
+	// =====Resize Image=====
+	private ImageIcon resizeImg(String imgPath, JLabel jName) {
+		if (imgPath != null) {
+			ImageIcon myImg = null;
+			myImg = new ImageIcon(imgPath);
+			Image img = myImg.getImage();
+			Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon icon = new ImageIcon(img2);
+			return icon;
+		} else {
+			JOptionPane.showMessageDialog(null, "Image direction not path!");
+			return null;
+		}
 	}
 }
