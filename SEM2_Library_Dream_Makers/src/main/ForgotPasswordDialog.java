@@ -39,6 +39,8 @@ public class ForgotPasswordDialog extends JDialog {
 	private String username = null;
 	private String mail = null;
 	private int xPosition, yPosition, mouseX, mouseY;
+	private JPanel panel_1;
+	private JPanel panel_2;
 
 	/**
 	 * Launch the application.
@@ -63,6 +65,7 @@ public class ForgotPasswordDialog extends JDialog {
 		setBounds(100, 100, 400, 339);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
@@ -79,6 +82,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(lblNewLabel_1);
 		
 		usernameField = new JTextField();
+		usernameField.setBorder(null);
 		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		usernameField.setBounds(32, 116, 335, 37);
 		contentPanel.add(usernameField);
@@ -115,6 +119,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(mailIcon);
 		
 		mailField = new JTextField();
+		mailField.setBorder(null);
 		mailField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		mailField.setColumns(10);
 		mailField.setBounds(32, 194, 335, 37);
@@ -184,6 +189,16 @@ public class ForgotPasswordDialog extends JDialog {
 		btnClose.setBounds(0, 0, 36, 36);
 		panelClose.add(btnClose);
 		
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.BLACK);
+		panel_1.setBounds(32, 153, 335, 2);
+		contentPanel.add(panel_1);
+		
+		panel_2 = new JPanel();
+		panel_2.setBackground(Color.BLACK);
+		panel_2.setBounds(32, 231, 335, 2);
+		contentPanel.add(panel_2);
+		
 		loadData();
 	}
 	
@@ -219,10 +234,10 @@ public class ForgotPasswordDialog extends JDialog {
 		username = usernameField.getText().trim();
 		mail = mailField.getText().trim();
 		if(username.isEmpty() || mail.isEmpty()) {
+			showMessenger("You must fill out all fields to get password back!");			
+		}else {
 			// Query username
 			
-		}else {
-			showMessenger("You must fill out all fields to get password back!");
 		}
 	}
 	

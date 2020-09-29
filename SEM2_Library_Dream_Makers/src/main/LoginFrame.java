@@ -115,6 +115,7 @@ public class LoginFrame extends JFrame {
 		panel_1.setLayout(null);
 
 		usernameField = new JTextField();
+		usernameField.setBorder(null);
 		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		usernameField.setBounds(31, 97, 276, 37);
 		panel_1.add(usernameField);
@@ -169,6 +170,7 @@ public class LoginFrame extends JFrame {
 		panel_1.add(FGPassword);
 
 		passwordField = new JPasswordField();
+		passwordField.setBorder(null);
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		passwordField.setBounds(31, 183, 276, 37);
 		panel_1.add(passwordField);
@@ -185,6 +187,16 @@ public class LoginFrame extends JFrame {
 		lockIcon = new JLabel("");
 		lockIcon.setBounds(31, 155, 25, 25);
 		panel_1.add(lockIcon);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.BLACK);
+		panel_3.setBounds(31, 134, 276, 2);
+		panel_1.add(panel_3);
+		
+		JPanel panel_3_1 = new JPanel();
+		panel_3_1.setBackground(Color.BLACK);
+		panel_3_1.setBounds(31, 220, 276, 2);
+		panel_1.add(panel_3_1);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.addMouseMotionListener(new MouseMotionAdapter() {
