@@ -1,4 +1,4 @@
-package main;
+package login;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -77,6 +77,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("USERNAME");
+		lblNewLabel_1.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1.setBounds(65, 86, 102, 25);
 		contentPanel.add(lblNewLabel_1);
@@ -110,6 +111,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(userIcon);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("MAIL");
+		lblNewLabel_1_1.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_1.setBounds(65, 164, 102, 25);
 		contentPanel.add(lblNewLabel_1_1);

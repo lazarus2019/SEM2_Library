@@ -1,4 +1,4 @@
-package main;
+package login;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -122,6 +122,7 @@ public class LoginFrame extends JFrame {
 		usernameField.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("USERNAME");
+		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel.setBounds(61, 69, 80, 22);
 		panel_1.add(lblNewLabel);
@@ -180,6 +181,7 @@ public class LoginFrame extends JFrame {
 		panel_1.add(userIcon);
 
 		JLabel lblPassword = new JLabel("PASSWORD");
+		lblPassword.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPassword.setBounds(61, 155, 80, 22);
 		panel_1.add(lblPassword);
