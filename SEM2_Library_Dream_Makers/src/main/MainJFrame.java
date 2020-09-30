@@ -19,6 +19,9 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
 import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Cursor;
 
 public class MainJFrame extends JFrame {
 
@@ -120,6 +123,13 @@ public class MainJFrame extends JFrame {
 		sideBarPanel.add(lblNewLabel_2);
 
 		JPanel btnDashboard = new JPanel();
+		btnDashboard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnDashboard.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.out.println("avs");
+			}
+		});
 		btnDashboard.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnDashboard.setBackground(new Color(51, 51, 51));
 		btnDashboard.setBounds(0, 171, 198, 37);
@@ -144,6 +154,7 @@ public class MainJFrame extends JFrame {
 		btnDashboard.add(lblNewLabel_3);
 
 		JPanel btnCategory = new JPanel();
+		btnCategory.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCategory.setLayout(null);
 		btnCategory.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnCategory.setBackground(new Color(51, 51, 51));
@@ -169,6 +180,7 @@ public class MainJFrame extends JFrame {
 		btnCategory.add(lblNewLabel_3_1);
 		
 		JPanel btnEmployee = new JPanel();
+		btnEmployee.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEmployee.setLayout(null);
 		btnEmployee.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnEmployee.setBackground(new Color(51, 51, 51));
@@ -194,6 +206,7 @@ public class MainJFrame extends JFrame {
 		btnEmployee.add(lblNewLabel_3_1_1);
 		
 		JPanel btnAuthor = new JPanel();
+		btnAuthor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAuthor.setLayout(null);
 		btnAuthor.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnAuthor.setBackground(new Color(51, 51, 51));
@@ -219,6 +232,7 @@ public class MainJFrame extends JFrame {
 		btnAuthor.add(lblNewLabel_3_1_1_1);
 		
 		JPanel btnBook = new JPanel();
+		btnBook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBook.setLayout(null);
 		btnBook.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnBook.setBackground(new Color(51, 51, 51));
@@ -244,6 +258,7 @@ public class MainJFrame extends JFrame {
 		btnBook.add(lblNewLabel_3_1_1_1_1);
 		
 		JPanel btnMember = new JPanel();
+		btnMember.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMember.setLayout(null);
 		btnMember.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnMember.setBackground(new Color(51, 51, 51));
@@ -269,6 +284,7 @@ public class MainJFrame extends JFrame {
 		btnMember.add(lblNewLabel_3_1_1_1_1_1);
 		
 		JPanel btnInvoice = new JPanel();
+		btnInvoice.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInvoice.setLayout(null);
 		btnInvoice.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnInvoice.setBackground(new Color(51, 51, 51));
@@ -294,6 +310,7 @@ public class MainJFrame extends JFrame {
 		btnInvoice.add(lblNewLabel_3_1_1_1_1_1_1);
 		
 		JPanel btnStatistical = new JPanel();
+		btnStatistical.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnStatistical.setLayout(null);
 		btnStatistical.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnStatistical.setBackground(new Color(51, 51, 51));
@@ -319,6 +336,7 @@ public class MainJFrame extends JFrame {
 		btnStatistical.add(lblNewLabel_3_1_1_1_1_1_1_1);
 		
 		JPanel btnSetting = new JPanel();
+		btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSetting.setLayout(null);
 		btnSetting.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnSetting.setBackground(new Color(51, 51, 51));
@@ -344,6 +362,7 @@ public class MainJFrame extends JFrame {
 		btnSetting.add(lblNewLabel_3_1_1_1_1_1_1_1_1);
 		
 		JPanel btnInfo = new JPanel();
+		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInfo.setLayout(null);
 		btnInfo.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnInfo.setBackground(new Color(51, 51, 51));
@@ -369,6 +388,7 @@ public class MainJFrame extends JFrame {
 		btnInfo.add(lblNewLabel_3_1_1_1_1_1_1_1_1_1);
 		
 		JPanel btnLogout = new JPanel();
+		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogout.setLayout(null);
 		btnLogout.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnLogout.setBackground(new Color(51, 51, 51));
