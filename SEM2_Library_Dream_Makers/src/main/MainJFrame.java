@@ -15,6 +15,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.border.LineBorder;
+
+import login.LoginFrame;
+
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
@@ -36,12 +39,27 @@ public class MainJFrame extends JFrame {
 	private JPanel invoice;
 	private JPanel report;
 	private JPanel setting;
+	private JPanel mainPanel;
+	private JPanel logoutContainer;
+	private JPanel infoContainer;
+	private JPanel settingContainer;
+	private JPanel statisticalContainer;
+	private JPanel invoiceContainer;
+	private JPanel memberContainer;
+	private JPanel bookContainer;
+	private JPanel authorContainer;
+	private JPanel employeeContainer;
+	private JPanel categoryContainer;
+	private JPanel dashboardContainer;
 
-	// Declare Frame, Dialog
+	// Declare Frame, Dialog, Panel
 	// Dialog
 	private infoDialog infoDialog = new infoDialog();
 
 	// Frame
+	private LoginFrame loginFrame = new LoginFrame();
+
+	// Panel
 	private dashboardPanel dashboardPanel = new dashboardPanel();
 	private categoryPanel categoryPanel = new categoryPanel();
 	private authorPanel authorPanel = new authorPanel();
@@ -138,6 +156,16 @@ public class MainJFrame extends JFrame {
 		sideBarPanel.add(lblNewLabel_2);
 
 		JPanel btnDashboard = new JPanel();
+		btnDashboard.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnDashboard_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnDashboard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDashboard.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnDashboard.setBackground(new Color(51, 51, 51));
@@ -145,10 +173,12 @@ public class MainJFrame extends JFrame {
 		sideBarPanel.add(btnDashboard);
 		btnDashboard.setLayout(null);
 
-		JPanel dashboardContainer = new JPanel();
+		dashboardContainer = new JPanel();
+		dashboardContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		dashboardContainer.setBackground(new Color(6, 202, 254));
 		dashboardContainer.setBounds(0, 0, 37, 37);
 		btnDashboard.add(dashboardContainer);
+		btnDashboard.addMouseListener(new PanelButtonMouseAdapter(dashboardContainer));
 		dashboardContainer.setLayout(null);
 
 		JLabel iconDashboard = new JLabel("");
@@ -163,6 +193,16 @@ public class MainJFrame extends JFrame {
 		btnDashboard.add(dashboardTxt);
 
 		JPanel btnCategory = new JPanel();
+		btnCategory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnCategory_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnCategory.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCategory.setLayout(null);
 		btnCategory.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -170,12 +210,13 @@ public class MainJFrame extends JFrame {
 		btnCategory.setBounds(0, 207, 198, 37);
 		sideBarPanel.add(btnCategory);
 
-		JPanel categoryContainer = new JPanel();
+		categoryContainer = new JPanel();
 		categoryContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		categoryContainer.setLayout(null);
 		categoryContainer.setBackground(new Color(51, 51, 51));
 		categoryContainer.setBounds(0, 0, 37, 37);
 		btnCategory.add(categoryContainer);
+		btnCategory.addMouseListener(new PanelButtonMouseAdapter(categoryContainer));
 
 		JLabel iconCategory = new JLabel("");
 		iconCategory.setBounds(0, 0, 37, 37);
@@ -189,6 +230,16 @@ public class MainJFrame extends JFrame {
 		btnCategory.add(categoryTxt);
 
 		JPanel btnEmployee = new JPanel();
+		btnEmployee.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnEmployee_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnEmployee.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEmployee.setLayout(null);
 		btnEmployee.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -196,12 +247,13 @@ public class MainJFrame extends JFrame {
 		btnEmployee.setBounds(0, 243, 198, 37);
 		sideBarPanel.add(btnEmployee);
 
-		JPanel employeeContainer = new JPanel();
+		employeeContainer = new JPanel();
 		employeeContainer.setLayout(null);
 		employeeContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		employeeContainer.setBackground(new Color(51, 51, 51));
 		employeeContainer.setBounds(0, 0, 37, 37);
 		btnEmployee.add(employeeContainer);
+		btnEmployee.addMouseListener(new PanelButtonMouseAdapter(employeeContainer));
 
 		JLabel iconEmployee = new JLabel("");
 		iconEmployee.setBounds(0, 0, 37, 37);
@@ -215,6 +267,16 @@ public class MainJFrame extends JFrame {
 		btnEmployee.add(employeeTxt);
 
 		JPanel btnAuthor = new JPanel();
+		btnAuthor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnAuthor_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnAuthor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAuthor.setLayout(null);
 		btnAuthor.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -222,12 +284,13 @@ public class MainJFrame extends JFrame {
 		btnAuthor.setBounds(0, 279, 198, 37);
 		sideBarPanel.add(btnAuthor);
 
-		JPanel authorContainer = new JPanel();
+		authorContainer = new JPanel();
 		authorContainer.setLayout(null);
 		authorContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		authorContainer.setBackground(new Color(51, 51, 51));
 		authorContainer.setBounds(0, 0, 37, 37);
 		btnAuthor.add(authorContainer);
+		btnAuthor.addMouseListener(new PanelButtonMouseAdapter(authorContainer));
 
 		JLabel iconAuthor = new JLabel("");
 		iconAuthor.setBounds(0, 0, 37, 37);
@@ -241,6 +304,16 @@ public class MainJFrame extends JFrame {
 		btnAuthor.add(authorTxt);
 
 		JPanel btnBook = new JPanel();
+		btnBook.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnBook_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnBook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBook.setLayout(null);
 		btnBook.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -248,12 +321,13 @@ public class MainJFrame extends JFrame {
 		btnBook.setBounds(0, 315, 198, 37);
 		sideBarPanel.add(btnBook);
 
-		JPanel bookContainer = new JPanel();
+		bookContainer = new JPanel();
 		bookContainer.setLayout(null);
 		bookContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		bookContainer.setBackground(new Color(51, 51, 51));
 		bookContainer.setBounds(0, 0, 37, 37);
 		btnBook.add(bookContainer);
+		btnBook.addMouseListener(new PanelButtonMouseAdapter(bookContainer));
 
 		JLabel iconBook = new JLabel("");
 		iconBook.setBounds(0, 0, 37, 37);
@@ -267,6 +341,16 @@ public class MainJFrame extends JFrame {
 		btnBook.add(bookTxt);
 
 		JPanel btnMember = new JPanel();
+		btnMember.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnMember_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnMember.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMember.setLayout(null);
 		btnMember.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -274,25 +358,36 @@ public class MainJFrame extends JFrame {
 		btnMember.setBounds(0, 351, 198, 37);
 		sideBarPanel.add(btnMember);
 
-		JPanel memberContainer = new JPanel();
+		memberContainer = new JPanel();
 		memberContainer.setLayout(null);
 		memberContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		memberContainer.setBackground(new Color(51, 51, 51));
 		memberContainer.setBounds(0, 0, 37, 37);
 		btnMember.add(memberContainer);
+		btnMember.addMouseListener(new PanelButtonMouseAdapter(memberContainer));
 
 		JLabel iconMember = new JLabel("");
 		iconMember.setBounds(0, 0, 37, 37);
 		memberContainer.add(iconMember);
 
-		JLabel lblNewLabel_3_1_1_1_1_1 = new JLabel("MEMBER");
-		lblNewLabel_3_1_1_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3_1_1_1_1_1.setForeground(Color.LIGHT_GRAY);
-		lblNewLabel_3_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_3_1_1_1_1_1.setBounds(58, 11, 88, 15);
-		btnMember.add(lblNewLabel_3_1_1_1_1_1);
+		JLabel memberTxt = new JLabel("MEMBER");
+		memberTxt.setHorizontalAlignment(SwingConstants.LEFT);
+		memberTxt.setForeground(Color.LIGHT_GRAY);
+		memberTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
+		memberTxt.setBounds(58, 11, 88, 15);
+		btnMember.add(memberTxt);
 
 		JPanel btnInvoice = new JPanel();
+		btnInvoice.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnInvoice_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnInvoice.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInvoice.setLayout(null);
 		btnInvoice.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -300,12 +395,13 @@ public class MainJFrame extends JFrame {
 		btnInvoice.setBounds(0, 386, 198, 37);
 		sideBarPanel.add(btnInvoice);
 
-		JPanel invoiceContainer = new JPanel();
+		invoiceContainer = new JPanel();
 		invoiceContainer.setLayout(null);
 		invoiceContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		invoiceContainer.setBackground(new Color(51, 51, 51));
 		invoiceContainer.setBounds(0, 0, 37, 37);
 		btnInvoice.add(invoiceContainer);
+		btnInvoice.addMouseListener(new PanelButtonMouseAdapter(invoiceContainer));
 
 		JLabel iconInvoice = new JLabel("");
 		iconInvoice.setBounds(0, 0, 37, 37);
@@ -319,6 +415,16 @@ public class MainJFrame extends JFrame {
 		btnInvoice.add(invoiceTxt);
 
 		JPanel btnStatistical = new JPanel();
+		btnStatistical.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnStatistical_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnStatistical.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnStatistical.setLayout(null);
 		btnStatistical.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -326,12 +432,13 @@ public class MainJFrame extends JFrame {
 		btnStatistical.setBounds(0, 422, 198, 37);
 		sideBarPanel.add(btnStatistical);
 
-		JPanel statisticalContainer = new JPanel();
+		statisticalContainer = new JPanel();
 		statisticalContainer.setLayout(null);
 		statisticalContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		statisticalContainer.setBackground(new Color(51, 51, 51));
 		statisticalContainer.setBounds(0, 0, 37, 37);
 		btnStatistical.add(statisticalContainer);
+		btnStatistical.addMouseListener(new PanelButtonMouseAdapter(statisticalContainer));
 
 		JLabel iconStatistical = new JLabel("");
 		iconStatistical.setBounds(0, 0, 37, 37);
@@ -345,6 +452,16 @@ public class MainJFrame extends JFrame {
 		btnStatistical.add(statisticalTxt);
 
 		JPanel btnSetting = new JPanel();
+		btnSetting.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnSetting_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSetting.setLayout(null);
 		btnSetting.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -352,12 +469,13 @@ public class MainJFrame extends JFrame {
 		btnSetting.setBounds(0, 491, 198, 37);
 		sideBarPanel.add(btnSetting);
 
-		JPanel settingContainer = new JPanel();
+		settingContainer = new JPanel();
 		settingContainer.setLayout(null);
 		settingContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		settingContainer.setBackground(new Color(51, 51, 51));
 		settingContainer.setBounds(0, 0, 37, 37);
 		btnSetting.add(settingContainer);
+		btnSetting.addMouseListener(new PanelButtonMouseAdapter(settingContainer));
 
 		JLabel iconSetting = new JLabel("");
 		iconSetting.setBounds(0, 0, 37, 37);
@@ -380,22 +498,6 @@ public class MainJFrame extends JFrame {
 					showMessenger("Something was wrong! Please try again");
 				}
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
 		});
 		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInfo.setLayout(null);
@@ -404,12 +506,13 @@ public class MainJFrame extends JFrame {
 		btnInfo.setBounds(0, 527, 198, 37);
 		sideBarPanel.add(btnInfo);
 
-		JPanel infoContainer = new JPanel();
+		infoContainer = new JPanel();
 		infoContainer.setLayout(null);
 		infoContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		infoContainer.setBackground(new Color(51, 51, 51));
 		infoContainer.setBounds(0, 0, 37, 37);
 		btnInfo.add(infoContainer);
+		btnInfo.addMouseListener(new PanelButtonMouseAdapter(infoContainer));
 
 		JLabel iconInfo = new JLabel("");
 		iconInfo.setBounds(0, 0, 37, 37);
@@ -423,6 +526,16 @@ public class MainJFrame extends JFrame {
 		btnInfo.add(infoTxt);
 
 		JPanel btnLogout = new JPanel();
+		btnLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnLogout_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogout.setLayout(null);
 		btnLogout.setBorder(new LineBorder(new Color(230, 230, 250)));
@@ -430,7 +543,7 @@ public class MainJFrame extends JFrame {
 		btnLogout.setBounds(0, 563, 198, 37);
 		sideBarPanel.add(btnLogout);
 
-		JPanel logoutContainer = new JPanel();
+		logoutContainer = new JPanel();
 		logoutContainer.setLayout(null);
 		logoutContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
 		logoutContainer.setBackground(Color.RED);
@@ -448,7 +561,7 @@ public class MainJFrame extends JFrame {
 		logoutTxt.setBounds(58, 11, 130, 15);
 		btnLogout.add(logoutTxt);
 
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setBounds(197, 33, 803, 617);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(new CardLayout(0, 0));
@@ -474,7 +587,6 @@ public class MainJFrame extends JFrame {
 
 		invoice = new JPanel();
 		mainPanel.add("invoice", invoice);
-		invoice.setLayout(null);
 
 		report = new JPanel();
 		mainPanel.add("report", report);
@@ -485,13 +597,15 @@ public class MainJFrame extends JFrame {
 		loadData();
 	}
 
+	// ======== Main Function ===========
+
 	// Load data
 	private void loadData() {
 		// Load logo
 		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 		logo.setIcon(logoImage);
 		// Add panel for button sidebar
-		
+
 		// Dashboard
 		dashboardPanel.setBounds(0, 0, 803, 617);
 		dashboard.add(dashboardPanel);
@@ -524,8 +638,67 @@ public class MainJFrame extends JFrame {
 		settingPanel.setBounds(0, 0, 803, 617);
 		setting.add(settingPanel);
 		// Invoice
-		invoice.add(invoicePanel);
+		invoice.setLayout(null);
 		invoicePanel.setBounds(0, 0, 803, 617);
+		invoice.add(invoicePanel);
+
+		// Set Dashboard is the first layout
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "dashboard");
+	}
+
+	// Show Dashboard
+	private void btnDashboard_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "dashboard");
+	}
+
+	// Show Category Manage
+	private void btnCategory_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "category");
+	}
+
+	// Show Author Manage
+	private void btnAuthor_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "author");
+	}
+
+	// Show Employee Manage
+	private void btnEmployee_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "employee");
+	}
+
+	// Show Book Manage
+	private void btnBook_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "book");
+	}
+
+	// Show Member Manage
+	private void btnMember_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "member");
+	}
+
+	// Show Invoice Manage
+	private void btnInvoice_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "invoice");
+	}
+
+	// Show Statistical
+	private void btnStatistical_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "report");
+	}
+
+	// Show Setting
+	private void btnSetting_mouseClicked(MouseEvent e) {
+		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
+		mainLayout.show(mainPanel, "setting");
 	}
 
 	// Show info dialog
@@ -533,7 +706,16 @@ public class MainJFrame extends JFrame {
 		infoDialog.setVisible(true);
 	}
 
-	// =====Resize Image=====
+	// Logout & show Login Form
+	private void btnLogout_mouseClicked(MouseEvent e) {
+		this.dispose();
+		this.setVisible(false);
+		loginFrame.setVisible(true);
+	}
+
+	// ======= Reusability Function=========
+
+	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
 		if (imgPath != null) {
 			ImageIcon myImg = null;
@@ -552,4 +734,51 @@ public class MainJFrame extends JFrame {
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
 	}
+
+	// Set color
+	private void setBtnColor(JPanel panel) {
+		panel.setBackground(new Color(6, 202, 254));
+	}
+
+	// Reset color
+	private void resetBtnColor(JPanel panel) {
+		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, settingContainer,
+				statisticalContainer, invoiceContainer, memberContainer, bookContainer, authorContainer, categoryContainer};
+		for(int i = 0; i < panels.length; i++) {
+			if(panels[i] != panel) {
+				panels[i].setBackground(new Color(51, 51, 51));				
+			}
+		}
+	}
+
+	// MouseAdapter for button
+	private class PanelButtonMouseAdapter extends MouseAdapter {
+		JPanel panel;
+
+		public PanelButtonMouseAdapter(JPanel panel) {
+			this.panel = panel;
+		}
+
+//		@Override
+//		public void mouseEntered(MouseEvent e) {
+//			panel.setBackground(new Color(6, 202, 254));
+//		}
+
+//		@Override
+//		public void mouseExited(MouseEvent e) {
+//			panel.setBackground(new Color(51, 51, 51));
+//		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			resetBtnColor(panel);
+			setBtnColor(panel);
+		}
+
+//		@Override
+//		public void mouseReleased(MouseEvent e) {
+//			panel.setBackground(new Color(6, 202, 254));
+//		}
+	}
+
 }
