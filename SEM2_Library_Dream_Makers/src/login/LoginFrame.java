@@ -23,6 +23,11 @@ import javax.swing.JTable;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
+
+import entities.Employee;
+import main.MainJFrame;
+import model.EmployeeModel;
+
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,10 +50,14 @@ public class LoginFrame extends JFrame {
 	// Declare variable
 	private String username = null;
 	private String password = null;
+	private String password_check;
 	private int xPosition, yPosition, mouseX, mouseY;
 
 	// Declare Frame
 	private ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog();
+
+	// Declare Class
+	private EmployeeModel employeeModel = new EmployeeModel();
 
 //	private Image img = new ImageIcon(LoginFrame.class.getResource("data/loginForm/loginImage.png")).getImage()
 //			.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
@@ -189,12 +198,12 @@ public class LoginFrame extends JFrame {
 		lockIcon = new JLabel("");
 		lockIcon.setBounds(31, 155, 25, 25);
 		panel_1.add(lockIcon);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Color.BLACK);
 		panel_3.setBounds(31, 134, 276, 2);
 		panel_1.add(panel_3);
-		
+
 		JPanel panel_3_1 = new JPanel();
 		panel_3_1.setBackground(Color.BLACK);
 		panel_3_1.setBounds(31, 220, 276, 2);
@@ -208,15 +217,16 @@ public class LoginFrame extends JFrame {
 					panel_2_mouseDragged(arg0);
 				} catch (Exception e) {
 					showMessenger("Something was wrong! Please try again");
-				}				
+				}
 			}
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				try {
 					panel_2_mouseMoved(e);
 				} catch (Exception e2) {
 					showMessenger("Something was wrong! Please try again");
-				}	
+				}
 			}
 		});
 		panel_2.setBackground(new Color(51, 51, 51));
@@ -275,7 +285,7 @@ public class LoginFrame extends JFrame {
 				} catch (Exception e2) {
 					showMessenger("Something was wrong! Please try again");
 				}
-				
+
 			}
 
 			@Override
@@ -297,6 +307,9 @@ public class LoginFrame extends JFrame {
 		loadData();
 	}
 
+	// ======== Main Function ===========
+
+	// Load data
 	private void loadData() {
 		ImageIcon imgLogin = resizeImg("src/data/loginForm/loginImage.png", loginImage);
 		loginImage.setIcon(imgLogin);
@@ -313,7 +326,19 @@ public class LoginFrame extends JFrame {
 		if (username.isEmpty() || password.isEmpty()) {
 			showMessenger("Please fill out all fields!");
 		} else {
-			// Query account
+			Employee employee = employeeModel.checkLogin(username);
+			if (employee == null) {
+				showMessenger("Username does not exist!");
+			} else {
+				String password_hash = employeeModel.decryptPassword(employee.getPassword());
+				if (password.equals(password_hash)) {
+					new MainJFrame().setVisible(true);
+					this.dispose();
+					this.setVisible(false);
+				}else {
+					showMessenger("Wrong password!");
+				}
+			}
 		}
 	}
 
@@ -322,7 +347,32 @@ public class LoginFrame extends JFrame {
 		forgotPasswordDialog.setVisible(true);
 	}
 
-	// =====Resize Image=====
+	// Minimize & Close button
+	// Minimize app
+	private void btnMinimize_mouseClicked(MouseEvent e) {
+		this.setState(LoginFrame.ICONIFIED);
+	}
+
+	// Close app
+	private void btnClose_mouseClicked(MouseEvent e) {
+		System.exit(0);
+	}
+
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+
+	// ======= Reusability Function=========
+
+	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
 		if (imgPath != null) {
 			ImageIcon myImg = null;
@@ -342,26 +392,4 @@ public class LoginFrame extends JFrame {
 		JOptionPane.showMessageDialog(null, mess);
 	}
 
-	// Minimize & Close button
-	// Minimize app
-	private void btnMinimize_mouseClicked(MouseEvent e) {
-		this.setState(LoginFrame.ICONIFIED);
-	}
-	
-	// Close app
-	private void btnClose_mouseClicked(MouseEvent e) {
-		System.exit(0);
-	}
-	
-	// Drag & move window
-	private void panel_2_mouseDragged(MouseEvent e) {
-		xPosition = e.getXOnScreen();
-		yPosition = e.getYOnScreen();
-		this.setLocation(xPosition - mouseX, yPosition - mouseY);
-	}
-	
-	private void panel_2_mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-	}
 }
