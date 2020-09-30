@@ -61,7 +61,8 @@ public class infoDialog extends JDialog {
 		setUndecorated(true);
 		setBounds(100, 100, 450, 375);
 		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(211, 211, 211));
+		contentPanel.setBounds(0, 0, 450, 375);
 		contentPanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
@@ -80,8 +81,9 @@ public class infoDialog extends JDialog {
 				}	
 			}
 		});
+		getContentPane().setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 
 		logo = new JLabel("");

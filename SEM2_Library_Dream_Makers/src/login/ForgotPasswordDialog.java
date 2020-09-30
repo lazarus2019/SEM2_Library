@@ -83,6 +83,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(lblNewLabel_1);
 		
 		usernameField = new JTextField();
+		usernameField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		usernameField.setBorder(null);
 		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		usernameField.setBounds(32, 116, 335, 37);
@@ -90,7 +91,7 @@ public class ForgotPasswordDialog extends JDialog {
 		usernameField.setColumns(10);
 		
 		JButton btnSend = new JButton("SEND");
-		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -121,6 +122,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(mailIcon);
 		
 		mailField = new JTextField();
+		mailField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		mailField.setBorder(null);
 		mailField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		mailField.setColumns(10);
@@ -159,14 +161,14 @@ public class ForgotPasswordDialog extends JDialog {
 		panel.setLayout(null);
 		
 		panelClose = new JPanel();
-		panelClose.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		panelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelClose.setBackground(new Color(51, 51, 51));
 		panelClose.setBounds(364, 0, 36, 36);
 		panel.add(panelClose);
 		panelClose.setLayout(null);
 		
 		btnClose = new JLabel("X");
-		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
