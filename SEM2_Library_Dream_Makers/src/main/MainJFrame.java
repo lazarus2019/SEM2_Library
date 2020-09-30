@@ -53,7 +53,7 @@ public class MainJFrame extends JFrame {
 	public MainJFrame() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 600);
+		setBounds(100, 100, 1000, 650);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,7 +62,7 @@ public class MainJFrame extends JFrame {
 
 		JPanel sideBarPanel = new JPanel();
 		sideBarPanel.setBackground(new Color(51, 51, 51));
-		sideBarPanel.setBounds(0, 0, 198, 600);
+		sideBarPanel.setBounds(0, 0, 198, 650);
 		contentPane.add(sideBarPanel);
 		sideBarPanel.setLayout(null);
 
@@ -115,8 +115,8 @@ public class MainJFrame extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("Dream Makers");
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setFont(new Font("Giddyup Std", Font.PLAIN, 24));
-		lblNewLabel_2.setBounds(10, 546, 178, 43);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_2.setBounds(45, 616, 107, 23);
 		sideBarPanel.add(lblNewLabel_2);
 
 		JPanel btnEmployee = new JPanel();
@@ -136,11 +136,11 @@ public class MainJFrame extends JFrame {
 		iconEmployee.setBounds(0, 0, 37, 37);
 		panel_4.add(iconEmployee);
 
-		JLabel lblNewLabel_3 = new JLabel("EMPLOYEE");
+		JLabel lblNewLabel_3 = new JLabel("DASHBOARD");
 		lblNewLabel_3.setForeground(new Color(6, 202, 254));
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3.setBounds(58, 11, 88, 15);
+		lblNewLabel_3.setBounds(58, 11, 130, 15);
 		btnEmployee.add(lblNewLabel_3);
 
 		JPanel btnBooks = new JPanel();
@@ -161,15 +161,165 @@ public class MainJFrame extends JFrame {
 		iconEmployee_1.setBounds(0, 0, 37, 37);
 		panel_4_1.add(iconEmployee_1);
 
-		JLabel lblNewLabel_3_1 = new JLabel("BOOKS");
+		JLabel lblNewLabel_3_1 = new JLabel("CATEGORY");
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_3_1.setForeground(new Color(192, 192, 192));
 		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_3_1.setBounds(58, 11, 88, 15);
+		lblNewLabel_3_1.setBounds(58, 11, 130, 15);
 		btnBooks.add(lblNewLabel_3_1);
+		
+		JPanel btnBooks_1 = new JPanel();
+		btnBooks_1.setLayout(null);
+		btnBooks_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1.setBounds(0, 243, 198, 37);
+		sideBarPanel.add(btnBooks_1);
+		
+		JPanel panel_4_1_1 = new JPanel();
+		panel_4_1_1.setLayout(null);
+		panel_4_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1.add(panel_4_1_1);
+		
+		JLabel iconEmployee_1_1 = new JLabel("");
+		iconEmployee_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1.add(iconEmployee_1_1);
+		
+		JLabel lblNewLabel_3_1_1 = new JLabel("EMPLOYEE");
+		lblNewLabel_3_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1.setBounds(58, 11, 88, 15);
+		btnBooks_1.add(lblNewLabel_3_1_1);
+		
+		JPanel btnBooks_1_1 = new JPanel();
+		btnBooks_1_1.setLayout(null);
+		btnBooks_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1_1.setBounds(0, 279, 198, 37);
+		sideBarPanel.add(btnBooks_1_1);
+		
+		JPanel panel_4_1_1_1 = new JPanel();
+		panel_4_1_1_1.setLayout(null);
+		panel_4_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1_1.add(panel_4_1_1_1);
+		
+		JLabel iconEmployee_1_1_1 = new JLabel("");
+		iconEmployee_1_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1_1.add(iconEmployee_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1_1 = new JLabel("AUTHOR");
+		lblNewLabel_3_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1_1.setBounds(58, 11, 88, 15);
+		btnBooks_1_1.add(lblNewLabel_3_1_1_1);
+		
+		JPanel btnBooks_1_1_1 = new JPanel();
+		btnBooks_1_1_1.setLayout(null);
+		btnBooks_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1_1_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1_1_1.setBounds(0, 315, 198, 37);
+		sideBarPanel.add(btnBooks_1_1_1);
+		
+		JPanel panel_4_1_1_1_1 = new JPanel();
+		panel_4_1_1_1_1.setLayout(null);
+		panel_4_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1_1_1.add(panel_4_1_1_1_1);
+		
+		JLabel iconEmployee_1_1_1_1 = new JLabel("");
+		iconEmployee_1_1_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1_1_1.add(iconEmployee_1_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1_1_1 = new JLabel("BOOK");
+		lblNewLabel_3_1_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1_1_1.setBounds(58, 11, 88, 15);
+		btnBooks_1_1_1.add(lblNewLabel_3_1_1_1_1);
+		
+		JPanel btnBooks_1_1_1_1 = new JPanel();
+		btnBooks_1_1_1_1.setLayout(null);
+		btnBooks_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1_1_1_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1_1_1_1.setBounds(0, 351, 198, 37);
+		sideBarPanel.add(btnBooks_1_1_1_1);
+		
+		JPanel panel_4_1_1_1_1_1 = new JPanel();
+		panel_4_1_1_1_1_1.setLayout(null);
+		panel_4_1_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1_1_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1_1_1_1.add(panel_4_1_1_1_1_1);
+		
+		JLabel iconEmployee_1_1_1_1_1 = new JLabel("");
+		iconEmployee_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1_1_1_1.add(iconEmployee_1_1_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1_1_1_1 = new JLabel("MEMBER");
+		lblNewLabel_3_1_1_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1_1_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1_1_1_1.setBounds(58, 11, 88, 15);
+		btnBooks_1_1_1_1.add(lblNewLabel_3_1_1_1_1_1);
+		
+		JPanel btnBooks_1_1_1_1_1 = new JPanel();
+		btnBooks_1_1_1_1_1.setLayout(null);
+		btnBooks_1_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1_1_1_1_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1_1_1_1_1.setBounds(0, 386, 198, 37);
+		sideBarPanel.add(btnBooks_1_1_1_1_1);
+		
+		JPanel panel_4_1_1_1_1_1_1 = new JPanel();
+		panel_4_1_1_1_1_1_1.setLayout(null);
+		panel_4_1_1_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1_1_1_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1_1_1_1_1.add(panel_4_1_1_1_1_1_1);
+		
+		JLabel iconEmployee_1_1_1_1_1_1 = new JLabel("");
+		iconEmployee_1_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1_1_1_1_1.add(iconEmployee_1_1_1_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1_1_1_1_1 = new JLabel("MEMBER");
+		lblNewLabel_3_1_1_1_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1_1_1_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1_1_1_1_1.setBounds(58, 11, 88, 15);
+		btnBooks_1_1_1_1_1.add(lblNewLabel_3_1_1_1_1_1_1);
+		
+		JPanel btnBooks_1_1_1_1_1_1 = new JPanel();
+		btnBooks_1_1_1_1_1_1.setLayout(null);
+		btnBooks_1_1_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		btnBooks_1_1_1_1_1_1.setBackground(new Color(51, 51, 51));
+		btnBooks_1_1_1_1_1_1.setBounds(0, 422, 198, 37);
+		sideBarPanel.add(btnBooks_1_1_1_1_1_1);
+		
+		JPanel panel_4_1_1_1_1_1_1_1 = new JPanel();
+		panel_4_1_1_1_1_1_1_1.setLayout(null);
+		panel_4_1_1_1_1_1_1_1.setBorder(new LineBorder(new Color(230, 230, 250)));
+		panel_4_1_1_1_1_1_1_1.setBackground(new Color(51, 51, 51));
+		panel_4_1_1_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		btnBooks_1_1_1_1_1_1.add(panel_4_1_1_1_1_1_1_1);
+		
+		JLabel iconEmployee_1_1_1_1_1_1_1 = new JLabel("");
+		iconEmployee_1_1_1_1_1_1_1.setBounds(0, 0, 37, 37);
+		panel_4_1_1_1_1_1_1_1.add(iconEmployee_1_1_1_1_1_1_1);
+		
+		JLabel lblNewLabel_3_1_1_1_1_1_1_1 = new JLabel("STATISTICAL");
+		lblNewLabel_3_1_1_1_1_1_1_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_3_1_1_1_1_1_1_1.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_3_1_1_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1_1_1_1_1_1_1.setBounds(58, 11, 130, 15);
+		btnBooks_1_1_1_1_1_1.add(lblNewLabel_3_1_1_1_1_1_1_1);
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setBounds(197, 33, 803, 567);
+		mainPanel.setBounds(197, 33, 803, 617);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(new CardLayout(0, 0));
 
@@ -194,6 +344,7 @@ public class MainJFrame extends JFrame {
 
 		invoice = new JPanel();
 		mainPanel.add("invoice", invoice);
+		invoice.setLayout(null);
 
 		report = new JPanel();
 		mainPanel.add("report", report);
@@ -214,22 +365,39 @@ public class MainJFrame extends JFrame {
 		logo.setIcon(logoImage);
 		// Add panel for button sidebar
 		dashboardPanel dashboardPanel = new dashboardPanel();
+		dashboardPanel.setBounds(0, 0, 803, 617);
 		dashboard.add(dashboardPanel);
+		category.setLayout(null);
 		categoryPanel categoryPanel = new categoryPanel();
+		categoryPanel.setBounds(0, 0, 803, 617);
 		category.add(categoryPanel);
+		author.setLayout(null);
 		authorPanel authorPanel = new authorPanel();
+		authorPanel.setBounds(0, 0, 803, 617);
 		author.add(authorPanel);
+		book.setLayout(null);
 		bookPanel bookPanel = new bookPanel();
+		bookPanel.setBounds(0, 0, 803, 617);
 		book.add(bookPanel);
+		employee.setLayout(null);
 		employeePanel employeePanel = new employeePanel();
+		employeePanel.setBounds(0, 0, 803, 617);
 		employee.add(employeePanel);
+		member.setLayout(null);
 		memberPanel memberPanel = new memberPanel();
+		memberPanel.setBounds(0, 0, 803, 617);
 		member.add(memberPanel);
+		report.setLayout(null);
 		reportPanel reportPanel = new reportPanel();
+		reportPanel.setBounds(0, 0, 803, 617);
 		report.add(reportPanel);
+		setting.setLayout(null);
 		settingPanel settingPanel = new settingPanel();
-		setting.add(settingPanel);
-		
+		settingPanel.setBounds(0, 0, 803, 617);
+		setting.add(settingPanel);	
+		invoicePanel invoicePanel = new invoicePanel();
+		invoice.add(invoicePanel);
+		invoicePanel.setBounds(0, 0, 803, 617);
 	}
 
 	// =====Resize Image=====

@@ -11,7 +11,7 @@ public class authorPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public authorPanel() {
-		setBounds(0, 0, 803, 567);
+		setBounds(0, 0, 803, 617);
 		setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
