@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.Image;
 import javax.swing.border.LineBorder;
 
+import entities.Employee;
 import login.LoginFrame;
 
 import javax.swing.JButton;
@@ -52,12 +53,11 @@ public class MainJFrame extends JFrame {
 	private JPanel categoryContainer;
 	private JPanel dashboardContainer;
 
-	// Declare Frame, Dialog, Panel
-	// Dialog
-	private infoDialog infoDialog = new infoDialog();
+	// Declare Direct mapping
+	Employee employeeMain = null;
 
+	// Declare Frame, Dialog, Panel
 	// Frame
-	private LoginFrame loginFrame = new LoginFrame();
 
 	// Panel
 	private dashboardPanel dashboardPanel = new dashboardPanel();
@@ -69,6 +69,9 @@ public class MainJFrame extends JFrame {
 	private reportPanel reportPanel = new reportPanel();
 	private settingPanel settingPanel = new settingPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
+	private JLabel titleTxt;
+	private JLabel usernameTxt;
+	private JLabel levelTxt;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -97,8 +100,8 @@ public class MainJFrame extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel sideBarPanel = new JPanel();
-		sideBarPanel.setBackground(new Color(51, 51, 51));
 		sideBarPanel.setBounds(0, 0, 198, 650);
+		sideBarPanel.setBackground(new Color(51, 51, 51));
 		contentPane.add(sideBarPanel);
 		sideBarPanel.setLayout(null);
 
@@ -134,19 +137,19 @@ public class MainJFrame extends JFrame {
 		levasfk.setBounds(10, 125, 89, 22);
 		panel.add(levasfk);
 
-		JLabel lblAdmin = new JLabel("Admin");
-		lblAdmin.setForeground(Color.WHITE);
-		lblAdmin.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblAdmin.setBounds(99, 105, 89, 22);
-		panel.add(lblAdmin);
+		usernameTxt = new JLabel("Admin");
+		usernameTxt.setForeground(Color.WHITE);
+		usernameTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+		usernameTxt.setFont(new Font("Tahoma", Font.BOLD, 12));
+		usernameTxt.setBounds(99, 105, 89, 22);
+		panel.add(usernameTxt);
 
-		JLabel lblAdmin_1 = new JLabel("Admin");
-		lblAdmin_1.setForeground(Color.WHITE);
-		lblAdmin_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAdmin_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblAdmin_1.setBounds(99, 125, 89, 22);
-		panel.add(lblAdmin_1);
+		levelTxt = new JLabel("Admin");
+		levelTxt.setForeground(Color.WHITE);
+		levelTxt.setHorizontalAlignment(SwingConstants.RIGHT);
+		levelTxt.setFont(new Font("Tahoma", Font.BOLD, 12));
+		levelTxt.setBounds(99, 125, 89, 22);
+		panel.add(levelTxt);
 
 		JLabel lblNewLabel_2 = new JLabel("Dream Makers");
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
@@ -593,17 +596,44 @@ public class MainJFrame extends JFrame {
 
 		setting = new JPanel();
 		mainPanel.add("setting", setting);
+		
+		JPanel titlePanel = new JPanel();
+		titlePanel.setBounds(197, 0, 803, 34);
+		contentPane.add(titlePanel);
+		titlePanel.setLayout(null);
+		
+		titleTxt = new JLabel("Dashboard");
+		titleTxt.setFont(new Font("Tahoma", Font.BOLD, 17));
+		titleTxt.setHorizontalAlignment(SwingConstants.CENTER);
+		titleTxt.setBounds(287, 0, 229, 34);
+		titlePanel.add(titleTxt);
 
 		loadData();
 	}
 
 	// ======== Main Function ===========
 
+	public void getAccount(Employee employee) {
+		employeeMain = employee;
+	}
+//
+//	private void checkLogin() {
+//		if (employeeMain != null) {
+//			loadData();
+//		} else {
+//			this.setVisible(false);
+//			new LoginFrame().setVisible(true);
+//			this.dispose();
+//		}
+//	}
+
 	// Load data
 	private void loadData() {
 		// Load logo
 		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 		logo.setIcon(logoImage);
+		// When user login success
+//		Employee employeeLogin = 
 		// Add panel for button sidebar
 
 		// Dashboard
@@ -649,68 +679,77 @@ public class MainJFrame extends JFrame {
 
 	// Show Dashboard
 	private void btnDashboard_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Dashboard");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "dashboard");
 	}
 
 	// Show Category Manage
 	private void btnCategory_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Category");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "category");
 	}
 
 	// Show Author Manage
 	private void btnAuthor_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Author");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "author");
 	}
 
 	// Show Employee Manage
 	private void btnEmployee_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Employee");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "employee");
 	}
 
 	// Show Book Manage
 	private void btnBook_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Book");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "book");
 	}
 
 	// Show Member Manage
 	private void btnMember_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Member");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "member");
 	}
 
 	// Show Invoice Manage
 	private void btnInvoice_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Invoice");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "invoice");
 	}
 
 	// Show Statistical
 	private void btnStatistical_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Report");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "report");
 	}
 
 	// Show Setting
 	private void btnSetting_mouseClicked(MouseEvent e) {
+		titleTxt.setText("Setting");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "setting");
 	}
 
 	// Show info dialog
 	private void btnInfo_mouseClicked(MouseEvent e) {
-		infoDialog.setVisible(true);
+		new infoDialog().setVisible(true);
 	}
 
 	// Logout & show Login Form
 	private void btnLogout_mouseClicked(MouseEvent e) {
-		this.dispose();
 		this.setVisible(false);
-		loginFrame.setVisible(true);
+		new LoginFrame().setVisible(true);
+		this.dispose();
 	}
 
 	// ======= Reusability Function=========
@@ -743,10 +782,11 @@ public class MainJFrame extends JFrame {
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
 		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, settingContainer,
-				statisticalContainer, invoiceContainer, memberContainer, bookContainer, authorContainer, categoryContainer};
-		for(int i = 0; i < panels.length; i++) {
-			if(panels[i] != panel) {
-				panels[i].setBackground(new Color(51, 51, 51));				
+				statisticalContainer, invoiceContainer, memberContainer, bookContainer, authorContainer,
+				categoryContainer };
+		for (int i = 0; i < panels.length; i++) {
+			if (panels[i] != panel) {
+				panels[i].setBackground(new Color(51, 51, 51));
 			}
 		}
 	}
@@ -780,5 +820,4 @@ public class MainJFrame extends JFrame {
 //			panel.setBackground(new Color(6, 202, 254));
 //		}
 	}
-
 }

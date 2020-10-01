@@ -11,7 +11,7 @@ import entities.Employee;
 public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+	
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {
 		Employee employee = null;

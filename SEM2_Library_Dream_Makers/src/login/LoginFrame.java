@@ -24,6 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
+import com.mysql.cj.x.protobuf.MysqlxConnection.Close;
+
 import entities.Employee;
 import main.MainJFrame;
 import model.EmployeeModel;
@@ -54,7 +56,6 @@ public class LoginFrame extends JFrame {
 	private int xPosition, yPosition, mouseX, mouseY;
 
 	// Declare Frame
-	private ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog();
 
 	// Declare Class
 	private EmployeeModel employeeModel = new EmployeeModel();
@@ -285,7 +286,6 @@ public class LoginFrame extends JFrame {
 				} catch (Exception e2) {
 					showMessenger("Something was wrong! Please try again");
 				}
-
 			}
 
 			@Override
@@ -332,9 +332,11 @@ public class LoginFrame extends JFrame {
 			} else {
 				String password_hash = employeeModel.decryptPassword(employee.getPassword());
 				if (password.equals(password_hash)) {
-					new MainJFrame().setVisible(true);
-					this.dispose();
 					this.setVisible(false);
+					MainJFrame mainJFrame = new MainJFrame();
+					mainJFrame.getAccount(employee);
+					mainJFrame.setVisible(true);
+					this.dispose();
 				}else {
 					showMessenger("Wrong password!");
 				}
@@ -344,7 +346,7 @@ public class LoginFrame extends JFrame {
 
 	// Show Forgot Password Dialog
 	private void FGPassword_mouseClicked(MouseEvent e) {
-		forgotPasswordDialog.setVisible(true);
+		new ForgotPasswordDialog().setVisible(true);
 	}
 
 	// Minimize & Close button
