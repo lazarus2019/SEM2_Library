@@ -27,7 +27,8 @@ import javax.swing.border.TitledBorder;
 import com.mysql.cj.x.protobuf.MysqlxConnection.Close;
 
 import entities.Employee;
-import main.MainJFrame;
+import main.AdminJFrame;
+import main.EmployeeJFrame;
 import model.EmployeeModel;
 
 import javax.swing.JTextField;
@@ -83,8 +84,8 @@ public class LoginFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginFrame() {
-		setResizable(false);
 		setUndecorated(true);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
 		setLocationRelativeTo(null);
@@ -332,11 +333,20 @@ public class LoginFrame extends JFrame {
 			} else {
 				String password_hash = employeeModel.decryptPassword(employee.getPassword());
 				if (password.equals(password_hash)) {
-					this.setVisible(false);
-					MainJFrame mainJFrame = new MainJFrame();
-					mainJFrame.getAccount(employee);
-					mainJFrame.setVisible(true);
-					this.dispose();
+					String level = employee.getLevel();
+					if(level.equals("admin")) {
+						this.setVisible(false);
+						AdminJFrame adminJFrame = new AdminJFrame();
+						adminJFrame.getAccount(employee);
+						adminJFrame.setVisible(true);
+						this.dispose();						
+					}else if(level.equals("librarian")){
+						this.setVisible(false);
+						EmployeeJFrame employeeJFrame = new EmployeeJFrame();
+						employeeJFrame.getAccount(employee);
+						employeeJFrame.setVisible(true);
+						this.dispose();		
+					}
 				}else {
 					showMessenger("Wrong password!");
 				}

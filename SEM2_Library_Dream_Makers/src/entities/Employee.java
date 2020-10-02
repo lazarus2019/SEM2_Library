@@ -14,13 +14,15 @@ public class Employee {
 	private String phone;
 	private String email;
 	private String photo;
+	private String level;
 
 	public Employee() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Employee(String employee_ID, String username, String password, String name, Date dob, boolean gender,
-			String address, String phone, String email, String photo) {
+			String address, String phone, String email, String photo, String level) {
 		super();
 		this.employee_ID = employee_ID;
 		this.username = username;
@@ -32,6 +34,7 @@ public class Employee {
 		this.phone = phone;
 		this.email = email;
 		this.photo = photo;
+		this.level = level;
 	}
 
 	public String getEmployee_ID() {
@@ -112,6 +115,14 @@ public class Employee {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 
 }

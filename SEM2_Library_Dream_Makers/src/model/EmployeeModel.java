@@ -15,7 +15,7 @@ public class EmployeeModel {
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {
 		Employee employee = null;
-		sql = "SELECT * FROM employee WHERE username = ?";
+		sql = "SELECT * FROM employee WHERE username = ?  ";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, username);
@@ -25,6 +25,7 @@ public class EmployeeModel {
 				employee.setEmployee_ID(resultSet.getString("employee_ID"));
 				employee.setUsername(resultSet.getString("username"));
 				employee.setPassword(resultSet.getString("password"));
+				employee.setLevel(resultSet.getString("level"));
 				return employee;
 			} else {
 				throw new Exception();
