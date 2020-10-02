@@ -25,7 +25,29 @@ public class EmployeeModel {
 				employee.setEmployee_ID(resultSet.getString("employee_ID"));
 				employee.setUsername(resultSet.getString("username"));
 				employee.setPassword(resultSet.getString("password"));
+				employee.setEmail(resultSet.getString("email"));
 				employee.setLevel(resultSet.getString("level"));
+				return employee;
+			} else {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			return employee;
+		}
+	}
+	
+	// Forgot Password - NTS
+	public static Employee forGotPass(String email) {
+		Employee employee = null;
+		sql = "SELECT * FROM employee WHERE email = ?  ";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, email);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				employee = new Employee();
+				employee.setPassword(resultSet.getString("password"));
+				employee.setEmail(resultSet.getString("email"));
 				return employee;
 			} else {
 				throw new Exception();

@@ -8,6 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import entities.Employee;
+import main.AdminJFrame;
+import main.EmployeeJFrame;
+import model.EmployeeModel;
+import model.SendMail;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -27,20 +34,21 @@ import java.awt.event.MouseMotionAdapter;
 public class ForgotPasswordDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField usernameField;
-	private JTextField mailField;
+	private JTextField emailField;
 	private JLabel userIcon;
-	private JLabel mailIcon;
 	private JLabel lblNewLabel_2;
 	private JLabel btnClose;
 	private JPanel panelClose;
 	
 	// Declare variable
-	private String username = null;
-	private String mail = null;
+	private String email = null;
 	private int xPosition, yPosition, mouseX, mouseY;
 	private JPanel panel_1;
-	private JPanel panel_2;
+	
+	// Declare Frame
+
+	// Declare Class
+	private EmployeeModel employeeModel = new EmployeeModel();
 
 	/**
 	 * Launch the application.
@@ -62,7 +70,7 @@ public class ForgotPasswordDialog extends JDialog {
 		setModal(true);
 		getContentPane().setEnabled(false);
 		setUndecorated(true);
-		setBounds(100, 100, 400, 339);
+		setBounds(100, 100, 400, 285);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
@@ -76,19 +84,19 @@ public class ForgotPasswordDialog extends JDialog {
 		lblNewLabel.setBounds(100, 39, 199, 36);
 		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("USERNAME");
+		JLabel lblNewLabel_1 = new JLabel("EMAIL");
 		lblNewLabel_1.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1.setBounds(65, 86, 102, 25);
 		contentPanel.add(lblNewLabel_1);
 		
-		usernameField = new JTextField();
-		usernameField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-		usernameField.setBorder(null);
-		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		usernameField.setBounds(32, 116, 335, 37);
-		contentPanel.add(usernameField);
-		usernameField.setColumns(10);
+		emailField = new JTextField();
+		emailField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+		emailField.setBorder(null);
+		emailField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		emailField.setBounds(32, 116, 335, 37);
+		contentPanel.add(emailField);
+		emailField.setColumns(10);
 		
 		JButton btnSend = new JButton("SEND");
 		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -104,36 +112,18 @@ public class ForgotPasswordDialog extends JDialog {
 		btnSend.setForeground(Color.WHITE);
 		btnSend.setBackground(new Color(255, 51, 51));
 		btnSend.setFont(new Font("Arial", Font.BOLD, 14));
-		btnSend.setBounds(32, 248, 335, 36);
+		btnSend.setBounds(31, 193, 335, 36);
 		contentPanel.add(btnSend);
 		
 		userIcon = new JLabel("");
 		userIcon.setBounds(34, 86, 25, 25);
 		contentPanel.add(userIcon);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("MAIL");
-		lblNewLabel_1_1.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_1_1.setBounds(65, 164, 102, 25);
-		contentPanel.add(lblNewLabel_1_1);
-		
-		mailIcon = new JLabel("");
-		mailIcon.setBounds(34, 164, 25, 25);
-		contentPanel.add(mailIcon);
-		
-		mailField = new JTextField();
-		mailField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-		mailField.setBorder(null);
-		mailField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		mailField.setColumns(10);
-		mailField.setBounds(32, 194, 335, 37);
-		contentPanel.add(mailField);
-		
 		lblNewLabel_2 = new JLabel("You must fill out all fields to get password back!");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setForeground(Color.RED);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		lblNewLabel_2.setBounds(34, 296, 334, 31);
+		lblNewLabel_2.setBounds(33, 241, 334, 31);
 		contentPanel.add(lblNewLabel_2);
 		
 		JPanel panel = new JPanel();
@@ -198,19 +188,12 @@ public class ForgotPasswordDialog extends JDialog {
 		panel_1.setBounds(32, 153, 335, 2);
 		contentPanel.add(panel_1);
 		
-		panel_2 = new JPanel();
-		panel_2.setBackground(Color.BLACK);
-		panel_2.setBounds(32, 231, 335, 2);
-		contentPanel.add(panel_2);
-		
 		loadData();
 	}
 	
 	private void loadData() {
 		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
 		userIcon.setIcon(imgUser);
-		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", mailIcon);
-		mailIcon.setIcon(imgMail);
 	}
 	
 	// =====Resize Image=====
@@ -235,13 +218,26 @@ public class ForgotPasswordDialog extends JDialog {
 	
 	// Send password to email
 	private void btnSend_actionPerformed(ActionEvent e) {
-		username = usernameField.getText().trim();
-		mail = mailField.getText().trim();
-		if(username.isEmpty() || mail.isEmpty()) {
+		email = emailField.getText().trim();
+		if(email.isEmpty()) {
 			showMessenger("You must fill out all fields to get password back!");			
 		}else {
 			// Query username
-			
+			Employee employee = employeeModel.forGotPass(email);
+			if (employee == null) {
+				showMessenger("Email does not exist!");
+			} else {				
+				String password = employee.getPassword();
+				SendMail sendMail = new SendMail();
+				if(sendMail.sendMailPassword(email, password)) {
+					showMessenger("Please check your mail!");
+					this.setVisible(false);
+					this.dispose();
+				}else {
+					showMessenger("Send Failed! Please try again");
+				};
+				
+			}
 		}
 	}
 	
