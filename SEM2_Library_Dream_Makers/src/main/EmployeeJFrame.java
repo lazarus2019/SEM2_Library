@@ -48,6 +48,8 @@ public class EmployeeJFrame extends JFrame {
 	private JPanel authorContainer;
 	private JPanel categoryContainer;
 	private JPanel dashboardContainer;
+	private JLabel btnClose;
+	private JLabel btnMinimize;
 
 	// Declare Direct mapping
 	Employee employeeMain = null;
@@ -241,7 +243,7 @@ public class EmployeeJFrame extends JFrame {
 		btnAuthor.setLayout(null);
 		btnAuthor.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnAuthor.setBackground(new Color(51, 51, 51));
-		btnAuthor.setBounds(0, 279, 198, 37);
+		btnAuthor.setBounds(0, 243, 198, 37);
 		sideBarPanel.add(btnAuthor);
 
 		authorContainer = new JPanel();
@@ -278,7 +280,7 @@ public class EmployeeJFrame extends JFrame {
 		btnBook.setLayout(null);
 		btnBook.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnBook.setBackground(new Color(51, 51, 51));
-		btnBook.setBounds(0, 315, 198, 37);
+		btnBook.setBounds(0, 279, 198, 37);
 		sideBarPanel.add(btnBook);
 
 		bookContainer = new JPanel();
@@ -315,7 +317,7 @@ public class EmployeeJFrame extends JFrame {
 		btnMember.setLayout(null);
 		btnMember.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnMember.setBackground(new Color(51, 51, 51));
-		btnMember.setBounds(0, 351, 198, 37);
+		btnMember.setBounds(0, 315, 198, 37);
 		sideBarPanel.add(btnMember);
 
 		memberContainer = new JPanel();
@@ -352,7 +354,7 @@ public class EmployeeJFrame extends JFrame {
 		btnInvoice.setLayout(null);
 		btnInvoice.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnInvoice.setBackground(new Color(51, 51, 51));
-		btnInvoice.setBounds(0, 386, 198, 37);
+		btnInvoice.setBounds(0, 350, 198, 37);
 		sideBarPanel.add(btnInvoice);
 
 		invoiceContainer = new JPanel();
@@ -389,7 +391,7 @@ public class EmployeeJFrame extends JFrame {
 		btnStatistical.setLayout(null);
 		btnStatistical.setBorder(new LineBorder(new Color(230, 230, 250)));
 		btnStatistical.setBackground(new Color(51, 51, 51));
-		btnStatistical.setBounds(0, 422, 198, 37);
+		btnStatistical.setBounds(0, 386, 198, 37);
 		sideBarPanel.add(btnStatistical);
 
 		statisticalContainer = new JPanel();
@@ -521,6 +523,74 @@ public class EmployeeJFrame extends JFrame {
 		titleTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		titleTxt.setBounds(287, 0, 229, 34);
 		titlePanel.add(titleTxt);
+		
+		JPanel panelMinimize = new JPanel();
+		panelMinimize.setBounds(735, 0, 34, 34);
+		panelMinimize.setBackground(new Color(240, 240, 240));
+		titlePanel.add(panelMinimize);
+		panelMinimize.setLayout(null);
+
+		btnMinimize = new JLabel("_");
+		btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnMinimize.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMinimize.setBounds(0, 0, 34, 34);
+		btnMinimize.setForeground(Color.RED);
+		btnMinimize.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnMinimize_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelMinimize.setBackground(new Color(227, 227, 227));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelMinimize.setBackground(new Color(240, 240, 240));
+			}
+		});
+		panelMinimize.add(btnMinimize);
+
+		JPanel panelClose = new JPanel();
+		panelClose.setLayout(null);
+		panelClose.setBackground(new Color(240, 240, 240));
+		panelClose.setBounds(769, 0, 34, 34);
+		titlePanel.add(panelClose);
+
+		btnClose = new JLabel("X");
+		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
+		btnClose.setForeground(Color.RED);
+		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClose.setBounds(0, 0, 34, 34);
+		btnClose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnClose_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelClose.setBackground(new Color(227, 227, 227));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelClose.setBackground(new Color(240, 240, 240));
+			}
+		});
+		panelClose.add(btnClose);
 
 		loadData();
 	}
@@ -658,6 +728,17 @@ public class EmployeeJFrame extends JFrame {
 		}
 
 		// ======= Reusability Function=========
+		
+		// Minimize & Close button
+		// Minimize app
+		private void btnMinimize_mouseClicked(MouseEvent e) {
+			this.setState(LoginFrame.ICONIFIED);
+		}
+
+		// Close app
+		private void btnClose_mouseClicked(MouseEvent e) {
+			System.exit(0);
+		}
 
 		// Resize Image
 		private ImageIcon resizeImg(String imgPath, JLabel jName) {

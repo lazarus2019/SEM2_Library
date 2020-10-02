@@ -50,6 +50,11 @@ public class AdminJFrame extends JFrame {
 	private JPanel employeeContainer;
 	private JPanel categoryContainer;
 	private JPanel dashboardContainer;
+	private JLabel titleTxt;
+	private JLabel usernameTxt;
+	private JLabel levelTxt;
+	private JLabel btnClose;
+	private JLabel btnMinimize;
 
 	// Declare Direct mapping
 	Employee employeeMain = null;
@@ -66,9 +71,6 @@ public class AdminJFrame extends JFrame {
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
-	private JLabel titleTxt;
-	private JLabel usernameTxt;
-	private JLabel levelTxt;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -553,17 +555,85 @@ public class AdminJFrame extends JFrame {
 
 		report = new JPanel();
 		mainPanel.add("report", report);
-		
+
 		JPanel titlePanel = new JPanel();
 		titlePanel.setBounds(197, 0, 803, 34);
 		contentPane.add(titlePanel);
 		titlePanel.setLayout(null);
-		
+
 		titleTxt = new JLabel("Dashboard");
 		titleTxt.setFont(new Font("Tahoma", Font.BOLD, 17));
 		titleTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		titleTxt.setBounds(287, 0, 229, 34);
 		titlePanel.add(titleTxt);
+
+		JPanel panelMinimize = new JPanel();
+		panelMinimize.setBounds(735, 0, 34, 34);
+		panelMinimize.setBackground(new Color(240, 240, 240));
+		titlePanel.add(panelMinimize);
+		panelMinimize.setLayout(null);
+
+		btnMinimize = new JLabel("_");
+		btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnMinimize.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMinimize.setBounds(0, 0, 34, 34);
+		btnMinimize.setForeground(Color.RED);
+		btnMinimize.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnMinimize_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelMinimize.setBackground(new Color(227, 227, 227));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelMinimize.setBackground(new Color(240, 240, 240));
+			}
+		});
+		panelMinimize.add(btnMinimize);
+
+		JPanel panelClose = new JPanel();
+		panelClose.setLayout(null);
+		panelClose.setBackground(new Color(240, 240, 240));
+		panelClose.setBounds(769, 0, 34, 34);
+		titlePanel.add(panelClose);
+
+		btnClose = new JLabel("X");
+		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
+		btnClose.setForeground(Color.RED);
+		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClose.setBounds(0, 0, 34, 34);
+		btnClose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnClose_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelClose.setBackground(new Color(227, 227, 227));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelClose.setBackground(new Color(240, 240, 240));
+			}
+		});
+		panelClose.add(btnClose);
 
 		loadData();
 	}
@@ -722,6 +792,17 @@ public class AdminJFrame extends JFrame {
 		}
 	}
 
+	// Minimize & Close button
+	// Minimize app
+	private void btnMinimize_mouseClicked(MouseEvent e) {
+		this.setState(LoginFrame.ICONIFIED);
+	}
+
+	// Close app
+	private void btnClose_mouseClicked(MouseEvent e) {
+		System.exit(0);
+	}
+
 	// Show error message
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
@@ -734,9 +815,8 @@ public class AdminJFrame extends JFrame {
 
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
-		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, 
-				statisticalContainer, invoiceContainer, memberContainer, bookContainer, authorContainer,
-				categoryContainer };
+		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, statisticalContainer,
+				invoiceContainer, memberContainer, bookContainer, authorContainer, categoryContainer };
 		for (int i = 0; i < panels.length; i++) {
 			if (panels[i] != panel) {
 				panels[i].setBackground(new Color(51, 51, 51));
