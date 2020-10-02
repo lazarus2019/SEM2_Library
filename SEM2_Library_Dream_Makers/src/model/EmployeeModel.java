@@ -7,10 +7,24 @@ import java.util.Random;
 
 import connect.ConnectDB;
 import entities.Employee;
+import main.bookPanel;
 
 public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	
+	// Change Password - NTS
+	public static boolean changePassword(String employee_ID, String password) {
+		sql = "UPDATE employee SET password = ? WHERE employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, password);
+			preparedStatement.setString(2, employee_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {

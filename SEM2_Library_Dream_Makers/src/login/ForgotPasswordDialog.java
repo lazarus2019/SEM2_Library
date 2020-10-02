@@ -35,7 +35,7 @@ public class ForgotPasswordDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField emailField;
-	private JLabel userIcon;
+	private JLabel mailIcon;
 	private JLabel lblNewLabel_2;
 	private JLabel btnClose;
 	private JPanel panelClose;
@@ -115,9 +115,9 @@ public class ForgotPasswordDialog extends JDialog {
 		btnSend.setBounds(31, 193, 335, 36);
 		contentPanel.add(btnSend);
 		
-		userIcon = new JLabel("");
-		userIcon.setBounds(34, 86, 25, 25);
-		contentPanel.add(userIcon);
+		mailIcon = new JLabel("");
+		mailIcon.setBounds(34, 86, 25, 25);
+		contentPanel.add(mailIcon);
 		
 		lblNewLabel_2 = new JLabel("You must fill out all fields to get password back!");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -192,8 +192,8 @@ public class ForgotPasswordDialog extends JDialog {
 	}
 	
 	private void loadData() {
-		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
-		userIcon.setIcon(imgUser);
+		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", mailIcon);
+		mailIcon.setIcon(imgUser);
 	}
 	
 	// =====Resize Image=====

@@ -254,7 +254,6 @@ public class LoginFrame extends JFrame {
 					showMessenger("Something was wrong! Please try again");
 				}
 			}
-
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				panelMininize.setBackground(new Color(87, 87, 87));

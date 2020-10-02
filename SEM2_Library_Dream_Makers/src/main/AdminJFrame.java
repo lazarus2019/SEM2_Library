@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 
 import entities.Employee;
 import login.LoginFrame;
+import setting.settingDialog;
 
 import javax.swing.JButton;
 import javax.swing.UIManager;
@@ -122,7 +123,18 @@ public class AdminJFrame extends JFrame {
 		panel_2.setBounds(37, 45, 121, 2);
 		panel.add(panel_2);
 
-		JLabel lblNewLabel_1 = new JLabel("");
+		JLabel lblNewLabel_1 = new JLabel("sadasdasdasdas");
+		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					employeeInfo_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1.setBounds(74, 51, 49, 49);
 		panel.add(lblNewLabel_1);
 
@@ -702,6 +714,13 @@ public AdminJFrame(Employee employee) {
 		// Set Dashboard is the first layout
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "dashboard");
+	}
+	
+	// Show Employee Info
+	private void employeeInfo_mouseClicked(MouseEvent e) {
+		settingDialog.employee = employeeMain;
+		settingDialog settingDialog = new settingDialog();
+		settingDialog.setVisible(true);
 	}
 
 	// Show Dashboard
