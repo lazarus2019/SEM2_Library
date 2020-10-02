@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
+import java.awt.color.ICC_ColorSpace;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -57,7 +59,7 @@ public class AdminJFrame extends JFrame {
 	private JLabel btnMinimize;
 
 	// Declare Direct mapping
-	Employee employeeMain = null;
+	public static Employee employeeMain = null;
 
 	// Declare Frame, Dialog, Panel
 	// Frame
@@ -637,12 +639,13 @@ public class AdminJFrame extends JFrame {
 
 		loadData();
 	}
+	
+public AdminJFrame(Employee employee) {
+	
+}
 
 	// ======== Main Function ===========
 
-	public void getAccount(Employee employee) {
-		employeeMain = employee;
-	}
 //
 //	private void checkLogin() {
 //		if (employeeMain != null) {
@@ -660,7 +663,8 @@ public class AdminJFrame extends JFrame {
 		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 		logo.setIcon(logoImage);
 		// When user login success
-//		Employee employeeLogin = 
+		usernameTxt.setText(employeeMain.getUsername());
+		levelTxt.setText(employeeMain.getLevel());
 		// Add panel for button sidebar
 
 		// Dashboard

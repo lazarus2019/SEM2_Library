@@ -336,8 +336,8 @@ public class LoginFrame extends JFrame {
 					String level = employee.getLevel();
 					if(level.equals("admin")) {
 						this.setVisible(false);
+						AdminJFrame.employeeMain = employee;
 						AdminJFrame adminJFrame = new AdminJFrame();
-						adminJFrame.getAccount(employee);
 						adminJFrame.setVisible(true);
 						this.dispose();						
 					}else if(level.equals("librarian")){

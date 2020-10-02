@@ -51,8 +51,8 @@ public class EmployeeJFrame extends JFrame {
 	private JLabel btnClose;
 	private JLabel btnMinimize;
 
-	// Declare Direct mapping
-	Employee employeeMain = null;
+	 // Declare Direct mapping
+	static Employee employeeMain = null;
 
 	// Declare Frame, Dialog, Panel
 	// Frame
@@ -596,7 +596,7 @@ public class EmployeeJFrame extends JFrame {
 	}
 	// ======== Main Function ===========
 
-		public void getAccount(Employee employee) {
+		public static void getAccount(Employee employee) {
 			employeeMain = employee;
 		}
 	//
@@ -616,7 +616,8 @@ public class EmployeeJFrame extends JFrame {
 			ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 			logo.setIcon(logoImage);
 			// When user login success
-//			Employee employeeLogin = 
+			usernameTxt.setText(employeeMain.getUsername());
+			levelTxt.setText(employeeMain.getLevel());
 			// Add panel for button sidebar
 
 			// Dashboard
