@@ -27,7 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 
-public class MainJFrame extends JFrame {
+public class AdminJFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel logo;
@@ -77,7 +77,7 @@ public class MainJFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainJFrame frame = new MainJFrame();
+					AdminJFrame frame = new AdminJFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -89,7 +89,7 @@ public class MainJFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainJFrame() {
+	public AdminJFrame() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
