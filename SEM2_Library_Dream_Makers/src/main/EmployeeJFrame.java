@@ -131,14 +131,14 @@ public class EmployeeJFrame extends JFrame {
 		levasfk.setBounds(10, 125, 89, 22);
 		panel.add(levasfk);
 
-		usernameTxt = new JLabel("Admin");
+		usernameTxt = new JLabel("Employee 1");
 		usernameTxt.setForeground(Color.WHITE);
 		usernameTxt.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameTxt.setFont(new Font("Tahoma", Font.BOLD, 12));
 		usernameTxt.setBounds(99, 105, 89, 22);
 		panel.add(usernameTxt);
 
-		levelTxt = new JLabel("Admin");
+		levelTxt = new JLabel("employee");
 		levelTxt.setForeground(Color.WHITE);
 		levelTxt.setHorizontalAlignment(SwingConstants.RIGHT);
 		levelTxt.setFont(new Font("Tahoma", Font.BOLD, 12));

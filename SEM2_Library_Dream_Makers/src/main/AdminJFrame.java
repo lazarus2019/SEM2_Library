@@ -39,11 +39,9 @@ public class AdminJFrame extends JFrame {
 	private JPanel member;
 	private JPanel invoice;
 	private JPanel report;
-	private JPanel setting;
 	private JPanel mainPanel;
 	private JPanel logoutContainer;
 	private JPanel infoContainer;
-	private JPanel settingContainer;
 	private JPanel statisticalContainer;
 	private JPanel invoiceContainer;
 	private JPanel memberContainer;
@@ -67,7 +65,6 @@ public class AdminJFrame extends JFrame {
 	private employeePanel employeePanel = new employeePanel();
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
-	private settingPanel settingPanel = new settingPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
 	private JLabel titleTxt;
 	private JLabel usernameTxt;
@@ -454,43 +451,6 @@ public class AdminJFrame extends JFrame {
 		statisticalTxt.setBounds(58, 11, 130, 15);
 		btnStatistical.add(statisticalTxt);
 
-		JPanel btnSetting = new JPanel();
-		btnSetting.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					btnSetting_mouseClicked(e);
-				} catch (Exception e2) {
-					showMessenger("Something was wrong! Please try again");
-				}
-			}
-		});
-		btnSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSetting.setLayout(null);
-		btnSetting.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnSetting.setBackground(new Color(51, 51, 51));
-		btnSetting.setBounds(0, 491, 198, 37);
-		sideBarPanel.add(btnSetting);
-
-		settingContainer = new JPanel();
-		settingContainer.setLayout(null);
-		settingContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		settingContainer.setBackground(new Color(51, 51, 51));
-		settingContainer.setBounds(0, 0, 37, 37);
-		btnSetting.add(settingContainer);
-		btnSetting.addMouseListener(new PanelButtonMouseAdapter(settingContainer));
-
-		JLabel iconSetting = new JLabel("");
-		iconSetting.setBounds(0, 0, 37, 37);
-		settingContainer.add(iconSetting);
-
-		JLabel settingTxt = new JLabel("SETTING");
-		settingTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		settingTxt.setForeground(Color.LIGHT_GRAY);
-		settingTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		settingTxt.setBounds(58, 11, 130, 15);
-		btnSetting.add(settingTxt);
-
 		JPanel btnInfo = new JPanel();
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -593,9 +553,6 @@ public class AdminJFrame extends JFrame {
 
 		report = new JPanel();
 		mainPanel.add("report", report);
-
-		setting = new JPanel();
-		mainPanel.add("setting", setting);
 		
 		JPanel titlePanel = new JPanel();
 		titlePanel.setBounds(197, 0, 803, 34);
@@ -663,10 +620,6 @@ public class AdminJFrame extends JFrame {
 		report.setLayout(null);
 		reportPanel.setBounds(0, 0, 803, 617);
 		report.add(reportPanel);
-		// Setting
-		setting.setLayout(null);
-		settingPanel.setBounds(0, 0, 803, 617);
-		setting.add(settingPanel);
 		// Invoice
 		invoice.setLayout(null);
 		invoicePanel.setBounds(0, 0, 803, 617);
@@ -781,7 +734,7 @@ public class AdminJFrame extends JFrame {
 
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
-		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, settingContainer,
+		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, 
 				statisticalContainer, invoiceContainer, memberContainer, bookContainer, authorContainer,
 				categoryContainer };
 		for (int i = 0; i < panels.length; i++) {
