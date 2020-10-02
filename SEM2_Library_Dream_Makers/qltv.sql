@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2020 at 05:35 AM
+-- Generation Time: Oct 02, 2020 at 06:03 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -162,10 +162,10 @@ CREATE TABLE `borrow_bill` (
 --
 
 INSERT INTO `borrow_bill` (`borrow_ID`, `member_ID`, `employee_ID`, `description`, `status`, `borrow_date`, `term_date`, `return_date`, `deposit_fee`, `late_fee`) VALUES
-('bor01', 'member1', 'emp01', 'hmm, nothing', 1, '2020-09-23', '2020-09-28', '2020-09-27', 10, 0),
-('bor02', 'member4', 'emp01', 'test', 1, '2020-09-26', '2020-10-02', '2020-09-30', 6, 0),
-('bor03', 'member2', 'emp01', 'hihi', 1, '2020-09-24', '2020-10-29', '2020-09-30', 14, 5),
-('bor04', 'member3', 'emp01', 'haahaa', 0, '2020-09-29', '2020-10-07', '0000-00-00', 15, 0);
+('bor01', 'member1', 'emp02', 'hmm, nothing', 1, '2020-09-23', '2020-09-28', '2020-09-27', 10, 0),
+('bor02', 'member4', 'emp02', 'test', 1, '2020-09-26', '2020-10-02', '2020-09-30', 6, 0),
+('bor03', 'member2', 'emp02', 'hihi', 1, '2020-09-24', '2020-10-29', '2020-09-30', 14, 5),
+('bor04', 'member3', 'emp02', 'haahaa', 0, '2020-09-29', '2020-10-07', '0000-00-00', 15, 0);
 
 -- --------------------------------------------------------
 
@@ -243,15 +243,17 @@ CREATE TABLE `employee` (
   `address` text NOT NULL,
   `phone` varchar(13) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `photo` varchar(30) NOT NULL
+  `photo` text NOT NULL,
+  `level` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`employee_ID`, `username`, `password`, `name`, `dob`, `gender`, `address`, `phone`, `email`, `photo`) VALUES
-('emp01', 'employee1', 'emp01abc', 'Miss Monica', '1995-09-16', 0, '24 Phan Liem St , Dakao Ward , District 1  , HCMC', '0354751761', 'monica@gmail.com', '');
+INSERT INTO `employee` (`employee_ID`, `username`, `password`, `name`, `dob`, `gender`, `address`, `phone`, `email`, `photo`, `level`) VALUES
+('emp01', 'admin', 'YWRtaW5HbmJoSg==', '', '0000-00-00', 0, '', '', 'thaisonbk2020@gmail.com', '', 'admin'),
+('emp02', 'employee1', 'YWRtaW5HbmJoSg==', 'Miss Monica', '1995-09-16', 0, '24 Phan Liem St , Dakao Ward , District 1  , HCMC', '0354751761', 'monica@gmail.com', '', 'librarian');
 
 -- --------------------------------------------------------
 
@@ -290,7 +292,7 @@ CREATE TABLE `member` (
   `address` varchar(300) NOT NULL,
   `phone` varchar(13) NOT NULL,
   `card_number` varchar(13) NOT NULL,
-  `photo` varchar(30) NOT NULL
+  `photo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
