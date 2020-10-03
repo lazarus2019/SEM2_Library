@@ -720,6 +720,10 @@ public AdminJFrame(Employee employee) {
 	private void employeeInfo_mouseClicked(MouseEvent e) {
 		settingDialog.employee = employeeMain;
 		settingDialog settingDialog = new settingDialog();
+		if(employeeMain.getLevel().equals("admin")) {
+			settingDialog.setBounds(100, 100, 406, 310);
+			settingDialog.setLocationRelativeTo(null);
+		}
 		settingDialog.setVisible(true);
 	}
 
