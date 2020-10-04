@@ -247,17 +247,21 @@ public class ChangePW extends JDialog {
 			showMessenger("Please fill out all fields!");
 		} else {
 			if (oldPass.equals(employeeModel.decryptPassword(passDB))) {
-				if (newPass.equals(repeatPass)) {
-					String password_hash = employeeModel.encryptPassword(newPass);
-					if(employeeModel.changePassword(employee.getEmployee_ID(), password_hash)) {
-						showMessenger("Change password success!");
-						this.setVisible(false);
-						this.dispose();
-					}else {
-						showMessenger("Something was wrong! Please try again");
-					}
+				if (oldPass.equals(newPass)) {
+					showMessenger("New password must be different from old password");
 				} else {
-					showMessenger("Repeat Password not match!");
+					if (newPass.equals(repeatPass)) {
+						String password_hash = employeeModel.encryptPassword(newPass);
+						if (employeeModel.changePassword(employee.getEmployee_ID(), password_hash)) {
+							showMessenger("Change password success!");
+							this.setVisible(false);
+							this.dispose();
+						} else {
+							showMessenger("Something was wrong! Please try again");
+						}
+					} else {
+						showMessenger("Repeat Password not match!");
+					}
 				}
 			} else {
 				showMessenger("Wrong password");
