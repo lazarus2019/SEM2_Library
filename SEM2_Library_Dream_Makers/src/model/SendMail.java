@@ -10,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import model.TestSendMail.MailConfig;
 
 public class SendMail {
 	

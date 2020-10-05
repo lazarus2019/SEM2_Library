@@ -194,6 +194,16 @@ public class settingDialog extends JDialog {
 		panelAdmin.add(emailField);
 
 		editEmail = new JLabel("");
+		editEmail.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					editEmail_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		editEmail.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		editEmail.setBounds(339, 152, 25, 25);
 		panelAdmin.add(editEmail);
@@ -274,7 +284,17 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEmail);
 		
 		JLabel editEmail_1 = new JLabel("");
-		editEmail_1.setBounds(339, 314, 25, 25);
+		editEmail_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					editEmail_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		editEmail_1.setBounds(343, 300, 25, 25);
 		panelEmployee.add(editEmail_1);
 		
 		JPanel panelPW_1 = new JPanel();
@@ -284,6 +304,26 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(panelPW_1);
 		
 		JLabel btnChangePW_1 = new JLabel("Change Password");
+		btnChangePW_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnChangePW_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelPW.setBackground(new Color(255, 51, 51));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelPW.setBackground(new Color(30, 144, 255));
+			}
+		});
 		btnChangePW_1.setHorizontalAlignment(SwingConstants.CENTER);
 		btnChangePW_1.setForeground(Color.WHITE);
 		btnChangePW_1.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -434,18 +474,26 @@ public class settingDialog extends JDialog {
 		ChangePW changePW = new ChangePW();
 		changePW.setVisible(true);
 	}
+
 	
-	// Show change email dialog
-	private void changeEmail() {
+	// Enable edit info
+	private void btnEdit_actionPerformed(ActionEvent e) {
 		txtEname.setEditable(true);
 		txtEphone.setEditable(true);
 		txtEaddress.setEditable(true);
 		txtEdob.setEnabled(true);
 	}
 	
-	// Enable edit info
-	private void btnEdit_actionPerformed(ActionEvent e) {
-		
+	// Change email button
+	private void editEmail_mouseClicked(MouseEvent e) {
+		changeEmail();
+	}
+	
+	// Show change email dialog
+	private void changeEmail() {
+		ChangeEmail.employee = employee;
+		ChangeEmail changeEmail = new ChangeEmail();
+		changeEmail.setVisible(true);
 	}
 	
 	// Drag & move window

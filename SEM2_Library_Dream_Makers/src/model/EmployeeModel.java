@@ -27,6 +27,19 @@ public class EmployeeModel {
 		}
 	}
 	
+	// Change email
+	public static boolean changeEmail(String employee_ID, String email) {
+		sql = "UPDATE employee SET email = ? WHERE employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, employee_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {
 		Employee employee = null;
