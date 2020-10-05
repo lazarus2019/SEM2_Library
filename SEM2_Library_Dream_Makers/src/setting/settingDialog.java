@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import entities.Employee;
+import model.EmployeeModel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -33,29 +34,39 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 
 public class settingDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField usernameField;
-	private JTextField emailField;
+	private static JTextField emailField;
 	private JLabel userIcon;
 	private JLabel emailIcon;
 	private JLabel editEmail;
 	private JPanel panelTitle;
 	private int xPosition, yPosition, mouseX, mouseY;
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	
+
+	public static String employee_ID = null;
 	public static Employee employee = null;
+	
+	
 	private JPanel panelInfo;
 	private JTextField txtEusername;
-	private JTextField txtEmail;
+	private static JTextField txtEmail;
 	private JTextField txtEname;
 	private JTextField txtEphone;
 	private JLabel titleLable;
 	private JTextArea txtEaddress;
 	private JDateChooser txtEdob;
 	private JButton btnEdit;
+	private final ButtonGroup genderGroup = new ButtonGroup();
+	private JRadioButton radioFemale;
+	private JRadioButton radioMale;
+	private JLabel editEmail_1;
 
 	/**
 	 * Launch the application.
@@ -76,7 +87,7 @@ public class settingDialog extends JDialog {
 	public settingDialog() {
 		setModal(true);
 		setUndecorated(true);
-		setBounds(100, 100, 406, 615);
+		setBounds(100, 100, 406, 645);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -150,7 +161,7 @@ public class settingDialog extends JDialog {
 		panelTitle.add(titleLable);
 
 		panelInfo = new JPanel();
-		panelInfo.setBounds(0, 34, 406, 581);
+		panelInfo.setBounds(0, 34, 406, 611);
 		contentPanel.add(panelInfo);
 		panelInfo.setLayout(new CardLayout(0, 0));
 
@@ -241,21 +252,21 @@ public class settingDialog extends JDialog {
 		btnChangePW.setHorizontalAlignment(SwingConstants.CENTER);
 		btnChangePW.setBounds(0, 0, 145, 36);
 		panelPW.add(btnChangePW);
-		
+
 		JPanel panelEmployee = new JPanel();
 		panelEmployee.setLayout(null);
 		panelEmployee.setBackground(Color.LIGHT_GRAY);
 		panelInfo.add("employeeSetting", panelEmployee);
-		
+
 		JLabel userIcon_1 = new JLabel("");
 		userIcon_1.setBounds(36, 6, 25, 25);
 		panelEmployee.add(userIcon_1);
-		
+
 		JLabel usernameTxt_1 = new JLabel("USERNAME");
 		usernameTxt_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		usernameTxt_1.setBounds(74, 0, 132, 36);
 		panelEmployee.add(usernameTxt_1);
-		
+
 		txtEusername = new JTextField();
 		txtEusername.setBounds(new Rectangle(0, 0, 0, 25));
 		txtEusername.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -264,16 +275,16 @@ public class settingDialog extends JDialog {
 		txtEusername.setBackground(Color.WHITE);
 		txtEusername.setBounds(36, 36, 297, 25);
 		panelEmployee.add(txtEusername);
-		
+
 		JLabel emailIcon_1 = new JLabel("");
 		emailIcon_1.setBounds(36, 270, 25, 25);
 		panelEmployee.add(emailIcon_1);
-		
+
 		JLabel emailTxt_1 = new JLabel("MAIL");
 		emailTxt_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		emailTxt_1.setBounds(74, 264, 132, 36);
 		panelEmployee.add(emailTxt_1);
-		
+
 		txtEmail = new JTextField();
 		txtEmail.setBounds(new Rectangle(0, 0, 0, 25));
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -282,8 +293,9 @@ public class settingDialog extends JDialog {
 		txtEmail.setBackground(Color.WHITE);
 		txtEmail.setBounds(36, 300, 297, 25);
 		panelEmployee.add(txtEmail);
-		
-		JLabel editEmail_1 = new JLabel("");
+
+		editEmail_1 = new JLabel("");
+		editEmail_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		editEmail_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -296,15 +308,16 @@ public class settingDialog extends JDialog {
 		});
 		editEmail_1.setBounds(343, 300, 25, 25);
 		panelEmployee.add(editEmail_1);
-		
+
 		JPanel panelPW_1 = new JPanel();
 		panelPW_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1.setLayout(null);
 		panelPW_1.setBackground(new Color(30, 144, 255));
-		panelPW_1.setBounds(36, 452, 145, 36);
+		panelPW_1.setBounds(36, 492, 145, 36);
 		panelEmployee.add(panelPW_1);
-		
+
 		JLabel btnChangePW_1 = new JLabel("Change Password");
+		btnChangePW_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnChangePW_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -317,12 +330,12 @@ public class settingDialog extends JDialog {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelPW.setBackground(new Color(255, 51, 51));
+				panelPW_1.setBackground(new Color(255, 51, 51));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelPW.setBackground(new Color(30, 144, 255));
+				panelPW_1.setBackground(new Color(30, 144, 255));
 			}
 		});
 		btnChangePW_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -330,16 +343,16 @@ public class settingDialog extends JDialog {
 		btnChangePW_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnChangePW_1.setBounds(0, 0, 145, 36);
 		panelPW_1.add(btnChangePW_1);
-		
+
 		JLabel userIcon_1_1 = new JLabel("");
 		userIcon_1_1.setBounds(36, 71, 25, 25);
 		panelEmployee.add(userIcon_1_1);
-		
+
 		JLabel usernameTxt_1_1 = new JLabel("NAME");
 		usernameTxt_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		usernameTxt_1_1.setBounds(74, 65, 132, 36);
 		panelEmployee.add(usernameTxt_1_1);
-		
+
 		txtEname = new JTextField();
 		txtEname.setBounds(new Rectangle(0, 0, 0, 25));
 		txtEname.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -348,16 +361,16 @@ public class settingDialog extends JDialog {
 		txtEname.setBackground(Color.WHITE);
 		txtEname.setBounds(36, 101, 297, 25);
 		panelEmployee.add(txtEname);
-		
+
 		JLabel userIcon_1_1_1 = new JLabel("");
 		userIcon_1_1_1.setBounds(36, 135, 25, 25);
 		panelEmployee.add(userIcon_1_1_1);
-		
+
 		JLabel usernameTxt_1_1_1 = new JLabel("PHONE");
 		usernameTxt_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		usernameTxt_1_1_1.setBounds(74, 129, 132, 36);
 		panelEmployee.add(usernameTxt_1_1_1);
-		
+
 		txtEphone = new JTextField();
 		txtEphone.setBounds(new Rectangle(0, 0, 0, 25));
 		txtEphone.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -366,58 +379,79 @@ public class settingDialog extends JDialog {
 		txtEphone.setBackground(Color.WHITE);
 		txtEphone.setBounds(36, 165, 297, 25);
 		panelEmployee.add(txtEphone);
-		
+
 		JLabel userIcon_1_1_1_1 = new JLabel("");
 		userIcon_1_1_1_1.setBounds(36, 199, 25, 25);
 		panelEmployee.add(userIcon_1_1_1_1);
-		
+
 		JLabel usernameTxt_1_1_1_1 = new JLabel("DOB");
 		usernameTxt_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		usernameTxt_1_1_1_1.setBounds(74, 193, 132, 36);
 		panelEmployee.add(usernameTxt_1_1_1_1);
-		
+
 		txtEdob = new JDateChooser();
 		txtEdob.setEnabled(false);
 		JTextFieldDateEditor editor = (JTextFieldDateEditor) txtEdob.getDateEditor();
 		editor.setEditable(false);
 		txtEdob.setDateFormatString("dd/MM/yyyy");
 		txtEdob.setBounds(new Rectangle(0, 0, 0, 25));
-		txtEdob.setBounds(36, 235, 297, 25);	
+		txtEdob.setBounds(36, 235, 297, 25);
 		panelEmployee.add(txtEdob);
-		
+
 		JPanel panelPW_1_1 = new JPanel();
 		panelPW_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1_1.setLayout(null);
 		panelPW_1_1.setBackground(new Color(30, 144, 255));
-		panelPW_1_1.setBounds(129, 524, 145, 36);
+		panelPW_1_1.setBounds(130, 553, 145, 36);
 		panelEmployee.add(panelPW_1_1);
-		
-		JLabel btnChangeInfo = new JLabel("SUBMIT");
-		btnChangeInfo.setHorizontalAlignment(SwingConstants.CENTER);
-		btnChangeInfo.setForeground(Color.WHITE);
-		btnChangeInfo.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnChangeInfo.setBounds(0, 0, 145, 36);
-		panelPW_1_1.add(btnChangeInfo);
-		
+
+		JLabel btnSubmit = new JLabel("SUBMIT");
+		btnSubmit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					btnSubmit_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelPW_1_1.setBackground(new Color(255, 51, 51));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelPW_1_1.setBackground(new Color(30, 144, 255));
+			}
+		});
+		btnSubmit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSubmit.setHorizontalAlignment(SwingConstants.CENTER);
+		btnSubmit.setForeground(Color.WHITE);
+		btnSubmit.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnSubmit.setBounds(0, 0, 145, 36);
+		panelPW_1_1.add(btnSubmit);
+
 		JLabel emailIcon_1_1 = new JLabel("");
 		emailIcon_1_1.setBounds(36, 335, 25, 25);
 		panelEmployee.add(emailIcon_1_1);
-		
+
 		JLabel emailTxt_1_1 = new JLabel("ADDRESS");
 		emailTxt_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		emailTxt_1_1.setBounds(74, 329, 132, 36);
 		panelEmployee.add(emailTxt_1_1);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(36, 371, 297, 72);
 		panelEmployee.add(scrollPane);
-		
+
 		txtEaddress = new JTextArea();
 		txtEaddress.setEditable(false);
 		txtEaddress.setWrapStyleWord(true);
 		txtEaddress.setLineWrap(true);
 		scrollPane.setViewportView(txtEaddress);
-		
+
 		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -430,34 +464,67 @@ public class settingDialog extends JDialog {
 		});
 		btnEdit.setBounds(339, 0, 67, 23);
 		panelEmployee.add(btnEdit);
-		
+
+		radioFemale = new JRadioButton("Female");
+		radioFemale.setBackground(Color.LIGHT_GRAY);
+		genderGroup.add(radioFemale);
+		radioFemale.setBounds(36, 450, 109, 23);
+		panelEmployee.add(radioFemale);
+
+		radioMale = new JRadioButton("Male");
+		radioMale.setBackground(Color.LIGHT_GRAY);
+		genderGroup.add(radioMale);
+		radioMale.setBounds(188, 450, 109, 23);
+		panelEmployee.add(radioMale);
+
 		loadData();
 	}
-	
+
 	private void loadData() {
+		// Get Employee Data
+		getEmployee(employee_ID);
+		// Declare Image
 		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
 		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", emailIcon);
 		ImageIcon imgEdit = resizeImg("src/data/loginForm/edit.png", editEmail);
 		CardLayout cl_panelInfo = (CardLayout) (panelInfo.getLayout());
-		if(employee.getLevel().equals("admin")) {
+		if (employee.getLevel().equals("admin")) {
 			titleLable.setText("Admin Info");
 			cl_panelInfo.show(panelInfo, "adminSetting");
+			editEmail.setIcon(imgEdit);
 			usernameField.setText(employee.getUsername());
-			emailField.setText(employee.getEmail());			
+			emailField.setText(employee.getEmail());
 			editEmail.setIcon(imgEdit);
 			emailIcon.setIcon(imgMail);
 			userIcon.setIcon(imgUser);
 		}
-		if(employee.getLevel().equals("librarian")) {
+		if (employee.getLevel().equals("librarian")) {
 			titleLable.setText("Employee Info");
 			cl_panelInfo.show(panelInfo, "employeeSetting");
+			editEmail_1.setIcon(imgEdit);
 			txtEusername.setText(employee.getUsername());
 			txtEname.setText(employee.getName());
 			txtEphone.setText(employee.getPhone());
 			txtEmail.setText(employee.getEmail());
 			txtEdob.setDate(employee.getDob());
 			txtEaddress.setText(employee.getAddress());
+			if (employee.isGender()) {
+				radioMale.setSelected(true);
+			} else {
+				radioFemale.setSelected(true);
+			}
 		}
+	}
+	
+	// Get Employee
+	private void getEmployee(String employee_ID) {
+		employee = EmployeeModel.getById(employee_ID);
+	}
+	
+	// Change email after submit
+	public static void changeRealEmail(String email) {
+		txtEmail.setText(email);
+		emailField.setText(email);
 	}
 
 	// Close the dialog
@@ -470,14 +537,13 @@ public class settingDialog extends JDialog {
 	private void btnChangePW_mouseClicked(MouseEvent e) {
 		changePW();
 	}
-	
+
 	private void changePW() {
 		ChangePW.employee = employee;
 		ChangePW changePW = new ChangePW();
 		changePW.setVisible(true);
 	}
 
-	
 	// Enable edit info
 	private void btnEdit_actionPerformed(ActionEvent e) {
 		txtEname.setEditable(true);
@@ -485,19 +551,24 @@ public class settingDialog extends JDialog {
 		txtEaddress.setEditable(true);
 		txtEdob.setEnabled(true);
 	}
-	
+
 	// Change email button
 	private void editEmail_mouseClicked(MouseEvent e) {
 		changeEmail();
 	}
-	
+
 	// Show change email dialog
 	private void changeEmail() {
 		ChangeEmail.employee = employee;
 		ChangeEmail changeEmail = new ChangeEmail();
 		changeEmail.setVisible(true);
 	}
-	
+
+	// Submit change info
+	private void btnSubmit_mouseClicked(MouseEvent e) {
+		
+	}
+
 	// Drag & move window
 	private void panelTitle_mouseDragged(MouseEvent e) {
 		xPosition = e.getXOnScreen();
@@ -514,7 +585,7 @@ public class settingDialog extends JDialog {
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
 	}
-	
+
 	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
 		if (imgPath != null) {

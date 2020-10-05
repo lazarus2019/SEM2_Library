@@ -14,7 +14,37 @@ public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
-	// Change Info by id
+	// Get employee by id - NTS
+	public static Employee getById(String employee_ID) {
+		Employee employee = null;
+		sql = "SELECT * FROM employee WHERE employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, employee_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				employee = new Employee();
+				employee.setEmployee_ID(resultSet.getString("employee_ID"));
+				employee.setUsername(resultSet.getString("username"));
+				employee.setPassword(resultSet.getString("password"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setLevel(resultSet.getString("level"));
+				employee.setDob(resultSet.getDate("dob"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setPhone(resultSet.getString("phone"));
+				employee.setName(resultSet.getString("name"));
+				employee.setPhoto(resultSet.getString("photo"));
+				employee.setGender(resultSet.getBoolean("gender"));
+				return employee;
+			} else {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			return employee;
+		}
+	}
+	
+	// Change Info by id - NTS
 	public static boolean updateById(Employee employee) {
 		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ?, photo = ? WHERE employee_ID = ?";
 		try {

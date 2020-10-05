@@ -228,6 +228,7 @@ public class ChangeEmail extends JDialog {
 						if(employeeModel.changeEmail(employee.getEmployee_ID(), newE)) {
 							showMessenger("Change email success!");
 							this.setVisible(false);
+							settingDialog.changeRealEmail(newE);
 							this.dispose();
 						}else {
 							showMessenger("Something was wrong! Please try again");

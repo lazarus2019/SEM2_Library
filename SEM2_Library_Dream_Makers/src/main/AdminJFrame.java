@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 
 import entities.Employee;
 import login.LoginFrame;
+import model.EmployeeModel;
 import setting.settingDialog;
 
 import javax.swing.JButton;
@@ -455,7 +456,7 @@ public class AdminJFrame extends JFrame {
 			}
 		});
 		titlePanel.setBounds(168, 0, 803, 34);
-		titlePanel.setBackground(new Color(120, 166, 254));
+		titlePanel.setBackground(new Color(67, 119, 203));
 		contentPane.add(titlePanel);
 		titlePanel.setLayout(null);
 
@@ -468,7 +469,7 @@ public class AdminJFrame extends JFrame {
 
 		JPanel panelMinimize = new JPanel();
 		panelMinimize.setBounds(735, 0, 34, 33);
-		panelMinimize.setBackground(new Color(120, 166, 254));
+		panelMinimize.setBackground(new Color(67, 119, 203));
 		titlePanel.add(panelMinimize);
 		panelMinimize.setLayout(null);
 
@@ -491,19 +492,19 @@ public class AdminJFrame extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelMinimize.setBackground(new Color(87, 144, 255));
+				panelMinimize.setBackground(new Color(52, 93, 158));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelMinimize.setBackground(new Color(120, 166, 254));
+				panelMinimize.setBackground(new Color(67, 119, 203));
 			}
 		});
 		panelMinimize.add(btnMinimize);
 
 		JPanel panelClose = new JPanel();
 		panelClose.setLayout(null);
-		panelClose.setBackground(new Color(120, 166, 254));
+		panelClose.setBackground(new Color(67, 119, 203));
 		panelClose.setBounds(769, 0, 34, 33);
 		titlePanel.add(panelClose);
 
@@ -526,12 +527,12 @@ public class AdminJFrame extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelClose.setBackground(new Color(87, 144, 255));
+				panelClose.setBackground(new Color(52, 93, 158));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelClose.setBackground(new Color(120, 166, 254));
+				panelClose.setBackground(new Color(67, 119, 203));
 			}
 		});
 		panelClose.add(btnClose);
@@ -597,7 +598,7 @@ public class AdminJFrame extends JFrame {
 	
 	// Show Employee Info
 	private void employeeInfo_mouseClicked(MouseEvent e) {
-		settingDialog.employee = employeeMain;
+		settingDialog.employee_ID = employeeMain.getEmployee_ID();
 		settingDialog settingDialog = new settingDialog();
 		if(employeeMain.getLevel().equals("admin")) {
 			settingDialog.setBounds(100, 100, 406, 310);			
