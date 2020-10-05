@@ -62,7 +62,7 @@ public class EmployeeJFrame extends JFrame {
 	private dashboardPanel dashboardPanel = new dashboardPanel();
 	private categoryPanel categoryPanel = new categoryPanel();
 	private authorPanel authorPanel = new authorPanel();
-	private bookPanel bookPanel = new bookPanel();
+//	private bookPanel bookPanel = new bookPanel();
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
@@ -642,8 +642,8 @@ public class EmployeeJFrame extends JFrame {
 			author.add(authorPanel);
 			// Book
 			book.setLayout(null);
-			bookPanel.setBounds(0, 0, 803, 617);
-			book.add(bookPanel);
+//			bookPanel.setBounds(0, 0, 803, 617);
+//			book.add(bookPanel);
 			// Member
 			member.setLayout(null);
 			memberPanel.setBounds(0, 0, 803, 617);

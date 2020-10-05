@@ -29,13 +29,13 @@ import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Cursor;
+import java.awt.event.MouseMotionAdapter;
 
 public class AdminJFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel logo;
 	private JPanel dashboard;
-	private JPanel category;
 	private JPanel employee;
 	private JPanel author;
 	private JPanel book;
@@ -43,21 +43,14 @@ public class AdminJFrame extends JFrame {
 	private JPanel invoice;
 	private JPanel report;
 	private JPanel mainPanel;
-	private JPanel logoutContainer;
-	private JPanel infoContainer;
-	private JPanel statisticalContainer;
-	private JPanel invoiceContainer;
-	private JPanel memberContainer;
-	private JPanel bookContainer;
-	private JPanel authorContainer;
-	private JPanel employeeContainer;
-	private JPanel categoryContainer;
-	private JPanel dashboardContainer;
 	private JLabel titleTxt;
 	private JLabel usernameTxt;
 	private JLabel levelTxt;
 	private JLabel btnClose;
 	private JLabel btnMinimize;
+	
+	// Declare Variables
+	private int xPosition, yPosition, mouseX, mouseY;
 
 	// Declare Direct mapping
 	public static Employee employeeMain = null;
@@ -67,13 +60,21 @@ public class AdminJFrame extends JFrame {
 
 	// Panel
 	private dashboardPanel dashboardPanel = new dashboardPanel();
-	private categoryPanel categoryPanel = new categoryPanel();
 	private authorPanel authorPanel = new authorPanel();
-	private bookPanel bookPanel = new bookPanel();
+//	private bookPanel bookPanel = new bookPanel();
 	private employeePanel employeePanel = new employeePanel();
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
+	private JPanel btnDashboard;
+	private JPanel btnEmployee;
+	private JPanel btnAuthor;
+	private JPanel btnBook;
+	private JPanel btnMember;
+	private JPanel btnInvoice;
+	private JPanel btnStatistical;
+	private JPanel btnInfo;
+	private JPanel btnLogout;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -94,7 +95,7 @@ public class AdminJFrame extends JFrame {
 	public AdminJFrame() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 650);
+		setBounds(100, 100, 971, 650);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -102,25 +103,25 @@ public class AdminJFrame extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel sideBarPanel = new JPanel();
-		sideBarPanel.setBounds(0, 0, 198, 650);
-		sideBarPanel.setBackground(new Color(51, 51, 51));
+		sideBarPanel.setBounds(0, 0, 168, 650);
+		sideBarPanel.setBackground(new Color(22, 33, 53));
 		contentPane.add(sideBarPanel);
 		sideBarPanel.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
-		panel.setBounds(0, 0, 198, 171);
+		panel.setBackground(new Color(22, 33, 53));
+		panel.setBounds(0, 0, 168, 171);
 		sideBarPanel.add(panel);
 		panel.setLayout(null);
 
 		logo = new JLabel("");
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setBounds(0, 2, 198, 42);
+		logo.setBounds(0, 2, 168, 42);
 		panel.add(logo);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(37, 45, 121, 2);
+		panel_2.setBounds(23, 45, 121, 2);
 		panel.add(panel_2);
 
 		JLabel lblNewLabel_1 = new JLabel("sadasdasdasdas");
@@ -135,44 +136,44 @@ public class AdminJFrame extends JFrame {
 				}
 			}
 		});
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(74, 51, 49, 49);
+		lblNewLabel_1.setForeground(SystemColor.control);
+		lblNewLabel_1.setBounds(59, 51, 49, 49);
 		panel.add(lblNewLabel_1);
 
 		JLabel usernamelavf = new JLabel("Username:");
-		usernamelavf.setForeground(Color.WHITE);
-		usernamelavf.setFont(new Font("Tahoma", Font.BOLD, 12));
+		usernamelavf.setForeground(SystemColor.control);
+		usernamelavf.setFont(new Font("Tahoma", Font.BOLD, 11));
 		usernamelavf.setBounds(10, 105, 89, 22);
 		panel.add(usernamelavf);
 
 		JLabel levasfk = new JLabel("Level:");
-		levasfk.setForeground(Color.WHITE);
-		levasfk.setFont(new Font("Tahoma", Font.BOLD, 12));
+		levasfk.setForeground(SystemColor.control);
+		levasfk.setFont(new Font("Tahoma", Font.BOLD, 11));
 		levasfk.setBounds(10, 125, 89, 22);
 		panel.add(levasfk);
 
 		usernameTxt = new JLabel("Admin");
-		usernameTxt.setForeground(Color.WHITE);
+		usernameTxt.setForeground(SystemColor.control);
 		usernameTxt.setHorizontalAlignment(SwingConstants.RIGHT);
-		usernameTxt.setFont(new Font("Tahoma", Font.BOLD, 12));
-		usernameTxt.setBounds(99, 105, 89, 22);
+		usernameTxt.setFont(new Font("Tahoma", Font.BOLD, 11));
+		usernameTxt.setBounds(75, 105, 89, 22);
 		panel.add(usernameTxt);
 
 		levelTxt = new JLabel("Admin");
-		levelTxt.setForeground(Color.WHITE);
+		levelTxt.setForeground(SystemColor.control);
 		levelTxt.setHorizontalAlignment(SwingConstants.RIGHT);
-		levelTxt.setFont(new Font("Tahoma", Font.BOLD, 12));
-		levelTxt.setBounds(99, 125, 89, 22);
+		levelTxt.setFont(new Font("Tahoma", Font.BOLD, 11));
+		levelTxt.setBounds(75, 125, 89, 22);
 		panel.add(levelTxt);
 
 		JLabel lblNewLabel_2 = new JLabel("Dream Makers");
-		lblNewLabel_2.setForeground(new Color(255, 255, 255));
+		lblNewLabel_2.setForeground(SystemColor.control);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_2.setBounds(45, 616, 107, 23);
+		lblNewLabel_2.setBounds(30, 616, 107, 23);
 		sideBarPanel.add(lblNewLabel_2);
 
-		JPanel btnDashboard = new JPanel();
+		btnDashboard = new JPanel();
 		btnDashboard.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -184,69 +185,21 @@ public class AdminJFrame extends JFrame {
 			}
 		});
 		btnDashboard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnDashboard.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnDashboard.setBackground(new Color(51, 51, 51));
-		btnDashboard.setBounds(0, 171, 198, 37);
+		btnDashboard.setBorder(null);
+		btnDashboard.setBackground(new Color(22, 33, 53));
+		btnDashboard.setBounds(0, 171, 168, 37);
+		btnDashboard.addMouseListener(new PanelButtonMouseAdapter(btnDashboard));
 		sideBarPanel.add(btnDashboard);
 		btnDashboard.setLayout(null);
 
-		dashboardContainer = new JPanel();
-		dashboardContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		dashboardContainer.setBackground(new Color(6, 202, 254));
-		dashboardContainer.setBounds(0, 0, 37, 37);
-		btnDashboard.add(dashboardContainer);
-		btnDashboard.addMouseListener(new PanelButtonMouseAdapter(dashboardContainer));
-		dashboardContainer.setLayout(null);
-
-		JLabel iconDashboard = new JLabel("");
-		iconDashboard.setBounds(0, 0, 37, 37);
-		dashboardContainer.add(iconDashboard);
-
-		JLabel dashboardTxt = new JLabel("DASHBOARD");
-		dashboardTxt.setForeground(new Color(6, 202, 254));
-		dashboardTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JLabel dashboardTxt = new JLabel("Dashboard");
+		dashboardTxt.setForeground(SystemColor.control);
+		dashboardTxt.setFont(new Font("Arial", Font.BOLD, 15));
 		dashboardTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		dashboardTxt.setBounds(58, 11, 130, 15);
+		dashboardTxt.setBounds(15, 11, 130, 15);
 		btnDashboard.add(dashboardTxt);
 
-		JPanel btnCategory = new JPanel();
-		btnCategory.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					btnCategory_mouseClicked(e);
-				} catch (Exception e2) {
-					showMessenger("Something was wrong! Please try again");
-				}
-			}
-		});
-		btnCategory.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCategory.setLayout(null);
-		btnCategory.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnCategory.setBackground(new Color(51, 51, 51));
-		btnCategory.setBounds(0, 207, 198, 37);
-		sideBarPanel.add(btnCategory);
-
-		categoryContainer = new JPanel();
-		categoryContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		categoryContainer.setLayout(null);
-		categoryContainer.setBackground(new Color(51, 51, 51));
-		categoryContainer.setBounds(0, 0, 37, 37);
-		btnCategory.add(categoryContainer);
-		btnCategory.addMouseListener(new PanelButtonMouseAdapter(categoryContainer));
-
-		JLabel iconCategory = new JLabel("");
-		iconCategory.setBounds(0, 0, 37, 37);
-		categoryContainer.add(iconCategory);
-
-		JLabel categoryTxt = new JLabel("CATEGORY");
-		categoryTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		categoryTxt.setForeground(new Color(192, 192, 192));
-		categoryTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		categoryTxt.setBounds(58, 11, 130, 15);
-		btnCategory.add(categoryTxt);
-
-		JPanel btnEmployee = new JPanel();
+		btnEmployee = new JPanel();
 		btnEmployee.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -259,31 +212,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnEmployee.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEmployee.setLayout(null);
-		btnEmployee.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnEmployee.setBackground(new Color(51, 51, 51));
-		btnEmployee.setBounds(0, 243, 198, 37);
+		btnEmployee.setBorder(null);
+		btnEmployee.setBackground(new Color(22, 33, 53));
+		btnEmployee.setBounds(0, 208, 168, 37);
+		btnEmployee.addMouseListener(new PanelButtonMouseAdapter(btnEmployee));
 		sideBarPanel.add(btnEmployee);
 
-		employeeContainer = new JPanel();
-		employeeContainer.setLayout(null);
-		employeeContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		employeeContainer.setBackground(new Color(51, 51, 51));
-		employeeContainer.setBounds(0, 0, 37, 37);
-		btnEmployee.add(employeeContainer);
-		btnEmployee.addMouseListener(new PanelButtonMouseAdapter(employeeContainer));
-
-		JLabel iconEmployee = new JLabel("");
-		iconEmployee.setBounds(0, 0, 37, 37);
-		employeeContainer.add(iconEmployee);
-
-		JLabel employeeTxt = new JLabel("EMPLOYEE");
+		JLabel employeeTxt = new JLabel("Employee");
 		employeeTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		employeeTxt.setForeground(Color.LIGHT_GRAY);
-		employeeTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		employeeTxt.setBounds(58, 11, 88, 15);
+		employeeTxt.setForeground(SystemColor.control);
+		employeeTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		employeeTxt.setBounds(15, 11, 88, 15);
 		btnEmployee.add(employeeTxt);
 
-		JPanel btnAuthor = new JPanel();
+		btnAuthor = new JPanel();
 		btnAuthor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -296,31 +238,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnAuthor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAuthor.setLayout(null);
-		btnAuthor.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnAuthor.setBackground(new Color(51, 51, 51));
-		btnAuthor.setBounds(0, 279, 198, 37);
+		btnAuthor.setBorder(null);
+		btnAuthor.setBackground(new Color(22, 33, 53));
+		btnAuthor.setBounds(0, 244, 168, 37);
+		btnAuthor.addMouseListener(new PanelButtonMouseAdapter(btnAuthor));
 		sideBarPanel.add(btnAuthor);
 
-		authorContainer = new JPanel();
-		authorContainer.setLayout(null);
-		authorContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		authorContainer.setBackground(new Color(51, 51, 51));
-		authorContainer.setBounds(0, 0, 37, 37);
-		btnAuthor.add(authorContainer);
-		btnAuthor.addMouseListener(new PanelButtonMouseAdapter(authorContainer));
-
-		JLabel iconAuthor = new JLabel("");
-		iconAuthor.setBounds(0, 0, 37, 37);
-		authorContainer.add(iconAuthor);
-
-		JLabel authorTxt = new JLabel("AUTHOR");
+		JLabel authorTxt = new JLabel("Author");
 		authorTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		authorTxt.setForeground(Color.LIGHT_GRAY);
-		authorTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		authorTxt.setBounds(58, 11, 88, 15);
+		authorTxt.setForeground(SystemColor.control);
+		authorTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		authorTxt.setBounds(15, 11, 88, 15);
 		btnAuthor.add(authorTxt);
 
-		JPanel btnBook = new JPanel();
+		btnBook = new JPanel();
 		btnBook.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -333,31 +264,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnBook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBook.setLayout(null);
-		btnBook.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnBook.setBackground(new Color(51, 51, 51));
-		btnBook.setBounds(0, 315, 198, 37);
+		btnBook.setBorder(null);
+		btnBook.setBackground(new Color(22, 33, 53));
+		btnBook.setBounds(0, 280, 168, 37);
+		btnBook.addMouseListener(new PanelButtonMouseAdapter(btnBook));
 		sideBarPanel.add(btnBook);
 
-		bookContainer = new JPanel();
-		bookContainer.setLayout(null);
-		bookContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		bookContainer.setBackground(new Color(51, 51, 51));
-		bookContainer.setBounds(0, 0, 37, 37);
-		btnBook.add(bookContainer);
-		btnBook.addMouseListener(new PanelButtonMouseAdapter(bookContainer));
-
-		JLabel iconBook = new JLabel("");
-		iconBook.setBounds(0, 0, 37, 37);
-		bookContainer.add(iconBook);
-
-		JLabel bookTxt = new JLabel("BOOK");
+		JLabel bookTxt = new JLabel("Book");
 		bookTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		bookTxt.setForeground(Color.LIGHT_GRAY);
-		bookTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		bookTxt.setBounds(58, 11, 88, 15);
+		bookTxt.setForeground(SystemColor.control);
+		bookTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		bookTxt.setBounds(15, 11, 88, 15);
 		btnBook.add(bookTxt);
 
-		JPanel btnMember = new JPanel();
+		btnMember = new JPanel();
 		btnMember.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -370,31 +290,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnMember.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMember.setLayout(null);
-		btnMember.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnMember.setBackground(new Color(51, 51, 51));
-		btnMember.setBounds(0, 351, 198, 37);
+		btnMember.setBorder(null);
+		btnMember.setBackground(new Color(22, 33, 53));
+		btnMember.setBounds(0, 316, 168, 37);
+		btnMember.addMouseListener(new PanelButtonMouseAdapter(btnMember));
 		sideBarPanel.add(btnMember);
 
-		memberContainer = new JPanel();
-		memberContainer.setLayout(null);
-		memberContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		memberContainer.setBackground(new Color(51, 51, 51));
-		memberContainer.setBounds(0, 0, 37, 37);
-		btnMember.add(memberContainer);
-		btnMember.addMouseListener(new PanelButtonMouseAdapter(memberContainer));
-
-		JLabel iconMember = new JLabel("");
-		iconMember.setBounds(0, 0, 37, 37);
-		memberContainer.add(iconMember);
-
-		JLabel memberTxt = new JLabel("MEMBER");
+		JLabel memberTxt = new JLabel("Member");
 		memberTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		memberTxt.setForeground(Color.LIGHT_GRAY);
-		memberTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		memberTxt.setBounds(58, 11, 88, 15);
+		memberTxt.setForeground(SystemColor.control);
+		memberTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		memberTxt.setBounds(15, 11, 88, 15);
 		btnMember.add(memberTxt);
 
-		JPanel btnInvoice = new JPanel();
+		btnInvoice = new JPanel();
 		btnInvoice.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -407,31 +316,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnInvoice.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInvoice.setLayout(null);
-		btnInvoice.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnInvoice.setBackground(new Color(51, 51, 51));
-		btnInvoice.setBounds(0, 386, 198, 37);
+		btnInvoice.setBorder(null);
+		btnInvoice.setBackground(new Color(22, 33, 53));
+		btnInvoice.setBounds(0, 351, 168, 37);
+		btnInvoice.addMouseListener(new PanelButtonMouseAdapter(btnInvoice));
 		sideBarPanel.add(btnInvoice);
 
-		invoiceContainer = new JPanel();
-		invoiceContainer.setLayout(null);
-		invoiceContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		invoiceContainer.setBackground(new Color(51, 51, 51));
-		invoiceContainer.setBounds(0, 0, 37, 37);
-		btnInvoice.add(invoiceContainer);
-		btnInvoice.addMouseListener(new PanelButtonMouseAdapter(invoiceContainer));
-
-		JLabel iconInvoice = new JLabel("");
-		iconInvoice.setBounds(0, 0, 37, 37);
-		invoiceContainer.add(iconInvoice);
-
-		JLabel invoiceTxt = new JLabel("INVOICE");
+		JLabel invoiceTxt = new JLabel("Borrow Book");
 		invoiceTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		invoiceTxt.setForeground(Color.LIGHT_GRAY);
-		invoiceTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		invoiceTxt.setBounds(58, 11, 88, 15);
+		invoiceTxt.setForeground(SystemColor.control);
+		invoiceTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		invoiceTxt.setBounds(15, 11, 130, 15);
 		btnInvoice.add(invoiceTxt);
 
-		JPanel btnStatistical = new JPanel();
+		btnStatistical = new JPanel();
 		btnStatistical.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -444,31 +342,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnStatistical.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnStatistical.setLayout(null);
-		btnStatistical.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnStatistical.setBackground(new Color(51, 51, 51));
-		btnStatistical.setBounds(0, 422, 198, 37);
+		btnStatistical.setBorder(null);
+		btnStatistical.setBackground(new Color(22, 33, 53));
+		btnStatistical.setBounds(0, 387, 168, 37);
+		btnStatistical.addMouseListener(new PanelButtonMouseAdapter(btnStatistical));
 		sideBarPanel.add(btnStatistical);
 
-		statisticalContainer = new JPanel();
-		statisticalContainer.setLayout(null);
-		statisticalContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		statisticalContainer.setBackground(new Color(51, 51, 51));
-		statisticalContainer.setBounds(0, 0, 37, 37);
-		btnStatistical.add(statisticalContainer);
-		btnStatistical.addMouseListener(new PanelButtonMouseAdapter(statisticalContainer));
-
-		JLabel iconStatistical = new JLabel("");
-		iconStatistical.setBounds(0, 0, 37, 37);
-		statisticalContainer.add(iconStatistical);
-
-		JLabel statisticalTxt = new JLabel("STATISTICAL");
+		JLabel statisticalTxt = new JLabel("Statistical");
 		statisticalTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		statisticalTxt.setForeground(Color.LIGHT_GRAY);
-		statisticalTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		statisticalTxt.setBounds(58, 11, 130, 15);
+		statisticalTxt.setForeground(SystemColor.control);
+		statisticalTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		statisticalTxt.setBounds(15, 11, 130, 15);
 		btnStatistical.add(statisticalTxt);
 
-		JPanel btnInfo = new JPanel();
+		btnInfo = new JPanel();
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -481,31 +368,20 @@ public class AdminJFrame extends JFrame {
 		});
 		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInfo.setLayout(null);
-		btnInfo.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnInfo.setBackground(new Color(51, 51, 51));
-		btnInfo.setBounds(0, 527, 198, 37);
+		btnInfo.setBorder(null);
+		btnInfo.setBackground(new Color(22, 33, 53));
+		btnInfo.setBounds(0, 520, 168, 37);
+		btnInfo.addMouseListener(new PanelButtonMouseAdapter(btnInfo));
 		sideBarPanel.add(btnInfo);
 
-		infoContainer = new JPanel();
-		infoContainer.setLayout(null);
-		infoContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		infoContainer.setBackground(new Color(51, 51, 51));
-		infoContainer.setBounds(0, 0, 37, 37);
-		btnInfo.add(infoContainer);
-		btnInfo.addMouseListener(new PanelButtonMouseAdapter(infoContainer));
-
-		JLabel iconInfo = new JLabel("");
-		iconInfo.setBounds(0, 0, 37, 37);
-		infoContainer.add(iconInfo);
-
-		JLabel infoTxt = new JLabel("APP INFO");
+		JLabel infoTxt = new JLabel("App Info");
 		infoTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		infoTxt.setForeground(Color.LIGHT_GRAY);
-		infoTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		infoTxt.setBounds(58, 11, 130, 15);
+		infoTxt.setForeground(SystemColor.control);
+		infoTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		infoTxt.setBounds(15, 11, 130, 15);
 		btnInfo.add(infoTxt);
 
-		JPanel btnLogout = new JPanel();
+		btnLogout = new JPanel();
 		btnLogout.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -518,40 +394,27 @@ public class AdminJFrame extends JFrame {
 		});
 		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogout.setLayout(null);
-		btnLogout.setBorder(new LineBorder(new Color(230, 230, 250)));
-		btnLogout.setBackground(new Color(51, 51, 51));
-		btnLogout.setBounds(0, 563, 198, 37);
+		btnLogout.setBorder(null);
+		btnLogout.setBackground(new Color(22, 33, 53));
+		btnLogout.setBounds(0, 556, 168, 37);
+		btnLogout.addMouseListener(new PanelButtonMouseAdapter(btnLogout));
 		sideBarPanel.add(btnLogout);
 
-		logoutContainer = new JPanel();
-		logoutContainer.setLayout(null);
-		logoutContainer.setBorder(new LineBorder(new Color(230, 230, 250)));
-		logoutContainer.setBackground(Color.RED);
-		logoutContainer.setBounds(0, 0, 37, 37);
-		btnLogout.add(logoutContainer);
-
-		JLabel iconLogout = new JLabel("");
-		iconLogout.setBounds(0, 0, 37, 37);
-		logoutContainer.add(iconLogout);
-
-		JLabel logoutTxt = new JLabel("LOGOUT");
+		JLabel logoutTxt = new JLabel("Logout");
 		logoutTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		logoutTxt.setForeground(Color.RED);
-		logoutTxt.setFont(new Font("Tahoma", Font.BOLD, 15));
-		logoutTxt.setBounds(58, 11, 130, 15);
+		logoutTxt.setForeground(SystemColor.control);
+		logoutTxt.setFont(new Font("Arial", Font.BOLD, 15));
+		logoutTxt.setBounds(15, 11, 130, 15);
 		btnLogout.add(logoutTxt);
 
 		mainPanel = new JPanel();
-		mainPanel.setBounds(197, 33, 803, 617);
+		mainPanel.setBounds(168, 33, 803, 617);
 		contentPane.add(mainPanel);
 		mainPanel.setLayout(new CardLayout(0, 0));
 
 		dashboard = new JPanel();
 		mainPanel.add("dashboard", dashboard);
 		dashboard.setLayout(null);
-
-		category = new JPanel();
-		mainPanel.add("category", category);
 
 		employee = new JPanel();
 		mainPanel.add("employee", employee);
@@ -572,28 +435,50 @@ public class AdminJFrame extends JFrame {
 		mainPanel.add("report", report);
 
 		JPanel titlePanel = new JPanel();
-		titlePanel.setBounds(197, 0, 803, 34);
+		titlePanel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_2_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_2_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		titlePanel.setBounds(168, 0, 803, 34);
+		titlePanel.setBackground(new Color(120, 166, 254));
 		contentPane.add(titlePanel);
 		titlePanel.setLayout(null);
 
 		titleTxt = new JLabel("Dashboard");
+		titleTxt.setForeground(SystemColor.control);
 		titleTxt.setFont(new Font("Tahoma", Font.BOLD, 17));
 		titleTxt.setHorizontalAlignment(SwingConstants.CENTER);
-		titleTxt.setBounds(287, 0, 229, 34);
+		titleTxt.setBounds(287, 0, 229, 33);
 		titlePanel.add(titleTxt);
 
 		JPanel panelMinimize = new JPanel();
-		panelMinimize.setBounds(735, 0, 34, 34);
-		panelMinimize.setBackground(new Color(240, 240, 240));
+		panelMinimize.setBounds(735, 0, 34, 33);
+		panelMinimize.setBackground(new Color(120, 166, 254));
 		titlePanel.add(panelMinimize);
 		panelMinimize.setLayout(null);
 
 		btnMinimize = new JLabel("_");
+		btnMinimize.setBackground(SystemColor.control);
 		btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMinimize.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnMinimize.setHorizontalAlignment(SwingConstants.CENTER);
-		btnMinimize.setBounds(0, 0, 34, 34);
-		btnMinimize.setForeground(Color.RED);
+		btnMinimize.setBounds(0, 0, 34, 33);
+		btnMinimize.setForeground(SystemColor.control);
 		btnMinimize.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -606,28 +491,29 @@ public class AdminJFrame extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelMinimize.setBackground(new Color(227, 227, 227));
+				panelMinimize.setBackground(new Color(87, 144, 255));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelMinimize.setBackground(new Color(240, 240, 240));
+				panelMinimize.setBackground(new Color(120, 166, 254));
 			}
 		});
 		panelMinimize.add(btnMinimize);
 
 		JPanel panelClose = new JPanel();
 		panelClose.setLayout(null);
-		panelClose.setBackground(new Color(240, 240, 240));
-		panelClose.setBounds(769, 0, 34, 34);
+		panelClose.setBackground(new Color(120, 166, 254));
+		panelClose.setBounds(769, 0, 34, 33);
 		titlePanel.add(panelClose);
 
 		btnClose = new JLabel("X");
+		btnClose.setBackground(SystemColor.control);
 		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
-		btnClose.setForeground(Color.RED);
+		btnClose.setForeground(SystemColor.control);
 		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnClose.setBounds(0, 0, 34, 34);
+		btnClose.setBounds(0, 0, 34, 33);
 		btnClose.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -640,12 +526,12 @@ public class AdminJFrame extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelClose.setBackground(new Color(227, 227, 227));
+				panelClose.setBackground(new Color(87, 144, 255));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelClose.setBackground(new Color(240, 240, 240));
+				panelClose.setBackground(new Color(120, 166, 254));
 			}
 		});
 		panelClose.add(btnClose);
@@ -679,18 +565,14 @@ public class AdminJFrame extends JFrame {
 		// Dashboard
 		dashboardPanel.setBounds(0, 0, 803, 617);
 		dashboard.add(dashboardPanel);
-		// Category
-		category.setLayout(null);
-		categoryPanel.setBounds(0, 0, 803, 617);
-		category.add(categoryPanel);
 		// Author
 		author.setLayout(null);
 		authorPanel.setBounds(0, 0, 803, 617);
 		author.add(authorPanel);
 		// Book
-		book.setLayout(null);
-		bookPanel.setBounds(0, 0, 803, 617);
-		book.add(bookPanel);
+//		book.setLayout(null);
+//		bookPanel.setBounds(0, 0, 803, 617);
+//		book.add(bookPanel);
 		// Employee
 		employee.setLayout(null);
 		employeePanel.setBounds(0, 0, 803, 617);
@@ -768,7 +650,7 @@ public class AdminJFrame extends JFrame {
 
 	// Show Invoice Manage
 	private void btnInvoice_mouseClicked(MouseEvent e) {
-		titleTxt.setText("Invoice");
+		titleTxt.setText("Borrow Books");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "invoice");
 	}
@@ -778,13 +660,6 @@ public class AdminJFrame extends JFrame {
 		titleTxt.setText("Report");
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 		mainLayout.show(mainPanel, "report");
-	}
-
-	// Show Setting
-	private void btnSetting_mouseClicked(MouseEvent e) {
-		titleTxt.setText("Setting");
-		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
-		mainLayout.show(mainPanel, "setting");
 	}
 
 	// Show info dialog
@@ -800,6 +675,18 @@ public class AdminJFrame extends JFrame {
 	}
 
 	// ======= Reusability Function=========
+	
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX - 168, yPosition - mouseY);
+	}
+
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
 
 	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
@@ -834,16 +721,16 @@ public class AdminJFrame extends JFrame {
 
 	// Set color
 	private void setBtnColor(JPanel panel) {
-		panel.setBackground(new Color(6, 202, 254));
+		panel.setBackground(new Color(40, 54, 79));
 	}
 
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
-		JPanel[] panels = { dashboardContainer, employeeContainer, infoContainer, statisticalContainer,
-				invoiceContainer, memberContainer, bookContainer, authorContainer, categoryContainer };
+		JPanel[] panels = { btnDashboard, btnEmployee, btnAuthor, btnStatistical,
+				btnInvoice, btnLogout, btnInfo, btnMember };
 		for (int i = 0; i < panels.length; i++) {
 			if (panels[i] != panel) {
-				panels[i].setBackground(new Color(51, 51, 51));
+				panels[i].setBackground(new Color(22, 33, 53));
 			}
 		}
 	}
@@ -855,16 +742,16 @@ public class AdminJFrame extends JFrame {
 		public PanelButtonMouseAdapter(JPanel panel) {
 			this.panel = panel;
 		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+			panel.setBackground(new Color(22, 33, 53));
+		}
 
-//		@Override
-//		public void mouseEntered(MouseEvent e) {
-//			panel.setBackground(new Color(6, 202, 254));
-//		}
-
-//		@Override
-//		public void mouseExited(MouseEvent e) {
-//			panel.setBackground(new Color(51, 51, 51));
-//		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			panel.setBackground(new Color(40, 54, 79));
+		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -872,9 +759,9 @@ public class AdminJFrame extends JFrame {
 			setBtnColor(panel);
 		}
 
-//		@Override
-//		public void mouseReleased(MouseEvent e) {
-//			panel.setBackground(new Color(6, 202, 254));
-//		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			panel.setBackground(new Color(22, 33, 53));
+		}
 	}
 }

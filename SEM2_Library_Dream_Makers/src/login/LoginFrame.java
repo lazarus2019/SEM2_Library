@@ -24,8 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
-import com.mysql.cj.x.protobuf.MysqlxConnection.Close;
-
 import entities.Employee;
 import main.AdminJFrame;
 import main.EmployeeJFrame;
@@ -53,7 +51,6 @@ public class LoginFrame extends JFrame {
 	// Declare variable
 	private String username = null;
 	private String password = null;
-	private String password_check;
 	private int xPosition, yPosition, mouseX, mouseY;
 
 	// Declare Frame
@@ -402,5 +399,4 @@ public class LoginFrame extends JFrame {
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
 	}
-
 }

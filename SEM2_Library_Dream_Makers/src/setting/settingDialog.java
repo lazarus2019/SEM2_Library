@@ -298,6 +298,7 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(editEmail_1);
 		
 		JPanel panelPW_1 = new JPanel();
+		panelPW_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1.setLayout(null);
 		panelPW_1.setBackground(new Color(30, 144, 255));
 		panelPW_1.setBounds(36, 452, 145, 36);
@@ -385,6 +386,7 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEdob);
 		
 		JPanel panelPW_1_1 = new JPanel();
+		panelPW_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1_1.setLayout(null);
 		panelPW_1_1.setBackground(new Color(30, 144, 255));
 		panelPW_1_1.setBounds(129, 524, 145, 36);

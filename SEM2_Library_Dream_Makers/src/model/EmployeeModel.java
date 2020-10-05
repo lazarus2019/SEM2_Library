@@ -14,6 +14,24 @@ public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
+	// Change Info by id
+	public static boolean updateById(Employee employee) {
+		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ?, photo = ? WHERE employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, employee.getName());
+			preparedStatement.setDate(2, new java.sql.Date(employee.getDob().getTime()));
+			preparedStatement.setString(3, employee.getAddress());
+			preparedStatement.setBoolean(4, employee.isGender());
+			preparedStatement.setString(5, employee.getPhone());
+			preparedStatement.setString(6, employee.getPhoto());
+			preparedStatement.setString(7, employee.getEmployee_ID());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	// Change Password - NTS
 	public static boolean changePassword(String employee_ID, String password) {
 		sql = "UPDATE employee SET password = ? WHERE employee_ID = ?";
@@ -26,8 +44,8 @@ public class EmployeeModel {
 			return false;
 		}
 	}
-	
-	// Change email
+
+	// Change email - NTS
 	public static boolean changeEmail(String employee_ID, String email) {
 		sql = "UPDATE employee SET email = ? WHERE employee_ID = ?";
 		try {
@@ -39,11 +57,11 @@ public class EmployeeModel {
 			return false;
 		}
 	}
-	
+
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {
 		Employee employee = null;
-		sql = "SELECT * FROM employee WHERE username = ?  ";
+		sql = "SELECT * FROM employee WHERE username = ?";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, username);
@@ -69,7 +87,7 @@ public class EmployeeModel {
 			return employee;
 		}
 	}
-	
+
 	// Forgot Password - NTS
 	public static Employee forGotPass(String email) {
 		Employee employee = null;
