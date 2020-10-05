@@ -341,8 +341,8 @@ public class LoginFrame extends JFrame {
 						this.dispose();						
 					}else if(level.equals("librarian")){
 						this.setVisible(false);
+						EmployeeJFrame.employeeMain = employee;
 						EmployeeJFrame employeeJFrame = new EmployeeJFrame();
-						employeeJFrame.getAccount(employee);
 						employeeJFrame.setVisible(true);
 						this.dispose();		
 					}

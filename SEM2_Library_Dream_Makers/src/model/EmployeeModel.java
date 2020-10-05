@@ -2,6 +2,7 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Random;
 
@@ -41,6 +42,12 @@ public class EmployeeModel {
 				employee.setPassword(resultSet.getString("password"));
 				employee.setEmail(resultSet.getString("email"));
 				employee.setLevel(resultSet.getString("level"));
+				employee.setDob(resultSet.getDate("dob"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setPhone(resultSet.getString("phone"));
+				employee.setName(resultSet.getString("name"));
+				employee.setPhoto(resultSet.getString("photo"));
+				employee.setGender(resultSet.getBoolean("gender"));
 				return employee;
 			} else {
 				throw new Exception();

@@ -18,6 +18,7 @@ import javax.swing.border.LineBorder;
 
 import entities.Employee;
 import login.LoginFrame;
+import setting.settingDialog;
 
 import javax.swing.JButton;
 import javax.swing.UIManager;
@@ -52,7 +53,7 @@ public class EmployeeJFrame extends JFrame {
 	private JLabel btnMinimize;
 
 	 // Declare Direct mapping
-	static Employee employeeMain = null;
+	public static Employee employeeMain = null;
 
 	// Declare Frame, Dialog, Panel
 	// Frame
@@ -117,7 +118,19 @@ public class EmployeeJFrame extends JFrame {
 		panel_2.setBounds(37, 45, 121, 2);
 		panel.add(panel_2);
 
-		JLabel lblNewLabel_1 = new JLabel("");
+		JLabel lblNewLabel_1 = new JLabel("sadasdasdasdas");
+		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					employeeInfo_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1.setBounds(74, 51, 49, 49);
 		panel.add(lblNewLabel_1);
 
@@ -595,10 +608,6 @@ public class EmployeeJFrame extends JFrame {
 		loadData();
 	}
 	// ======== Main Function ===========
-
-		public static void getAccount(Employee employee) {
-			employeeMain = employee;
-		}
 	//
 //		private void checkLogin() {
 //			if (employeeMain != null) {
@@ -651,6 +660,17 @@ public class EmployeeJFrame extends JFrame {
 			// Set Dashboard is the first layout
 			CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());
 			mainLayout.show(mainPanel, "dashboard");
+		}
+		
+		// Show Employee Info
+		private void employeeInfo_mouseClicked(MouseEvent e) {
+			settingDialog.employee = employeeMain;
+			settingDialog settingDialog = new settingDialog();
+			if(employeeMain.getLevel().equals("labrarian")) {
+				settingDialog.setBounds(100, 100, 406, 615);		
+			}
+			settingDialog.setLocationRelativeTo(null);
+			settingDialog.setVisible(true);
 		}
 
 		// Show Dashboard

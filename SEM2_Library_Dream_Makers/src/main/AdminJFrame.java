@@ -124,6 +124,7 @@ public class AdminJFrame extends JFrame {
 		panel.add(panel_2);
 
 		JLabel lblNewLabel_1 = new JLabel("sadasdasdasdas");
+		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -651,10 +652,6 @@ public class AdminJFrame extends JFrame {
 
 		loadData();
 	}
-	
-public AdminJFrame(Employee employee) {
-	
-}
 
 	// ======== Main Function ===========
 
@@ -721,9 +718,9 @@ public AdminJFrame(Employee employee) {
 		settingDialog.employee = employeeMain;
 		settingDialog settingDialog = new settingDialog();
 		if(employeeMain.getLevel().equals("admin")) {
-			settingDialog.setBounds(100, 100, 406, 310);
-			settingDialog.setLocationRelativeTo(null);
+			settingDialog.setBounds(100, 100, 406, 310);			
 		}
+		settingDialog.setLocationRelativeTo(null);
 		settingDialog.setVisible(true);
 	}
 
