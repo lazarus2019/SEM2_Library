@@ -131,7 +131,7 @@ public class infoDialog extends JDialog {
 			}
 		});
 		lblNewLabel_1.setForeground(new Color(0, 0, 255));
-		lblNewLabel_1.setBounds(40, 272, 89, 23);
+		lblNewLabel_1.setBounds(40, 272, 132, 23);
 		
 		contentPanel.add(lblNewLabel_1);
 	}

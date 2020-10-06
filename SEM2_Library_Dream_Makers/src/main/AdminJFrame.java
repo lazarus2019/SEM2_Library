@@ -60,7 +60,7 @@ public class AdminJFrame extends JFrame {
 	// Frame
 
 	// Panel
-	private dashboardPanel dashboardPanel = new dashboardPanel();
+	private dashboardAdminPanel dashboardAdminPanel = new dashboardAdminPanel();
 	private authorPanel authorPanel = new authorPanel();
 //	private bookPanel bookPanel = new bookPanel();
 	private employeePanel employeePanel = new employeePanel();
@@ -564,8 +564,8 @@ public class AdminJFrame extends JFrame {
 		// Add panel for button sidebar
 
 		// Dashboard
-		dashboardPanel.setBounds(0, 0, 803, 617);
-		dashboard.add(dashboardPanel);
+		dashboardAdminPanel.setBounds(0, 0, 803, 617);
+		dashboard.add(dashboardAdminPanel);
 		// Author
 		author.setLayout(null);
 		authorPanel.setBounds(0, 0, 803, 617);

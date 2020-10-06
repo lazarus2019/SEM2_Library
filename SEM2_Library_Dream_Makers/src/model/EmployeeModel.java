@@ -13,7 +13,67 @@ import main.bookPanel;
 public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	// Get amount employee - NTS
+	public static int getAmountEmployee() {
+		int am_employee = 0;
+		sql = "SELECT COUNT(level) as amount FROM employee WHERE level = 'librarian'";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_employee = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_employee;
+		}
+		return am_employee;
+	}
 	
+	// Get issused book - NTS
+	public static int getAmountReturnBook() {
+		int am_returnBook = 0;
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = true";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_returnBook = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_returnBook;
+		}
+		return am_returnBook;
+	}
+	
+	// Get issused book - NTS
+	public static int getAmountIssuedBook() {
+		int am_issuedBook = 0;
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = false";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_issuedBook = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_issuedBook;
+		}
+		return am_issuedBook;
+	}
+	
+	// Get member - NTS
+	public static int getAmountMember() {
+		int am_member = 0;
+		sql = "SELECT COUNT(member_ID) as amount FROM member";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_member = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_member;
+		}
+		return am_member;
+	}
+
 	// Get employee by id - NTS
 	public static Employee getById(String employee_ID) {
 		Employee employee = null;
@@ -43,7 +103,7 @@ public class EmployeeModel {
 			return employee;
 		}
 	}
-	
+
 	// Update Info by id - NTS
 	public static boolean updateById(Employee employee) {
 		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ?, photo = ? WHERE employee_ID = ?";
