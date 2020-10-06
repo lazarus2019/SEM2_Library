@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -71,6 +72,12 @@ public class settingDialog extends JDialog {
 	private JRadioButton radioFemale;
 	private JRadioButton radioMale;
 	private JLabel editEmail_1;
+	private JLabel userIcon_1;
+	private JLabel nameIcon;
+	private JLabel phoneIcon;
+	private JLabel emailIcon_1;
+	private JLabel addressIcon;
+	private JLabel calendarIcon;
 
 	/**
 	 * Launch the application.
@@ -262,7 +269,7 @@ public class settingDialog extends JDialog {
 		panelEmployee.setBackground(Color.LIGHT_GRAY);
 		panelInfo.add("employeeSetting", panelEmployee);
 
-		JLabel userIcon_1 = new JLabel("");
+		userIcon_1 = new JLabel("");
 		userIcon_1.setBounds(36, 6, 25, 25);
 		panelEmployee.add(userIcon_1);
 
@@ -280,7 +287,7 @@ public class settingDialog extends JDialog {
 		txtEusername.setBounds(36, 36, 297, 25);
 		panelEmployee.add(txtEusername);
 
-		JLabel emailIcon_1 = new JLabel("");
+		emailIcon_1 = new JLabel("");
 		emailIcon_1.setBounds(36, 270, 25, 25);
 		panelEmployee.add(emailIcon_1);
 
@@ -348,9 +355,9 @@ public class settingDialog extends JDialog {
 		btnChangePW_1.setBounds(0, 0, 145, 36);
 		panelPW_1.add(btnChangePW_1);
 
-		JLabel userIcon_1_1 = new JLabel("");
-		userIcon_1_1.setBounds(36, 71, 25, 25);
-		panelEmployee.add(userIcon_1_1);
+		nameIcon = new JLabel("");
+		nameIcon.setBounds(36, 71, 25, 25);
+		panelEmployee.add(nameIcon);
 
 		JLabel usernameTxt_1_1 = new JLabel("NAME");
 		usernameTxt_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -366,9 +373,9 @@ public class settingDialog extends JDialog {
 		txtEname.setBounds(36, 101, 297, 25);
 		panelEmployee.add(txtEname);
 
-		JLabel userIcon_1_1_1 = new JLabel("");
-		userIcon_1_1_1.setBounds(36, 135, 25, 25);
-		panelEmployee.add(userIcon_1_1_1);
+		phoneIcon = new JLabel("");
+		phoneIcon.setBounds(36, 135, 25, 25);
+		panelEmployee.add(phoneIcon);
 
 		JLabel usernameTxt_1_1_1 = new JLabel("PHONE");
 		usernameTxt_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -384,9 +391,9 @@ public class settingDialog extends JDialog {
 		txtEphone.setBounds(36, 165, 297, 25);
 		panelEmployee.add(txtEphone);
 
-		JLabel userIcon_1_1_1_1 = new JLabel("");
-		userIcon_1_1_1_1.setBounds(36, 199, 25, 25);
-		panelEmployee.add(userIcon_1_1_1_1);
+		calendarIcon = new JLabel("");
+		calendarIcon.setBounds(36, 199, 25, 25);
+		panelEmployee.add(calendarIcon);
 
 		JLabel usernameTxt_1_1_1_1 = new JLabel("DOB");
 		usernameTxt_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -437,9 +444,9 @@ public class settingDialog extends JDialog {
 		btnSubmit.setBounds(0, 0, 145, 36);
 		panelPW_1_1.add(btnSubmit);
 
-		JLabel emailIcon_1_1 = new JLabel("");
-		emailIcon_1_1.setBounds(36, 335, 25, 25);
-		panelEmployee.add(emailIcon_1_1);
+		addressIcon = new JLabel("");
+		addressIcon.setBounds(36, 335, 25, 25);
+		panelEmployee.add(addressIcon);
 
 		JLabel emailTxt_1_1 = new JLabel("ADDRESS");
 		emailTxt_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -491,11 +498,14 @@ public class settingDialog extends JDialog {
 		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
 		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", emailIcon);
 		ImageIcon imgEdit = resizeImg("src/data/loginForm/edit.png", editEmail);
+		ImageIcon imgName = resizeImg("src/data/loginForm/name.png", nameIcon);
+		ImageIcon imgAddress = resizeImg("src/data/loginForm/address.png", addressIcon);
+		ImageIcon imgCalendarIcon = resizeImg("src/data/loginForm/calendar.png", calendarIcon);
+		ImageIcon imgPhone = resizeImg("src/data/loginForm/phone.png", phoneIcon);
 		CardLayout cl_panelInfo = (CardLayout) (panelInfo.getLayout());
 		if (employee.getLevel().equals("admin")) {
 			titleLable.setText("Admin Info");
 			cl_panelInfo.show(panelInfo, "adminSetting");
-			editEmail.setIcon(imgEdit);
 			usernameField.setText(employee.getUsername());
 			emailField.setText(employee.getEmail());
 			editEmail.setIcon(imgEdit);
@@ -506,6 +516,12 @@ public class settingDialog extends JDialog {
 			titleLable.setText("Employee Info");
 			cl_panelInfo.show(panelInfo, "employeeSetting");
 			editEmail_1.setIcon(imgEdit);
+			emailIcon_1.setIcon(imgMail);
+			userIcon_1.setIcon(imgUser);
+			calendarIcon.setIcon(imgCalendarIcon);
+			nameIcon.setIcon(imgName);
+			addressIcon.setIcon(imgAddress);
+			phoneIcon.setIcon(imgPhone);
 			txtEusername.setText(employee.getUsername());
 			txtEname.setText(employee.getName());
 			txtEphone.setText(employee.getPhone());
