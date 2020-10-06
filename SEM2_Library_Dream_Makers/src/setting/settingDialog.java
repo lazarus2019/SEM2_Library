@@ -25,9 +25,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Enumeration;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
+
+import checking.CheckValidate;
 
 import java.awt.Rectangle;
 import javax.swing.JScrollPane;
@@ -35,6 +39,7 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 
@@ -52,8 +57,7 @@ public class settingDialog extends JDialog {
 
 	public static String employee_ID = null;
 	public static Employee employee = null;
-	
-	
+
 	private JPanel panelInfo;
 	private JTextField txtEusername;
 	private static JTextField txtEmail;
@@ -515,12 +519,12 @@ public class settingDialog extends JDialog {
 			}
 		}
 	}
-	
+
 	// Get Employee
 	private void getEmployee(String employee_ID) {
 		employee = EmployeeModel.getById(employee_ID);
 	}
-	
+
 	// Change email after submit
 	public static void changeRealEmail(String email) {
 		txtEmail.setText(email);
@@ -566,7 +570,57 @@ public class settingDialog extends JDialog {
 
 	// Submit change info
 	private void btnSubmit_mouseClicked(MouseEvent e) {
-		
+		Employee employee_tmp = new Employee();
+		String name = txtEname.getText().trim();
+		Date dob = txtEdob.getDate();
+		String address = txtEaddress.getText().trim();
+		String phone = txtEphone.getText().trim();
+		employee_tmp.setEmployee_ID(employee_ID);
+		employee_tmp.setName(name);
+		employee_tmp.setDob(dob);
+		employee_tmp.setAddress(address);
+		employee_tmp.setPhone(phone);
+		employee_tmp.setPhoto("abc.png"); // Unfinish
+		CheckValidate check = new CheckValidate();
+		if (getRadioSelected(genderGroup).equalsIgnoreCase("female")) {
+			employee_tmp.setGender(false);
+		} else {
+			employee_tmp.setGender(true);
+		}
+		if (name.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+			showMessenger("Please fill out all fields!");
+		} else {
+			if (!check.checkPhone(phone)) {
+				showMessenger("Phone must be digit!");
+			} else {
+				if (!check.checkDate(dob)) {
+					showMessenger("Must be than 18 years old!\nPlease choose DOB again");
+				} else {
+					if (!check.checkName(name)) {
+						showMessenger("At least 2 characters of name!");
+					} else {
+						if (EmployeeModel.updateById(employee_tmp)) {
+							showMessenger("Update success!");
+						} else {
+							showMessenger("Something was wrong! Please try again");
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	// Get radio selected
+	private String getRadioSelected(ButtonGroup buttonGroup) {
+		Enumeration<AbstractButton> buttons = genderGroup.getElements();
+		while (buttons.hasMoreElements()) {
+			JRadioButton radioButton = (JRadioButton) buttons.nextElement();
+			if (radioButton.isSelected()) {
+				return radioButton.getText();
+			}
+		}
+		return null;
 	}
 
 	// Drag & move window

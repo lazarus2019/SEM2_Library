@@ -44,7 +44,7 @@ public class EmployeeModel {
 		}
 	}
 	
-	// Change Info by id - NTS
+	// Update Info by id - NTS
 	public static boolean updateById(Employee employee) {
 		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ?, photo = ? WHERE employee_ID = ?";
 		try {
