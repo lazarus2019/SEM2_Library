@@ -31,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.JSeparator;
 
 public class AdminJFrame extends JFrame {
 
@@ -108,10 +109,20 @@ public class AdminJFrame extends JFrame {
 		sideBarPanel.setBackground(new Color(22, 33, 53));
 		contentPane.add(sideBarPanel);
 		sideBarPanel.setLayout(null);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBackground(SystemColor.menu);
+		separator_1.setBounds(0, 170, 168, 1);
+		sideBarPanel.add(separator_1);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBackground(SystemColor.control);
+		separator.setBounds(0, 519, 168, 1);
+		sideBarPanel.add(separator);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(22, 33, 53));
 		panel.setBounds(0, 0, 168, 171);
+		panel.setBackground(new Color(22, 33, 53));
 		sideBarPanel.add(panel);
 		panel.setLayout(null);
 
@@ -168,13 +179,14 @@ public class AdminJFrame extends JFrame {
 		panel.add(levelTxt);
 
 		JLabel lblNewLabel_2 = new JLabel("Dream Makers");
+		lblNewLabel_2.setBounds(30, 616, 107, 23);
 		lblNewLabel_2.setForeground(SystemColor.control);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_2.setBounds(30, 616, 107, 23);
 		sideBarPanel.add(lblNewLabel_2);
 
 		btnDashboard = new JPanel();
+		btnDashboard.setBounds(0, 171, 168, 37);
 		btnDashboard.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -188,7 +200,6 @@ public class AdminJFrame extends JFrame {
 		btnDashboard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDashboard.setBorder(null);
 		btnDashboard.setBackground(new Color(22, 33, 53));
-		btnDashboard.setBounds(0, 171, 168, 37);
 		btnDashboard.addMouseListener(new PanelButtonMouseAdapter(btnDashboard));
 		sideBarPanel.add(btnDashboard);
 		btnDashboard.setLayout(null);
@@ -201,6 +212,7 @@ public class AdminJFrame extends JFrame {
 		btnDashboard.add(dashboardTxt);
 
 		btnEmployee = new JPanel();
+		btnEmployee.setBounds(0, 208, 168, 37);
 		btnEmployee.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -215,7 +227,6 @@ public class AdminJFrame extends JFrame {
 		btnEmployee.setLayout(null);
 		btnEmployee.setBorder(null);
 		btnEmployee.setBackground(new Color(22, 33, 53));
-		btnEmployee.setBounds(0, 208, 168, 37);
 		btnEmployee.addMouseListener(new PanelButtonMouseAdapter(btnEmployee));
 		sideBarPanel.add(btnEmployee);
 
@@ -227,6 +238,7 @@ public class AdminJFrame extends JFrame {
 		btnEmployee.add(employeeTxt);
 
 		btnAuthor = new JPanel();
+		btnAuthor.setBounds(0, 244, 168, 37);
 		btnAuthor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -241,7 +253,6 @@ public class AdminJFrame extends JFrame {
 		btnAuthor.setLayout(null);
 		btnAuthor.setBorder(null);
 		btnAuthor.setBackground(new Color(22, 33, 53));
-		btnAuthor.setBounds(0, 244, 168, 37);
 		btnAuthor.addMouseListener(new PanelButtonMouseAdapter(btnAuthor));
 		sideBarPanel.add(btnAuthor);
 
@@ -253,6 +264,7 @@ public class AdminJFrame extends JFrame {
 		btnAuthor.add(authorTxt);
 
 		btnBook = new JPanel();
+		btnBook.setBounds(0, 280, 168, 37);
 		btnBook.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -267,7 +279,6 @@ public class AdminJFrame extends JFrame {
 		btnBook.setLayout(null);
 		btnBook.setBorder(null);
 		btnBook.setBackground(new Color(22, 33, 53));
-		btnBook.setBounds(0, 280, 168, 37);
 		btnBook.addMouseListener(new PanelButtonMouseAdapter(btnBook));
 		sideBarPanel.add(btnBook);
 
@@ -279,6 +290,7 @@ public class AdminJFrame extends JFrame {
 		btnBook.add(bookTxt);
 
 		btnMember = new JPanel();
+		btnMember.setBounds(0, 316, 168, 37);
 		btnMember.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -293,7 +305,6 @@ public class AdminJFrame extends JFrame {
 		btnMember.setLayout(null);
 		btnMember.setBorder(null);
 		btnMember.setBackground(new Color(22, 33, 53));
-		btnMember.setBounds(0, 316, 168, 37);
 		btnMember.addMouseListener(new PanelButtonMouseAdapter(btnMember));
 		sideBarPanel.add(btnMember);
 
@@ -305,6 +316,7 @@ public class AdminJFrame extends JFrame {
 		btnMember.add(memberTxt);
 
 		btnInvoice = new JPanel();
+		btnInvoice.setBounds(0, 351, 168, 37);
 		btnInvoice.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -319,7 +331,6 @@ public class AdminJFrame extends JFrame {
 		btnInvoice.setLayout(null);
 		btnInvoice.setBorder(null);
 		btnInvoice.setBackground(new Color(22, 33, 53));
-		btnInvoice.setBounds(0, 351, 168, 37);
 		btnInvoice.addMouseListener(new PanelButtonMouseAdapter(btnInvoice));
 		sideBarPanel.add(btnInvoice);
 
@@ -331,6 +342,7 @@ public class AdminJFrame extends JFrame {
 		btnInvoice.add(invoiceTxt);
 
 		btnStatistical = new JPanel();
+		btnStatistical.setBounds(0, 387, 168, 37);
 		btnStatistical.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -345,7 +357,6 @@ public class AdminJFrame extends JFrame {
 		btnStatistical.setLayout(null);
 		btnStatistical.setBorder(null);
 		btnStatistical.setBackground(new Color(22, 33, 53));
-		btnStatistical.setBounds(0, 387, 168, 37);
 		btnStatistical.addMouseListener(new PanelButtonMouseAdapter(btnStatistical));
 		sideBarPanel.add(btnStatistical);
 
@@ -357,6 +368,7 @@ public class AdminJFrame extends JFrame {
 		btnStatistical.add(statisticalTxt);
 
 		btnInfo = new JPanel();
+		btnInfo.setBounds(0, 520, 168, 37);
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -371,7 +383,6 @@ public class AdminJFrame extends JFrame {
 		btnInfo.setLayout(null);
 		btnInfo.setBorder(null);
 		btnInfo.setBackground(new Color(22, 33, 53));
-		btnInfo.setBounds(0, 520, 168, 37);
 		btnInfo.addMouseListener(new PanelButtonMouseAdapter(btnInfo));
 		sideBarPanel.add(btnInfo);
 
@@ -383,6 +394,7 @@ public class AdminJFrame extends JFrame {
 		btnInfo.add(infoTxt);
 
 		btnLogout = new JPanel();
+		btnLogout.setBounds(0, 556, 168, 37);
 		btnLogout.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -397,7 +409,6 @@ public class AdminJFrame extends JFrame {
 		btnLogout.setLayout(null);
 		btnLogout.setBorder(null);
 		btnLogout.setBackground(new Color(22, 33, 53));
-		btnLogout.setBounds(0, 556, 168, 37);
 		btnLogout.addMouseListener(new PanelButtonMouseAdapter(btnLogout));
 		sideBarPanel.add(btnLogout);
 
@@ -730,9 +741,7 @@ public class AdminJFrame extends JFrame {
 		JPanel[] panels = { btnDashboard, btnEmployee, btnAuthor, btnStatistical,
 				btnInvoice, btnLogout, btnInfo, btnMember };
 		for (int i = 0; i < panels.length; i++) {
-			if (panels[i] != panel) {
 				panels[i].setBackground(new Color(22, 33, 53));
-			}
 		}
 	}
 
@@ -744,25 +753,25 @@ public class AdminJFrame extends JFrame {
 			this.panel = panel;
 		}
 		
-		@Override
-		public void mouseExited(MouseEvent e) {
-			panel.setBackground(new Color(22, 33, 53));
-		}
+//		@Override
+//		public void mouseExited(MouseEvent e) {
+//			panel.setBackground(new Color(22, 33, 53));
+//		}
+//
+//		@Override
+//		public void mouseEntered(MouseEvent e) {
+//			panel.setBackground(new Color(40, 54, 79));
+//		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-			panel.setBackground(new Color(40, 54, 79));
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {
 			resetBtnColor(panel);
 			setBtnColor(panel);
 		}
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			panel.setBackground(new Color(22, 33, 53));
-		}
+//		@Override
+//		public void mouseReleased(MouseEvent e) {
+//			panel.setBackground(new Color(22, 33, 53));
+//		}
 	}
 }

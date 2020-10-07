@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import java.awt.SystemColor;
+import java.awt.Color;
 
 public class reportPanel extends JPanel {
 
@@ -15,13 +17,19 @@ public class reportPanel extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBorder(null);
+		tabbedPane.setOpaque(true);
+		tabbedPane.setBackground(Color.WHITE);
 		add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("New tab", null, panel, null);
+		panel.setBorder(null);
+		tabbedPane.addTab("Obsolete Books", null, panel, null);
 		
 		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
+		panel_1.setBorder(null);
+		panel_1.setBackground(Color.WHITE);
+		tabbedPane.addTab("Total", null, panel_1, null);
 	}
 
 }

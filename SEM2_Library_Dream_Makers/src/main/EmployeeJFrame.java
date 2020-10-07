@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
@@ -104,6 +105,16 @@ public class EmployeeJFrame extends JFrame {
 		sideBarPanel.setBackground(new Color(22, 33, 53));
 		contentPane.add(sideBarPanel);
 		sideBarPanel.setLayout(null);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBackground(SystemColor.menu);
+		separator_1.setBounds(0, 170, 168, 1);
+		sideBarPanel.add(separator_1);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBackground(SystemColor.control);
+		separator.setBounds(0, 519, 168, 1);
+		sideBarPanel.add(separator);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(22, 33, 53));

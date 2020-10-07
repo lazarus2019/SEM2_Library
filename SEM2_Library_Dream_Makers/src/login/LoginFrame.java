@@ -24,6 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import entities.Employee;
 import main.AdminJFrame;
 import main.EmployeeJFrame;
@@ -327,8 +329,8 @@ public class LoginFrame extends JFrame {
 			if (employee == null) {
 				showMessenger("Username does not exist!");
 			} else {
-				String password_hash = employeeModel.decryptPassword(employee.getPassword());
-				if (password.equals(password_hash)) {
+				String password_hash = employee.getPassword();
+				if (BCrypt.checkpw(password, password_hash)) {
 					String level = employee.getLevel();
 					if(level.equals("admin")) {
 						this.setVisible(false);
