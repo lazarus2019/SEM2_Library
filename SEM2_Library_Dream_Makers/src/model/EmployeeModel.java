@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Random;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import connect.ConnectDB;
 import entities.Employee;
 import main.bookPanel;
@@ -103,6 +105,24 @@ public class EmployeeModel {
 			return employee;
 		}
 	}
+	
+	// Update Password by email - NTS
+	public static boolean updateByEmail(String email) {
+		sql = "UPDATE employee SET password = ? WHERE email = ?";
+		try {
+			String passwordE = generatePassword();
+			String passwordDB = encryptPassword(passwordE);
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, passwordDB);
+			preparedStatement.setString(2, email);
+			if(!SendMail.sendMailPassword(email, passwordE)) {
+				return false;
+			}
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	// Update Info by id - NTS
 	public static boolean updateById(Employee employee) {
@@ -188,7 +208,6 @@ public class EmployeeModel {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				employee = new Employee();
-				employee.setPassword(resultSet.getString("password"));
 				employee.setEmail(resultSet.getString("email"));
 				return employee;
 			} else {
@@ -199,20 +218,18 @@ public class EmployeeModel {
 		}
 	}
 
-	// Decrypt password - NTS
-	public static String decryptPassword(String password) {
-		String password_cut = new String(Base64.getMimeDecoder().decode(password));
-		return new String(password_cut.substring(0, password_cut.length() - 5));
-	}
-
 	// Encrypt password - NTS
 	public static String encryptPassword(String password) {
+		return BCrypt.hashpw(password, BCrypt.gensalt());
+	}
+	
+	// Get random password - NTS
+	public static String generatePassword() {
 		Random rand = new Random();
-		String password_hash = "";
-		for (int i = 0; i < 5; i++) {
-			password_hash += charString.charAt(rand.nextInt(charString.length()));
+		String password = "";
+		for (int i = 0; i < 8; i++) {
+			password += charString.charAt(rand.nextInt(charString.length()));
 		}
-		String password_save = password + password_hash;
-		return Base64.getEncoder().encodeToString(password_save.getBytes());
+		return password;
 	}
 }

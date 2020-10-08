@@ -222,14 +222,12 @@ public class ForgotPasswordDialog extends JDialog {
 		if(email.isEmpty()) {
 			showMessenger("You must fill out all fields to get password back!");			
 		}else {
-			// Query username
+			// Query email
 			Employee employee = employeeModel.forGotPass(email);
 			if (employee == null) {
 				showMessenger("Email does not exist!");
 			} else {				
-				String password = employee.getPassword();
-				SendMail sendMail = new SendMail();
-				if(sendMail.sendMailPassword(email, password)) {
+				if(employeeModel.updateByEmail(email)) {
 					showMessenger("Please check your mail!");
 					this.setVisible(false);
 					this.dispose();

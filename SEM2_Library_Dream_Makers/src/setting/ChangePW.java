@@ -9,6 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import entities.Employee;
 import model.EmployeeModel;
 
@@ -246,7 +248,7 @@ public class ChangePW extends JDialog {
 		if (oldPass.isEmpty() || newPass.isEmpty() || repeatPass.isEmpty()) {
 			showMessenger("Please fill out all fields!");
 		} else {
-			if (oldPass.equals(employeeModel.decryptPassword(passDB))) {
+			if (BCrypt.checkpw(oldPass, passDB)) {
 				if (oldPass.equals(newPass)) {
 					showMessenger("New password must be different from old password");
 				} else {

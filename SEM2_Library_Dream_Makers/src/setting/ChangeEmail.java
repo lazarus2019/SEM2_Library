@@ -23,6 +23,8 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import checking.CheckValidate;
 import entities.Employee;
 import model.EmployeeModel;
@@ -224,7 +226,7 @@ public class ChangeEmail extends JDialog {
 				if(checkValidate.checkEmail(newE)) {
 					Employee employee_check = employeeModel.checkLogin(employee.getUsername());
 					String passDB = employee_check.getPassword();
-					if(password.equals(employeeModel.decryptPassword(passDB))){
+					if(BCrypt.checkpw(password, passDB)){
 						if(employeeModel.changeEmail(employee.getEmployee_ID(), newE)) {
 							showMessenger("Change email success!");
 							this.setVisible(false);

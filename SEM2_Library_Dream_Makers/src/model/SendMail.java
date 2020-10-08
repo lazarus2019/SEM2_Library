@@ -42,11 +42,6 @@ public class SendMail {
 				return new PasswordAuthentication(MailConfig.APP_EMAIL, MailConfig.APP_PASSWORD);
 			}
 		});
-		
-		// Get password
-		EmployeeModel employeeModel = new EmployeeModel();
-		String password_send = employeeModel.decryptPassword(password);
-		
 		// 2) Compose message
 		try {
 			MimeMessage message = new MimeMessage(session);
@@ -56,7 +51,7 @@ public class SendMail {
 			// 3) Create HTML content
 			message.setSubject("Forgot Password");
 			String htmlContent = "    <h1>Monica's Library</h1>\r\n" + "    <p>We send you your password</p>\r\n"
-					+ "    <p><strong>Your pass:</strong> <span style=\"color:red\"><i>"+ password_send +"</i></span></p>";
+					+ "    <p><strong>Your pass:</strong> <span style=\"color:red\"><i>"+ password +"</i></span></p>";
 			message.setContent(htmlContent, "text/html");
 
 			// 4) Send message
