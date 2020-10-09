@@ -7,10 +7,14 @@ import javax.swing.JTabbedPane;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import com.toedter.calendar.JYearChooser;
+
+import model.BooksModel;
+
 import com.toedter.calendar.JMonthChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -157,8 +161,8 @@ public class reportPanel extends JPanel {
 	private void btnSearchObsolete_mouseClicked(MouseEvent e) {
 		int month = monthChooser.getMonth()+1;
 		int year = yearChooser.getYear();
-		System.out.println(month);
-		System.out.println(year);
+		List<String> test = BooksModel.getObseleteBill(month, year);
+		System.out.println(test);
 	}
 
 	// ======= Reusability Function=========

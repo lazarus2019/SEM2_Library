@@ -13,6 +13,8 @@ import entities.Books;
 
 public class BooksModel {
 
+	static String sql;
+
 	public List<Books> findAll() {
 		List<Books> books = new ArrayList<Books>();
 		try {
@@ -98,8 +100,6 @@ public class BooksModel {
 
 	}
 
-	
-
 	public String findPublish(String publish_ID) {
 		String name = null;
 		try {
@@ -138,6 +138,7 @@ public class BooksModel {
 		}
 		return name;
 	}
+
 	public Books find(String id) {
 
 		Books book = new Books();
@@ -164,13 +165,15 @@ public class BooksModel {
 		return book;
 
 	}
+
 	public List<Books> searchBooks(String keyword) {
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select * from books where title like ?");
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from books where title like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				Books book = new Books();
 				book.setBook_ID(resultSet.getString("book_ID"));
 				book.setCall_number(resultSet.getString("call_number"));
@@ -186,5 +189,24 @@ public class BooksModel {
 			return null;
 		}
 		return books;
+	}
+
+	// Get Obselete bill by month and year
+	public static List<String> getObseleteBill(int month, int year) {
+		sql = "SELECT borrow_ID FROM borrow_bill WHERE status = 1 AND MONTH(return_date) = ? AND YEAR(return_date) = ? AND DATEDIFF(day, return_date, term_date) < 0";
+		List<String> bills = new ArrayList<String>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, month);
+			preparedStatement.setInt(2, year);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				bills.add(resultSet.getString("borrow_ID"));
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return bills;
 	}
 }
