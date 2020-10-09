@@ -50,7 +50,6 @@ public class EmployeeJFrame extends JFrame {
 	private JPanel btnBook;
 	private JPanel btnMember;
 	private JPanel btnInvoice;
-	private JPanel btnStatistical;
 	private JPanel btnInfo;
 	private JPanel btnLogout;
 	
@@ -68,7 +67,6 @@ public class EmployeeJFrame extends JFrame {
 	private authorPanel authorPanel = new authorPanel();
 //	private bookPanel bookPanel = new bookPanel();
 	private memberPanel memberPanel = new memberPanel();
-	private reportPanel reportPanel = new reportPanel();
 	private invoicePanel invoicePanel = new invoicePanel();
 	private JLabel titleTxt;
 	private JLabel usernameTxt;
@@ -311,32 +309,6 @@ public class EmployeeJFrame extends JFrame {
 		invoiceTxt.setBounds(15, 11, 130, 15);
 		btnInvoice.add(invoiceTxt);
 
-		btnStatistical = new JPanel();
-		btnStatistical.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					btnStatistical_mouseClicked(e);
-				} catch (Exception e2) {
-					showMessenger("Something was wrong! Please try again");
-				}
-			}
-		});
-		btnStatistical.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnStatistical.setLayout(null);
-		btnStatistical.setBorder(null);
-		btnStatistical.setBackground(new Color(22, 33, 53));
-		btnStatistical.setBounds(0, 351, 168, 37);
-		btnStatistical.addMouseListener(new PanelButtonMouseAdapter(btnStatistical));
-		sideBarPanel.add(btnStatistical);
-
-		JLabel statisticalTxt = new JLabel("Statistical");
-		statisticalTxt.setHorizontalAlignment(SwingConstants.LEFT);
-		statisticalTxt.setForeground(SystemColor.control);
-		statisticalTxt.setFont(new Font("Arial", Font.BOLD, 15));
-		statisticalTxt.setBounds(15, 11, 130, 15);
-		btnStatistical.add(statisticalTxt);
-
 		btnInfo = new JPanel();
 		btnInfo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -554,10 +526,6 @@ public class EmployeeJFrame extends JFrame {
 		member.setLayout(null);
 		memberPanel.setBounds(0, 0, 803, 617);
 		member.add(memberPanel);
-		// Report
-		report.setLayout(null);
-		reportPanel.setBounds(0, 0, 803, 617);
-		report.add(reportPanel);
 		// Invoice
 		invoice.setLayout(null);
 		invoicePanel.setBounds(0, 0, 803, 617);
@@ -706,7 +674,7 @@ public class EmployeeJFrame extends JFrame {
 
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
-		JPanel[] panels = { btnDashboard, btnAuthor, btnStatistical, btnInvoice, btnLogout, btnInfo, btnMember };
+		JPanel[] panels = { btnDashboard, btnAuthor, btnInvoice, btnLogout, btnInfo, btnMember };
 		for (int i = 0; i < panels.length; i++) {
 			if (panels[i] != panel) {
 				panels[i].setBackground(new Color(22, 33, 53));
