@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2020 at 06:03 AM
+-- Generation Time: Oct 09, 2020 at 06:26 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -109,34 +109,35 @@ CREATE TABLE `books` (
   `title` varchar(100) NOT NULL,
   `category_ID` int(11) NOT NULL,
   `publish_ID` varchar(30) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+  `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_ID`, `call_number`, `isbn`, `title`, `category_ID`, `publish_ID`, `quantity`) VALUES
-('BK01', 'NO-TO-260', '9786047764013', 'Nóng giận là bản năng , tĩnh lặng là bản lĩnh', 7, 'nxbtg', 30),
-('BK02', 'SO-ME-358', '9786048894276', 'Sống thực tế giữa đời thực dụng', 3, 'nxbdt', 32),
-('BK03', 'GI-PH-367', '8935212317368', 'Giông tố', 4, 'nxbvh', 13),
-('BK04', 'BI-EL-253', '9786045657553', 'The Rules', 8, 'nxbpn', 10),
-('BK05', 'DA-SU-320', '9786045674550', 'Đập tan sự thân mật giả mạo', 7, 'nxbpn', 10),
-('BK06', 'OU-DI-615', '9786046475071', 'Outlander 1', 4, 'nxbdt', 3),
-('BK07', 'OU-DI-620', '8935212331272', 'Outlander 2', 4, 'nxbdt', 4),
-('BK08', 'SH-DO-695', '9786049637230', 'Sherlock Holmes 1', 1, 'nxbvh', 5),
-('BK09', 'SH-DO-684', '8935095627899', 'Sherlock Holmes 2', 1, 'nxbvh', 6),
-('BK10', 'SH-DO-700', '8935095622832', 'Sherlock Holmes 3', 1, 'nxbvh', 6),
-('BK11', 'TU-TH-286', '9786049829789', 'Tuổi trẻ hoang dại ', 7, 'nxbvh', 20),
-('BK12', 'DU-NI-198', '8936186544064', 'Đừng sợ mình sai , đừng tin mình đúng', 3, 'nxbpn', 36),
-('BK13', 'TO-BU-135', '9786045556870', 'Tôi không thích ồn ào', 3, 'nxbnn', 23),
-('BK14', 'NG-MA-292', '9786049768385', 'Nghệ thuật tinh tế của việc \"đếch\" quan tâm', 7, 'nxbvh', 21),
-('BK15', 'HO-DA-313', '8935086823392', 'How to Win Friends & Influence People', 8, 'nxbtg', 10),
-('BK16', 'TR-TO-301', '9786041076945', 'Trên đường băng', 3, 'nxbtn', 32),
-('BK17', 'TU-RO-285', '9786045370193', 'Tuổi trẻ đáng giá bao nhiêu', 3, 'nxbnn', 25),
-('BK18', 'CO-AN-251', '9786041081291', 'Chú chó nhỏ mang giỏ hoa hồng', 3, 'nxbtn', 12),
-('BK19', 'TO-AN-251', '9786041140936', 'Tôi là Bê Tô', 3, 'nxbtn', 12),
-('BK20', 'CM-MA-187', '9786048965747', '5 Centimet trên giây', 4, 'nxbvh', 30);
+INSERT INTO `books` (`book_ID`, `call_number`, `isbn`, `title`, `category_ID`, `publish_ID`, `quantity`, `price`) VALUES
+('BK01', 'NO-TO-260', '9786047764013', 'Nóng giận là bản năng , tĩnh lặng là bản lĩnh', 7, 'nxbtg', 30, 3),
+('BK02', 'SO-ME-358', '9786048894276', 'Sống thực tế giữa đời thực dụng', 3, 'nxbdt', 32, 4),
+('BK03', 'GI-PH-367', '8935212317368', 'Giông tố', 4, 'nxbvh', 13, 5),
+('BK04', 'BI-EL-253', '9786045657553', 'The Rules', 8, 'nxbpn', 10, 5),
+('BK05', 'DA-SU-320', '9786045674550', 'Đập tan sự thân mật giả mạo', 7, 'nxbpn', 10, 4.5),
+('BK06', 'OU-DI-615', '9786046475071', 'Outlander 1', 4, 'nxbdt', 3, 6),
+('BK07', 'OU-DI-620', '8935212331272', 'Outlander 2', 4, 'nxbdt', 4, 6),
+('BK08', 'SH-DO-695', '9786049637230', 'Sherlock Holmes 1', 1, 'nxbvh', 5, 15),
+('BK09', 'SH-DO-684', '8935095627899', 'Sherlock Holmes 2', 1, 'nxbvh', 6, 15),
+('BK10', 'SH-DO-700', '8935095622832', 'Sherlock Holmes 3', 1, 'nxbvh', 6, 15),
+('BK11', 'TU-TH-286', '9786049829789', 'Tuổi trẻ hoang dại ', 7, 'nxbvh', 20, 3),
+('BK12', 'DU-NI-198', '8936186544064', 'Đừng sợ mình sai , đừng tin mình đúng', 3, 'nxbpn', 36, 4),
+('BK13', 'TO-BU-135', '9786045556870', 'Tôi không thích ồn ào', 3, 'nxbnn', 23, 4),
+('BK14', 'NG-MA-292', '9786049768385', 'Nghệ thuật tinh tế của việc \"đếch\" quan tâm', 7, 'nxbvh', 21, 5),
+('BK15', 'HO-DA-313', '8935086823392', 'How to Win Friends & Influence People', 8, 'nxbtg', 10, 5),
+('BK16', 'TR-TO-301', '9786041076945', 'Trên đường băng', 3, 'nxbtn', 32, 3),
+('BK17', 'TU-RO-285', '9786045370193', 'Tuổi trẻ đáng giá bao nhiêu', 3, 'nxbnn', 25, 4),
+('BK18', 'CO-AN-251', '9786041081291', 'Chú chó nhỏ mang giỏ hoa hồng', 3, 'nxbtn', 12, 5),
+('BK19', 'TO-AN-251', '9786041140936', 'Tôi là Bê Tô', 3, 'nxbtn', 12, 4),
+('BK20', 'CM-MA-187', '9786048965747', '5 Centimet trên giây', 4, 'nxbvh', 30, 5);
 
 -- --------------------------------------------------------
 
@@ -154,18 +155,19 @@ CREATE TABLE `borrow_bill` (
   `term_date` date NOT NULL,
   `return_date` date DEFAULT NULL,
   `deposit_fee` double NOT NULL,
-  `late_fee` double DEFAULT 0
+  `late_fee` double DEFAULT 0,
+  `compen_fee` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `borrow_bill`
 --
 
-INSERT INTO `borrow_bill` (`borrow_ID`, `member_ID`, `employee_ID`, `description`, `status`, `borrow_date`, `term_date`, `return_date`, `deposit_fee`, `late_fee`) VALUES
-('bor01', 'member1', 'emp02', 'hmm, nothing', 1, '2020-09-23', '2020-09-28', '2020-09-27', 10, 0),
-('bor02', 'member4', 'emp02', 'test', 1, '2020-09-26', '2020-10-02', '2020-09-30', 6, 0),
-('bor03', 'member2', 'emp02', 'hihi', 1, '2020-09-24', '2020-10-29', '2020-09-30', 14, 5),
-('bor04', 'member3', 'emp02', 'haahaa', 0, '2020-09-29', '2020-10-07', '0000-00-00', 15, 0);
+INSERT INTO `borrow_bill` (`borrow_ID`, `member_ID`, `employee_ID`, `description`, `status`, `borrow_date`, `term_date`, `return_date`, `deposit_fee`, `late_fee`, `compen_fee`) VALUES
+('bor01', 'member1', 'emp02', 'hmm, nothing', 1, '2020-09-23', '2020-09-28', '2020-09-27', 10, 0, 0),
+('bor02', 'member4', 'emp02', 'test', 1, '2020-09-26', '2020-10-02', '2020-09-30', 6, 0, 0),
+('bor03', 'member2', 'emp02', 'hihi', 1, '2020-09-24', '2020-10-29', '2020-09-30', 14, 5, 0),
+('bor04', 'member3', 'emp02', 'haahaa', 0, '2020-09-29', '2020-10-07', '0000-00-00', 15, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -177,7 +179,7 @@ CREATE TABLE `bor_book` (
   `No` int(11) NOT NULL,
   `book_ID` varchar(30) NOT NULL,
   `borrow_ID` varchar(30) NOT NULL,
-  `status` tinyint(1) NOT NULL
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -185,22 +187,22 @@ CREATE TABLE `bor_book` (
 --
 
 INSERT INTO `bor_book` (`No`, `book_ID`, `borrow_ID`, `status`) VALUES
-(1, 'BK01', 'bor01', 0),
-(2, 'BK05', 'bor01', 0),
-(3, 'BK10', 'bor01', 0),
-(4, 'BK07', 'bor01', 0),
-(5, 'BK04', 'bor04', 0),
-(6, 'BK14', 'bor04', 0),
-(7, 'BK14', 'bor02', 0),
-(8, 'BK04', 'bor02', 0),
-(9, 'BK09', 'bor02', 0),
-(10, 'BK10', 'bor02', 0),
-(11, 'BK08', 'bor02', 0),
-(12, 'BK19', 'bor03', 0),
-(13, 'BK18', 'bor03', 0),
-(14, 'BK04', 'bor03', 0),
-(15, 'BK09', 'bor03', 0),
-(16, 'BK11', 'bor03', 0);
+(1, 'BK01', 'bor01', 1),
+(2, 'BK05', 'bor01', 3),
+(3, 'BK10', 'bor01', 1),
+(4, 'BK07', 'bor01', 1),
+(5, 'BK04', 'bor04', 2),
+(6, 'BK14', 'bor04', 2),
+(7, 'BK14', 'bor02', 1),
+(8, 'BK04', 'bor02', 1),
+(9, 'BK09', 'bor02', 1),
+(10, 'BK10', 'bor02', 1),
+(11, 'BK08', 'bor02', 1),
+(12, 'BK19', 'bor03', 3),
+(13, 'BK18', 'bor03', 1),
+(14, 'BK04', 'bor03', 1),
+(15, 'BK09', 'bor03', 1),
+(16, 'BK11', 'bor03', 1);
 
 -- --------------------------------------------------------
 
@@ -252,8 +254,8 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employee_ID`, `username`, `password`, `name`, `dob`, `gender`, `address`, `phone`, `email`, `photo`, `level`) VALUES
-('emp01', 'admin', 'YWRtaW5HbmJoSg==', '', '0000-00-00', 0, '', '', 'thaisonbk2020@gmail.com', '', 'admin'),
-('emp02', 'employee1', 'YWRtaW5HbmJoSg==', 'Miss Monica', '1995-09-16', 0, '24 Phan Liem St , Dakao Ward , District 1  , HCMC', '0354751761', 'monica@gmail.com', '', 'librarian');
+('emp01', 'admin', '$2a$10$kE9fQIuolwI3xNalfZrQKOChB1I80Sd/bfZUQjojxnSai3A8hlM1u', '', '0000-00-00', 0, '', '', 'thaisonbk2020@gmail.com', '', 'admin'),
+('emp02', 'employee1', '$2a$10$kE9fQIuolwI3xNalfZrQKOChB1I80Sd/bfZUQjojxnSai3A8hlM1u', 'Miss Monica', '1995-09-16', 0, '24 Phan Liem St , Dakao Ward , District 1  , HCMC', '0354751761', 'monica@gmail.com', '', 'librarian');
 
 -- --------------------------------------------------------
 
@@ -331,6 +333,26 @@ INSERT INTO `publish_house` (`publish_ID`, `name`, `address`, `phone`) VALUES
 ('nxbtn', 'Nhà xuất bản Thanh Niên', '64 Ba Trieu, Tran Hung Dao, Hoan Kiem, Hanoi', '0654089365'),
 ('nxbvh', 'Nhà xuất bản Văn Học', '290/20 Nam Ky Khoi Nghia, Ward 14, District 3, Ho Chi Minh City', '0659863215');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status`
+--
+
+CREATE TABLE `status` (
+  `status_ID` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `status`
+--
+
+INSERT INTO `status` (`status_ID`, `name`) VALUES
+(1, 'Returned'),
+(2, 'Not Returned'),
+(3, 'Lost');
+
 --
 -- Indexes for dumped tables
 --
@@ -372,7 +394,8 @@ ALTER TABLE `borrow_bill`
 ALTER TABLE `bor_book`
   ADD PRIMARY KEY (`No`),
   ADD KEY `book_ID` (`book_ID`),
-  ADD KEY `borrow_ID` (`borrow_ID`);
+  ADD KEY `borrow_ID` (`borrow_ID`),
+  ADD KEY `status` (`status`);
 
 --
 -- Indexes for table `category`
@@ -407,6 +430,12 @@ ALTER TABLE `publish_house`
   ADD PRIMARY KEY (`publish_ID`);
 
 --
+-- Indexes for table `status`
+--
+ALTER TABLE `status`
+  ADD PRIMARY KEY (`status_ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -427,6 +456,12 @@ ALTER TABLE `bor_book`
 --
 ALTER TABLE `category`
   MODIFY `category_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `status`
+--
+ALTER TABLE `status`
+  MODIFY `status_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -458,7 +493,8 @@ ALTER TABLE `borrow_bill`
 --
 ALTER TABLE `bor_book`
   ADD CONSTRAINT `bor_book_ibfk_1` FOREIGN KEY (`book_ID`) REFERENCES `books` (`book_ID`),
-  ADD CONSTRAINT `bor_book_ibfk_2` FOREIGN KEY (`borrow_ID`) REFERENCES `borrow_bill` (`borrow_ID`);
+  ADD CONSTRAINT `bor_book_ibfk_2` FOREIGN KEY (`borrow_ID`) REFERENCES `borrow_bill` (`borrow_ID`),
+  ADD CONSTRAINT `bor_book_ibfk_3` FOREIGN KEY (`status`) REFERENCES `status` (`status_ID`);
 
 --
 -- Constraints for table `lib_card`
