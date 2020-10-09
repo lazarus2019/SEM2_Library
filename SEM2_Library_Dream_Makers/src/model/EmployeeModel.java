@@ -14,7 +14,7 @@ import main.bookPanel;
 
 public class EmployeeModel {
 	static String sql;
-	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 	// Get amount employee - NTS
 	public static int getAmountEmployee() {
