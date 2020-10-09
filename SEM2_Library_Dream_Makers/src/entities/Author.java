@@ -3,19 +3,18 @@ package entities;
 public class Author {
 	private String author_ID;
 	private String name;
-	private String address;
-	private String phone;
+	private String nation;
 
 	public Author() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Author(String author_ID, String name, String address, String phone) {
+	public Author(String author_ID, String name, String nation) {
 		super();
 		this.author_ID = author_ID;
 		this.name = name;
-		this.address = address;
-		this.phone = phone;
+		this.nation = nation;
 	}
 
 	public String getAuthor_ID() {
@@ -34,20 +33,12 @@ public class Author {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getNation() {
+		return nation;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setNation(String nation) {
+		this.nation = nation;
 	}
 
 }
