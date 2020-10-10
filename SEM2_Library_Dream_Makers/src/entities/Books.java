@@ -7,14 +7,14 @@ public class Books {
 	private String isbn;
 	private String title;
 	private int category_ID;
-	private String publish_ID;
+	private int publish_ID;
 	private int quantity;
 
 	public Books() {
 		super();
 	}
 
-	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, String publish_ID,
+	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, int publish_ID,
 			int quantity) {
 		super();
 		this.book_ID = book_ID;
@@ -66,12 +66,12 @@ public class Books {
 		this.category_ID = category_ID;
 	}
 
-	public String getPublish_ID() {
+	public int getPublish_ID() {
 		return publish_ID;
 	}
 
-	public void setPublish_ID(String publish_ID) {
-		this.publish_ID = publish_ID;
+	public void setPublish_ID(int i) {
+		this.publish_ID = i;
 	}
 
 	public int getQuantity() {
