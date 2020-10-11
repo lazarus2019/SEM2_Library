@@ -15,6 +15,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import model.BooksModel;
 import model.EmployeeModel;
 
 import javax.swing.JScrollPane;
@@ -28,6 +29,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormatSymbols;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -234,20 +236,27 @@ public class dashboardAdminPanel extends JPanel {
 	}
 	
 	private void getChart() {
-		int s1 = 10;
-		int s2 = 30;
-		int s3 = 15;
+		Date a1 = new Date();
+		int monthNow = a1.getMonth()+1;
+		BooksModel booksModel = new BooksModel();
+		int s1 = booksModel.getAmountBookByMonth(monthNow-2);
+		int s2 = booksModel.getAmountBookByMonth(monthNow-1);
+		int s3 = booksModel.getAmountBookByMonth(monthNow);
+		String firstM = getMonth(monthNow-2);
+		String secondM = getMonth(monthNow-1);
+		String thirtM = getMonth(monthNow);
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.setValue(s1, "", "September");
-		dataset.setValue(s2, "", "October");
-		dataset.setValue(s3, "", "November");
+		dataset.setValue(s1, firstM, firstM);
+		dataset.setValue(s2, secondM, secondM);
+		dataset.setValue(s3, thirtM, thirtM);
 		
-		JFreeChart chart = ChartFactory.createBarChart("", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
+		JFreeChart chart = ChartFactory.createBarChart("", "", "Books", dataset, PlotOrientation.VERTICAL, true, false, false);
 		CategoryPlot catePlot = chart.getCategoryPlot();
 		catePlot.setRangeGridlinePaint(Color.BLACK);
 		
 		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setOpaque(false);
 		ChartPanel chartPanel2 = new ChartPanel(chart);
 		Dimension a = new Dimension(435, 180);
 		chartPanel.setPreferredSize(a);
@@ -259,7 +268,10 @@ public class dashboardAdminPanel extends JPanel {
 		panel_1.validate();
 		panel.validate();
 		
-		Date a1 = new Date();
-		System.out.println(a1.getMonth() + 1);
+
+	}
+	
+	public static String getMonth(int month) {
+	    return new DateFormatSymbols().getMonths()[month-1];
 	}
 }

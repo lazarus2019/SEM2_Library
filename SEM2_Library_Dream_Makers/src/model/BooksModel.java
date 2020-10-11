@@ -267,4 +267,19 @@ public class BooksModel {
 		return (dateOne.getTime() - dateTwo.getTime()) < 0;
 	}
 
+	// AMOUNT OF BOOK BY MONTH - NTS
+	public static int getAmountBookByMonth(int month) {
+		int amountBook = 0;
+		sql = "SELECT COUNT(b.book_ID) AS amountB FROM bor_book b WHERE MONTH(b.borrow_date) = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, month);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			amountBook = resultSet.getInt("amountB");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return amountBook;
+	}
 }
