@@ -63,7 +63,7 @@ public class AdminJFrame extends JFrame {
 	// Panel
 	private dashboardAdminPanel dashboardAdminPanel = new dashboardAdminPanel();
 	private authorPanel authorPanel = new authorPanel();
-//	private bookPanel bookPanel = new bookPanel();
+	private bookPanel bookPanel = new bookPanel();
 	private employeePanel employeePanel = new employeePanel();
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
@@ -582,9 +582,9 @@ public class AdminJFrame extends JFrame {
 		authorPanel.setBounds(0, 0, 803, 617);
 		author.add(authorPanel);
 		// Book
-//		book.setLayout(null);
-//		bookPanel.setBounds(0, 0, 803, 617);
-//		book.add(bookPanel);
+		book.setLayout(null);
+		bookPanel.setBounds(0, 0, 803, 617);
+		book.add(bookPanel);
 		// Employee
 		employee.setLayout(null);
 		employeePanel.setBounds(0, 0, 803, 617);
