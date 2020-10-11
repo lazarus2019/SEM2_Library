@@ -34,7 +34,7 @@ public class EmployeeModel {
 	// Get issused book - NTS
 	public static int getAmountReturnBook() {
 		int am_returnBook = 0;
-		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = true";
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 1";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -49,7 +49,7 @@ public class EmployeeModel {
 	// Get issused book - NTS
 	public static int getAmountIssuedBook() {
 		int am_issuedBook = 0;
-		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = false";
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 2";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -74,6 +74,23 @@ public class EmployeeModel {
 			return am_member;
 		}
 		return am_member;
+	}
+	
+	// Get employee name by id - NTS
+	public static String getNameById(String employee_ID) {
+		sql = "SELECT * FROM employee WHERE employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, employee_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				return resultSet.getString("name");
+			} else {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	// Get employee by id - NTS

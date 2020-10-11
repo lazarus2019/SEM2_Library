@@ -8,6 +8,13 @@ import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import model.EmployeeModel;
 
 import javax.swing.JScrollPane;
@@ -18,17 +25,24 @@ import java.awt.SystemColor;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
+
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.ScrollPaneConstants;
 
 public class dashboardAdminPanel extends JPanel {
 	private JLabel bookIssuedAm;
 	private JLabel bookReturnAm;
 	private JLabel memberAm;
 	private JLabel employeeAm;
+	private JPanel panel;
+	private JScrollPane scrollPane_1;
+	private JPanel panel_1;
 
 	/**
 	 * Create the panel.
@@ -37,6 +51,18 @@ public class dashboardAdminPanel extends JPanel {
 		setBackground(SystemColor.control);
 		setBounds(0, 0, 803, 617);
 		setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Borrow Book");
+		lblNewLabel_1.setForeground(Color.WHITE);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblNewLabel_1.setBounds(320, 307, 244, 28);
+		add(lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel("Borrow Book");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(320, 16, 244, 28);
+		add(lblNewLabel);
 		
 		JPanel book = new JPanel();
 		book.setBounds(29, 26, 271, 126);
@@ -65,7 +91,7 @@ public class dashboardAdminPanel extends JPanel {
 		book.add(lblNewLabel_2);
 		
 		JPanel employee = new JPanel();
-		employee.setBounds(29, 163, 271, 126);
+		employee.setBounds(29, 320, 271, 126);
 		employee.setLayout(null);
 		employee.setBackground(new Color(33, 118, 235));
 		add(employee);
@@ -91,7 +117,7 @@ public class dashboardAdminPanel extends JPanel {
 		employee.add(lblNewLabel_2_1);
 		
 		JPanel returnBook = new JPanel();
-		returnBook.setBounds(350, 26, 271, 126);
+		returnBook.setBounds(29, 174, 271, 126);
 		returnBook.setLayout(null);
 		returnBook.setBackground(new Color(33, 118, 235));
 		add(returnBook);
@@ -117,7 +143,7 @@ public class dashboardAdminPanel extends JPanel {
 		returnBook.add(lblNewLabel_2_1_1);
 		
 		JPanel member = new JPanel();
-		member.setBounds(350, 163, 271, 126);
+		member.setBounds(29, 467, 271, 126);
 		member.setLayout(null);
 		member.setBackground(new Color(33, 118, 235));
 		add(member);
@@ -143,7 +169,7 @@ public class dashboardAdminPanel extends JPanel {
 		member.add(lblNewLabel_2_1_1_1);
 		
 		JLabel btnRefresh = new JLabel("Refresh");
-		btnRefresh.setBounds(667, 11, 99, 28);
+		btnRefresh.setBounds(689, 16, 99, 28);
 		btnRefresh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -175,8 +201,23 @@ public class dashboardAdminPanel extends JPanel {
 		background.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/Main/background.png")));
 		background.setBounds(0, 0, 803, 617);
 		add(background);
-
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(320, 63, 467, 225);
+		add(scrollPane);
+		
+		panel = new JPanel();
+		scrollPane.setViewportView(panel);
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(320, 368, 467, 225);
+		add(scrollPane_1);
+		
+		panel_1 = new JPanel();
+		scrollPane_1.setViewportView(panel_1);
+		
 		loadData();
+		
 	}
 	
 	private void loadData() {
@@ -185,9 +226,40 @@ public class dashboardAdminPanel extends JPanel {
 		bookReturnAm.setText(String.valueOf(emModel.getAmountReturnBook()));
 		employeeAm.setText(String.valueOf(emModel.getAmountEmployee()));
 		memberAm.setText(String.valueOf(emModel.getAmountMember()));
+		getChart();
 	}
 	
 	private void btnRefresh_mouseClicked(MouseEvent e) {
 		loadData();
+	}
+	
+	private void getChart() {
+		int s1 = 10;
+		int s2 = 30;
+		int s3 = 15;
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.setValue(s1, "", "September");
+		dataset.setValue(s2, "", "October");
+		dataset.setValue(s3, "", "November");
+		
+		JFreeChart chart = ChartFactory.createBarChart("", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
+		CategoryPlot catePlot = chart.getCategoryPlot();
+		catePlot.setRangeGridlinePaint(Color.BLACK);
+		
+		ChartPanel chartPanel = new ChartPanel(chart);
+		ChartPanel chartPanel2 = new ChartPanel(chart);
+		Dimension a = new Dimension(435, 180);
+		chartPanel.setPreferredSize(a);
+		chartPanel2.setPreferredSize(a);
+		panel.removeAll();
+		panel_1.removeAll();
+		panel.add(chartPanel, BorderLayout.CENTER);
+		panel_1.add(chartPanel2, BorderLayout.CENTER);
+		panel_1.validate();
+		panel.validate();
+		
+		Date a1 = new Date();
+		System.out.println(a1.getMonth() + 1);
 	}
 }

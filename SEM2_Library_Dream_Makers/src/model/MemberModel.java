@@ -10,7 +10,8 @@ import entities.Member;
 
 
 public class MemberModel {
-
+	static String sql;
+	
 	public List<Member> findAll(){
 		try {
 			List<Member> members = new ArrayList<Member>();
@@ -57,4 +58,28 @@ public class MemberModel {
 		return member;
 	}
 	
+	// Get card number by id - NTS
+	public static String getCardNoById(String member_ID) {
+		sql = "SELECT * FROM member WHERE member_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				return resultSet.getString("card_number");
+			}else {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public static int getNewMember() {
+		int memberAM = 0;
+		
+		return memberAM;
+	}
 }

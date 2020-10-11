@@ -8,8 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.sun.mail.imap.protocol.Status;
+
 import connect.ConnectDB;
 import entities.Books;
+import entities.Bor_book;
+import entities.ObseleteBook;
 
 public class BooksModel {
 
@@ -191,22 +195,76 @@ public class BooksModel {
 		return books;
 	}
 
-	// Get Obselete bill by month and year
-	public static List<String> getObseleteBill(int month, int year) {
-		sql = "SELECT borrow_ID FROM borrow_bill WHERE status = 1 AND MONTH(return_date) = ? AND YEAR(return_date) = ? AND DATEDIFF(day, return_date, term_date) < 0";
-		List<String> bills = new ArrayList<String>();
+	// Get Obselete Books - NTS
+	public static List<ObseleteBook> getAll(List<Bor_book> books) {
+		List<ObseleteBook> alls = new ArrayList<ObseleteBook>();
+		sql = "SELECT employee_ID, member_ID, title FROM borrow_bill, books WHERE borrow_ID = ? AND book_ID = ?";
+		for (Bor_book book : books) {
+			try {
+				PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+				preparedStatement.setString(1, book.getBorrow_ID());
+				preparedStatement.setString(2, book.getBook_ID());
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					ObseleteBook all = new ObseleteBook();
+					all.setFee(book.getFee());
+					all.setInvoice_ID(book.getBorrow_ID());
+					all.setTerm_date(book.getTerm_date());
+					all.setReturn_date(book.getReturn_date());
+					all.setTitle(resultSet.getString("title"));
+					all.setEmployee_name(EmployeeModel.getNameById(resultSet.getString("employee_ID")));
+					all.setCard_number(MemberModel.getCardNoById(resultSet.getString("member_ID")));
+					alls.add(all);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return alls;
+	}
+
+	// Get Obselete bill by month and year - NTS
+	public static List<Bor_book> getObseleteBook(int status, int month, int year) {
+		sql = "SELECT * FROM bor_book WHERE status = ? AND MONTH(return_date) = ? AND YEAR(return_date) = ?";
+		List<Bor_book> books = new ArrayList<Bor_book>();
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
-			preparedStatement.setInt(1, month);
-			preparedStatement.setInt(2, year);
+			preparedStatement.setInt(1, status);
+			preparedStatement.setInt(2, month);
+			preparedStatement.setInt(3, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				bills.add(resultSet.getString("borrow_ID"));
+				if (resultSet.getInt("status") == 3) {
+					Bor_book book = new Bor_book();
+					book.setBorrow_ID(resultSet.getString("borrow_ID"));
+					book.setBook_ID(resultSet.getString("book_ID"));
+					book.setFee(resultSet.getDouble("late_fee"));
+					book.setReturn_date(resultSet.getDate("return_date"));
+					book.setTerm_date(resultSet.getDate("term_date"));
+					books.add(book);
+				} else {
+					if (checkBWDate(resultSet.getDate("term_date"), resultSet.getDate("return_date"))) {
+						Bor_book book = new Bor_book();
+						book.setBorrow_ID(resultSet.getString("borrow_ID"));
+						book.setBook_ID(resultSet.getString("book_ID"));
+						book.setFee(resultSet.getDouble("late_fee"));
+						book.setReturn_date(resultSet.getDate("return_date"));
+						book.setTerm_date(resultSet.getDate("term_date"));
+						books.add(book);
+					}
+				}
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
 		}
-		return bills;
+		return books;
 	}
+
+	// Check between date - NTS
+	public static boolean checkBWDate(Date dateOne, Date dateTwo) {
+		return (dateOne.getTime() - dateTwo.getTime()) < 0;
+	}
+
 }

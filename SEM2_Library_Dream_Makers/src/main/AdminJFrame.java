@@ -596,6 +596,7 @@ public class AdminJFrame extends JFrame {
 		// Report
 		report.setLayout(null);
 		reportPanel.setBounds(0, 0, 803, 617);
+		reportPanel.employeeMain = employeeMain;
 		report.add(reportPanel);
 		// Invoice
 		invoice.setLayout(null);
