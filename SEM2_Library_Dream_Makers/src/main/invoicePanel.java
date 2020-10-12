@@ -537,7 +537,7 @@ public class invoicePanel extends JPanel {
 
 	// Search "ID Card" for Member Details of BORROW BOOK
 	public void jbtnSearchIDCardB_actionPerformed(ActionEvent arg0) {
-		String idCard = jtextFieldIDCardB.getText();
+		String idCard = jtextFieldIDCardB.getText().trim();
 		if (!idCard.isEmpty()) {
 			MemberModel memberModel = new MemberModel();
 			Member member = memberModel.find(idCard);
