@@ -77,9 +77,19 @@ public class MemberModel {
 	}
 	
 	
-	public static int getNewMember() {
+	public static int getNewMember(int month) {
 		int memberAM = 0;
-		
+		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, month);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			memberAM  = resultSet.getInt("amount");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
 		return memberAM;
 	}
 }

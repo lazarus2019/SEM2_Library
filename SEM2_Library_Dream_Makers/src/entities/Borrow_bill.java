@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Borrow_bill {
 
-	private String borrow_ID;
+	private int borrow_ID;
 	private String member_ID;
 	private String employee_ID;
 	private String description;
@@ -19,7 +19,7 @@ public class Borrow_bill {
 		super();
 	}
 
-	public Borrow_bill(String borrow_ID, String member_ID, String employee_ID, String description, boolean status,
+	public Borrow_bill(int borrow_ID, String member_ID, String employee_ID, String description, boolean status,
 			Date borrow_date, Date term_date, Date return_date, Double deposit_fee, Double late_fee) {
 		super();
 		this.borrow_ID = borrow_ID;
@@ -34,11 +34,11 @@ public class Borrow_bill {
 		this.late_fee = late_fee;
 	}
 
-	public String getBorrow_ID() {
+	public int getBorrow_ID() {
 		return borrow_ID;
 	}
 
-	public void setBorrow_ID(String borrow_ID) {
+	public void setBorrow_ID(int borrow_ID) {
 		this.borrow_ID = borrow_ID;
 	}
 

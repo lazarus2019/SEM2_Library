@@ -17,6 +17,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import model.BooksModel;
 import model.EmployeeModel;
+import model.MemberModel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -42,9 +43,13 @@ public class dashboardAdminPanel extends JPanel {
 	private JLabel bookReturnAm;
 	private JLabel memberAm;
 	private JLabel employeeAm;
-	private JPanel panel;
+	private JPanel panelBorrowBook;
 	private JScrollPane scrollPane_1;
-	private JPanel panel_1;
+	private JPanel panelNewMember;
+	
+	// Declare variable
+	static Date today = new Date();
+	static int monthNow = today.getMonth()+1;
 
 	/**
 	 * Create the panel.
@@ -208,69 +213,82 @@ public class dashboardAdminPanel extends JPanel {
 		scrollPane.setBounds(320, 63, 467, 225);
 		add(scrollPane);
 		
-		panel = new JPanel();
-		scrollPane.setViewportView(panel);
+		panelBorrowBook = new JPanel();
+		scrollPane.setViewportView(panelBorrowBook);
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(320, 368, 467, 225);
 		add(scrollPane_1);
 		
-		panel_1 = new JPanel();
-		scrollPane_1.setViewportView(panel_1);
+		panelNewMember = new JPanel();
+		scrollPane_1.setViewportView(panelNewMember);
 		
 		loadData();
 		
 	}
 	
+	// Load data
 	private void loadData() {
 		EmployeeModel emModel = new EmployeeModel();
 		bookIssuedAm.setText(String.valueOf(emModel.getAmountIssuedBook()));
 		bookReturnAm.setText(String.valueOf(emModel.getAmountReturnBook()));
 		employeeAm.setText(String.valueOf(emModel.getAmountEmployee()));
 		memberAm.setText(String.valueOf(emModel.getAmountMember()));
-		getChart();
+		getBookChart();
+		getMemberChart();
 	}
 	
+	// Button refresh
 	private void btnRefresh_mouseClicked(MouseEvent e) {
 		loadData();
 	}
 	
-	private void getChart() {
-		Date a1 = new Date();
-		int monthNow = a1.getMonth()+1;
+	// Get book borrow by month chart
+	private void getBookChart() {
 		BooksModel booksModel = new BooksModel();
 		int s1 = booksModel.getAmountBookByMonth(monthNow-2);
 		int s2 = booksModel.getAmountBookByMonth(monthNow-1);
-		int s3 = booksModel.getAmountBookByMonth(monthNow);
+		int s3 = booksModel.getAmountBookByMonth(monthNow);		
+		getChart(s1, s2, s3, panelBorrowBook, "Book");
+	}
+	
+	// Get new member by month chart
+	private void getMemberChart() {
+		MemberModel memberModel = new MemberModel();
+		int s1 = memberModel.getNewMember(monthNow-2);
+		int s2 = memberModel.getNewMember(monthNow-1);
+		int s3 = memberModel.getNewMember(monthNow);		
+		getChart(s1, s2, s3, panelNewMember, "Member");
+	}
+	
+	private void getChart(int s1, int s2, int s3, JPanel panel, String content) {
 		String firstM = getMonth(monthNow-2);
 		String secondM = getMonth(monthNow-1);
 		String thirtM = getMonth(monthNow);
 		
+		// Add value for chart
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.setValue(s1, firstM, firstM);
-		dataset.setValue(s2, secondM, secondM);
-		dataset.setValue(s3, thirtM, thirtM);
+		dataset.setValue(s1, String.valueOf(s1), firstM);
+		dataset.setValue(s2, String.valueOf(s2), secondM);
+		dataset.setValue(s3, String.valueOf(s3), thirtM);
 		
-		JFreeChart chart = ChartFactory.createBarChart("", "", "Books", dataset, PlotOrientation.VERTICAL, true, false, false);
+		// Create new bar chart
+		JFreeChart chart = ChartFactory.createBarChart("", "", content, dataset, PlotOrientation.VERTICAL, true, false, false);
 		CategoryPlot catePlot = chart.getCategoryPlot();
 		catePlot.setRangeGridlinePaint(Color.BLACK);
 		
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setOpaque(false);
-		ChartPanel chartPanel2 = new ChartPanel(chart);
+		// Set size for chart
 		Dimension a = new Dimension(435, 180);
 		chartPanel.setPreferredSize(a);
-		chartPanel2.setPreferredSize(a);
-		panel.removeAll();
-		panel_1.removeAll();
-		panel.add(chartPanel, BorderLayout.CENTER);
-		panel_1.add(chartPanel2, BorderLayout.CENTER);
-		panel_1.validate();
-		panel.validate();
 		
-
+		panel.removeAll();
+		panel.add(chartPanel, BorderLayout.CENTER);
+		panel.validate();
 	}
 	
+	// Convert month to string
 	public static String getMonth(int month) {
 	    return new DateFormatSymbols().getMonths()[month-1];
 	}

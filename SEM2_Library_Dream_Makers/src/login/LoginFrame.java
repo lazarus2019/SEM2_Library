@@ -80,7 +80,7 @@ public class LoginFrame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the frame
 	 */
 	public LoginFrame() {
 		setUndecorated(true);

@@ -6,18 +6,17 @@ public class ObseleteBook {
 	private String card_number;
 	private String employee_name;
 	private String title;
-	private String invoice_ID;
+	private int invoice_ID;
 	private Date return_date;
 	private Date term_date;
-	private double fee;
 
 	public ObseleteBook() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ObseleteBook(String card_number, String employee_name, String title, String invoice_ID, Date return_date,
-			Date term_date, double fee) {
+	public ObseleteBook(String card_number, String employee_name, String title, int invoice_ID, Date return_date,
+			Date term_date) {
 		super();
 		this.card_number = card_number;
 		this.employee_name = employee_name;
@@ -25,7 +24,6 @@ public class ObseleteBook {
 		this.invoice_ID = invoice_ID;
 		this.return_date = return_date;
 		this.term_date = term_date;
-		this.fee = fee;
 	}
 
 	public String getCard_number() {
@@ -52,11 +50,11 @@ public class ObseleteBook {
 		this.title = title;
 	}
 
-	public String getInvoice_ID() {
+	public int getInvoice_ID() {
 		return invoice_ID;
 	}
 
-	public void setInvoice_ID(String invoice_ID) {
+	public void setInvoice_ID(int invoice_ID) {
 		this.invoice_ID = invoice_ID;
 	}
 
@@ -74,14 +72,6 @@ public class ObseleteBook {
 
 	public void setTerm_date(Date term_date) {
 		this.term_date = term_date;
-	}
-
-	public double getFee() {
-		return fee;
-	}
-
-	public void setFee(double fee) {
-		this.fee = fee;
 	}
 
 }

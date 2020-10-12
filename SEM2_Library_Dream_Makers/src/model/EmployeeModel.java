@@ -30,7 +30,7 @@ public class EmployeeModel {
 		}
 		return am_employee;
 	}
-	
+
 	// Get issused book - NTS
 	public static int getAmountReturnBook() {
 		int am_returnBook = 0;
@@ -45,7 +45,7 @@ public class EmployeeModel {
 		}
 		return am_returnBook;
 	}
-	
+
 	// Get issused book - NTS
 	public static int getAmountIssuedBook() {
 		int am_issuedBook = 0;
@@ -60,7 +60,7 @@ public class EmployeeModel {
 		}
 		return am_issuedBook;
 	}
-	
+
 	// Get member - NTS
 	public static int getAmountMember() {
 		int am_member = 0;
@@ -75,7 +75,7 @@ public class EmployeeModel {
 		}
 		return am_member;
 	}
-	
+
 	// Get employee name by id - NTS
 	public static String getNameById(String employee_ID) {
 		sql = "SELECT * FROM employee WHERE employee_ID = ?";
@@ -122,7 +122,7 @@ public class EmployeeModel {
 			return employee;
 		}
 	}
-	
+
 	// Update Password by email - NTS
 	public static boolean updateByEmail(String email) {
 		sql = "UPDATE employee SET password = ? WHERE email = ?";
@@ -132,7 +132,7 @@ public class EmployeeModel {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, passwordDB);
 			preparedStatement.setString(2, email);
-			if(!SendMail.sendMailPassword(email, passwordE)) {
+			if (!SendMail.sendMailPassword(email, passwordE)) {
 				return false;
 			}
 			return preparedStatement.executeUpdate() > 0;
@@ -239,7 +239,7 @@ public class EmployeeModel {
 	public static String encryptPassword(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
-	
+
 	// Get random password - NTS
 	public static String generatePassword() {
 		Random rand = new Random();

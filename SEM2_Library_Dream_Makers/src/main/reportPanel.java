@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import com.toedter.calendar.JYearChooser;
 
 import entities.Bor_book;
+import entities.Borrow_bill;
 import entities.Employee;
 import entities.ObseleteBook;
 import model.BooksModel;
@@ -355,22 +356,20 @@ public class reportPanel extends JPanel {
 				return false;
 			}
 		};
-		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Term date",
-				"Late fee" };
+		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Days"};
 		tableModel.setColumnIdentifiers(columns);
 		tableObsolete.setModel(tableModel);
 		tableObsolete.getTableHeader().setReorderingAllowed(false);
 		tableObsolete.getTableHeader().setResizingAllowed(false);
 		TableColumnModel columnModelF = tableObsolete.getColumnModel();
 		// Set columns width
-		columnModelF.getColumn(0).setPreferredWidth(25);
-		columnModelF.getColumn(1).setPreferredWidth(90);
+		columnModelF.getColumn(0).setPreferredWidth(30);
+		columnModelF.getColumn(1).setPreferredWidth(100);
 		columnModelF.getColumn(2).setPreferredWidth(90);
 		columnModelF.getColumn(3).setPreferredWidth(280);
-		columnModelF.getColumn(4).setPreferredWidth(60);
-		columnModelF.getColumn(5).setPreferredWidth(77);
-		columnModelF.getColumn(6).setPreferredWidth(77);
-		columnModelF.getColumn(7).setPreferredWidth(60);
+		columnModelF.getColumn(4).setPreferredWidth(75);
+		columnModelF.getColumn(5).setPreferredWidth(80);
+		columnModelF.getColumn(6).setPreferredWidth(80);
 
 		// Set Header color
 		JTableHeader tableFindBookHeader = tableObsolete.getTableHeader();
@@ -399,16 +398,16 @@ public class reportPanel extends JPanel {
 	private void getObselectData() {
 		int month = monthChooser.getMonth() + 1;
 		int year = yearChooser.getYear();
-		int status = statusBox.getSelectedIndex() == 0 ? 1 : 3;
-		List<Bor_book> books = booksModel.getObseleteBook(status, month, year);
+		int status = statusBox.getSelectedIndex() == 0 ? 2 : 3;
+		List<Borrow_bill> books = booksModel.getBills(month, year);
 		if (books != null) {
-			obbs = booksModel.getAll(books);
+			obbs = booksModel.getObseleteBook(books, status);
 			tableModel.getDataVector().removeAllElements();
 			tableModel.fireTableDataChanged();
 			for (ObseleteBook obb : obbs) {
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, obb.getCard_number(),
 						obb.getEmployee_name(), obb.getTitle(), obb.getInvoice_ID(), spdf.format(obb.getReturn_date()),
-						spdf.format(obb.getTerm_date()), obb.getFee() });
+						spdf.format(obb.getTerm_date())});
 			}
 			tableObsolete.setModel(tableModel);
 		} else {
@@ -530,7 +529,6 @@ public class reportPanel extends JPanel {
 			row.createCell(4).setCellValue(obb.getInvoice_ID());
 			row.createCell(5).setCellValue(spdf.format(obb.getReturn_date()));
 			row.createCell(6).setCellValue(spdf.format(obb.getTerm_date()));
-			row.createCell(7).setCellValue(obb.getFee());
 		}
 
 		for (int i = 0; i < columns.length; i++) {
