@@ -130,7 +130,7 @@ public class ChangeEmail extends JDialog {
 		btnClose.setBounds(0, 0, 34, 34);
 		panelClose.add(btnClose);
 
-		JLabel lblNewLabel_3 = new JLabel("Change Password");
+		JLabel lblNewLabel_3 = new JLabel("Change Email");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_3.setForeground(new Color(255, 255, 255));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
@@ -242,11 +242,6 @@ public class ChangeEmail extends JDialog {
 					showMessenger("Wrong type mail\n" + "Sample: abcxyz@gmail.com\n" + "Or: abcxyz@GMAIL.COM");
 				}
 			}
-		}
-
-		// Show password
-		private void isShowPassword_actionPerformed(ActionEvent e) {
-
 		}
 
 		// Close the dialog

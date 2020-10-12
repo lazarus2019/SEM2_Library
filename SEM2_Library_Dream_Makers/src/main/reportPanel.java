@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,6 +56,9 @@ import java.awt.event.ActionEvent;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.toedter.calendar.JDayChooser;
+import javax.swing.JCheckBox;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 // Import apache poi excel
 
@@ -77,6 +81,8 @@ public class reportPanel extends JPanel {
 	private JMonthChooser monthChooser_1;
 	private JDayChooser dayChooser;
 	private JYearChooser yearChooser_1;
+	private JCheckBox chbxDay;
+	private JCheckBox chbxMonth;
 
 	/**
 	 * Create the panel.
@@ -273,7 +279,7 @@ public class reportPanel extends JPanel {
 		panel_5.add(dayChooser);
 
 		monthChooser_1 = new JMonthChooser();
-		monthChooser_1.setBounds(311, 106, 106, 32);
+		monthChooser_1.setBounds(311, 101, 106, 32);
 		panel_5.add(monthChooser_1);
 
 		yearChooser_1 = new JYearChooser();
@@ -292,7 +298,7 @@ public class reportPanel extends JPanel {
 
 		JLabel lblNewLabel_2_1_1 = new JLabel("Month");
 		lblNewLabel_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_2_1_1.setBounds(311, 79, 66, 16);
+		lblNewLabel_2_1_1.setBounds(311, 74, 66, 16);
 		panel_5.add(lblNewLabel_2_1_1);
 
 		JLabel btnSearch = new JLabel("Search");
@@ -311,6 +317,29 @@ public class reportPanel extends JPanel {
 		btnSearch.setBackground(new Color(30, 106, 210));
 		btnSearch.setBounds(311, 218, 113, 35);
 		panel_5.add(btnSearch);
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setBackground(Color.WHITE);
+		panel_9.setBounds(311, 144, 123, 66);
+		panel_5.add(panel_9);
+		panel_9.setLayout(null);
+		
+		chbxDay = new JCheckBox("Day");
+		chbxDay.setBackground(Color.WHITE);
+		chbxDay.setBounds(0, 0, 97, 22);
+		panel_9.add(chbxDay);
+		
+		chbxMonth = new JCheckBox("Month");
+		chbxMonth.setBackground(Color.WHITE);
+		chbxMonth.setBounds(0, 22, 97, 22);
+		panel_9.add(chbxMonth);
+		
+		JCheckBox chbxYear = new JCheckBox("Year");
+		chbxYear.setSelected(true);
+		chbxYear.setEnabled(false);
+		chbxYear.setBackground(Color.WHITE);
+		chbxYear.setBounds(0, 44, 97, 22);
+		panel_9.add(chbxYear);
 
 		JPanel panel_8 = new JPanel();
 		panel_8.setBounds(464, 11, 304, 136);
@@ -356,7 +385,7 @@ public class reportPanel extends JPanel {
 				return false;
 			}
 		};
-		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Days"};
+		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Day late"};
 		tableModel.setColumnIdentifiers(columns);
 		tableObsolete.setModel(tableModel);
 		tableObsolete.getTableHeader().setReorderingAllowed(false);
@@ -404,10 +433,12 @@ public class reportPanel extends JPanel {
 			obbs = booksModel.getObseleteBook(books, status);
 			tableModel.getDataVector().removeAllElements();
 			tableModel.fireTableDataChanged();
+			long diff;
 			for (ObseleteBook obb : obbs) {
+				diff = obb.getReturn_date().getTime() - obb.getTerm_date().getTime();
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, obb.getCard_number(),
 						obb.getEmployee_name(), obb.getTitle(), obb.getInvoice_ID(), spdf.format(obb.getReturn_date()),
-						spdf.format(obb.getTerm_date())});
+						TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + " days"});
 			}
 			tableObsolete.setModel(tableModel);
 		} else {
@@ -552,7 +583,11 @@ public class reportPanel extends JPanel {
 	// 
 	
 	private void btnSearch_mouseClicked(MouseEvent e) {
-		System.out.println(dayChooser.getDay());
+		int day = dayChooser.getDay();
+		int month = monthChooser_1.getMonth();
+		int year = yearChooser_1.getYear();
+		
+		
 	}
 	
 	// ======= Reusability Function=========

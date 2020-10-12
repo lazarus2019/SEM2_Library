@@ -59,7 +59,7 @@ public class dashboardAdminPanel extends JPanel {
 		setBounds(0, 0, 803, 617);
 		setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Borrow Book");
+		JLabel lblNewLabel_1 = new JLabel("New Member");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblNewLabel_1.setBounds(320, 307, 244, 28);
