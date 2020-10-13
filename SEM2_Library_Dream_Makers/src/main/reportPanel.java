@@ -23,6 +23,7 @@ import com.toedter.calendar.JYearChooser;
 import entities.Bor_book;
 import entities.Borrow_bill;
 import entities.Employee;
+import entities.FamousBook;
 import entities.ObseleteBook;
 import model.BooksModel;
 import model.SendMail;
@@ -584,8 +585,29 @@ public class reportPanel extends JPanel {
 	
 	private void btnSearch_mouseClicked(MouseEvent e) {
 		int day = dayChooser.getDay();
-		int month = monthChooser_1.getMonth();
+		int month = monthChooser_1.getMonth()+1;
 		int year = yearChooser_1.getYear();
+		
+		int option = 0;
+		if(chbxDay.isSelected() && chbxMonth.isSelected()) {
+			option = 1;
+		}
+		
+		if(chbxDay.isSelected() && !chbxMonth.isSelected()) {
+			option = 2;
+		}
+		
+		if(!chbxDay.isSelected() && chbxMonth.isSelected()) {
+			option = 3;
+		}
+		
+		List<FamousBook> boks = BooksModel.getFamousBook(day, month, year, option);
+		if(boks != null) {
+			for(FamousBook bok : boks) {
+				System.out.println(bok.getTitle());
+			}
+			System.out.println("----");
+		}
 		
 		
 	}

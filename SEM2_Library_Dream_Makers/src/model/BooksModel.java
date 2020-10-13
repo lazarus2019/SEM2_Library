@@ -14,6 +14,7 @@ import connect.ConnectDB;
 import entities.Books;
 import entities.Bor_book;
 import entities.Borrow_bill;
+import entities.FamousBook;
 import entities.ObseleteBook;
 
 public class BooksModel {
@@ -253,7 +254,6 @@ public class BooksModel {
 		return books;
 	}
 
-
 	// Check between date - NTS
 	public static boolean checkBWDate(Date dateOne, Date dateTwo) {
 		return (dateOne.getTime() - dateTwo.getTime()) < 0;
@@ -274,4 +274,63 @@ public class BooksModel {
 		}
 		return amountBook;
 	}
+
+	// GET FAMOUS BOOKS
+	public static List<FamousBook> getFamousBook(int day, int month, int year, int option) {
+		List<FamousBook> books = new ArrayList<FamousBook>();
+
+		// Switch condition
+		switch (option) {
+		case 0:
+			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
+			break;
+		case 1:
+			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND MONTH(bb.borrow_date) = ? AND DAY(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
+		case 2:
+			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND MONTH(bb.borrow_date) = ? AND DAY(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
+			break;
+		case 3:
+			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND MONTH(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
+			break;
+		default:
+			return null;
+		}
+
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			switch (option) {
+			case 0:
+				preparedStatement.setInt(1, year);
+				break;
+			case 1:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(1, month);
+				preparedStatement.setInt(1, day);
+				break;
+			case 2:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(1, new Date().getMonth());
+				preparedStatement.setInt(1, day);
+				break;
+			case 3:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				break;
+			default:
+				return null;
+			}
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				FamousBook book = new FamousBook();
+				book.setAmount(resultSet.getInt("amount"));
+				book.setBook_ID(resultSet.getString("bookID"));
+				book.setTitle(resultSet.getString("title"));
+				books.add(book);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		return books;
+	}
+
 }
