@@ -77,6 +77,10 @@ public class reportPanel extends JPanel {
 
 	private static String[] columns = null;
 	private static List<ObseleteBook> obbs = null;
+	private static List<FamousBook> boks = null;
+	private static List<FriendlyMember> members = null;
+	private static List<Member> newMembers = null;
+	private static List<Borrow_bill> bills = null;
 
 	// Declare Direct mapping
 	public static Employee employeeMain = null;
@@ -306,7 +310,11 @@ public class reportPanel extends JPanel {
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				btnSearch_mouseClicked(e);
+				try {
+					btnSearch_mouseClicked(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
 			}
 		});
 		btnSearch.addMouseListener(new LabelButtonMouseAdapter(btnSearch));
@@ -352,6 +360,17 @@ public class reportPanel extends JPanel {
 		panel_8.add(lblNewLabel_1);
 
 		billBookAm = new JLabel("0");
+		billBookAm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		billBookAm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					billBookAm_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		billBookAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		billBookAm.setFont(new Font("Tahoma", Font.BOLD, 14));
 		billBookAm.setBounds(98, 46, 54, 20);
@@ -363,6 +382,17 @@ public class reportPanel extends JPanel {
 		panel_8.add(lblNewLabel_1_1);
 
 		newMemberAm = new JLabel("0");
+		newMemberAm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					newMemberAm_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		newMemberAm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		newMemberAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		newMemberAm.setFont(new Font("Tahoma", Font.BOLD, 14));
 		newMemberAm.setBounds(98, 81, 54, 20);
@@ -644,7 +674,6 @@ public class reportPanel extends JPanel {
 	}
 
 	// ======Famous Book & Friendly Member Statistical
-	//
 
 	private void btnSearch_mouseClicked(MouseEvent e) {
 		int day = dayChooser.getDay();
@@ -665,15 +694,15 @@ public class reportPanel extends JPanel {
 		}
 
 		// List of famous books
-		List<FamousBook> boks = BooksModel.getFamousBook(day, month, year, option);
+		boks = BooksModel.getFamousBook(day, month, year, option);
 		MemberModel memberModel = new MemberModel();
 		// List of friendly members
-		List<FriendlyMember> members = memberModel.getFriendlyMember(day, month, year, option);
+		members = memberModel.getFriendlyMember(day, month, year, option);
 		// Amount of new member
-		List<Member> newMembers = memberModel.getAllNewMember(day, month, year, option);
+		newMembers = memberModel.getAllNewMember(day, month, year, option);
 		int newMemberAmount = newMembers.size();
 		// Amount of bill
-		List<Borrow_bill> bills = Borrow_billModel.getAllBills(day, month, year, option);
+		bills = Borrow_billModel.getAllBills(day, month, year, option);
 		int billAmount = bills.size();
 
 		// SET VALUE
@@ -703,6 +732,28 @@ public class reportPanel extends JPanel {
 		newMemberAm.setText(String.valueOf(newMemberAmount));
 	}
 
+	// Dialog
+	private void billBookAm_mouseClicked(MouseEvent e) {
+		if(bills != null) {
+			ReportDialog.titlePanel = "Borrow Bill";
+			ReportDialog.bills = bills;
+			ReportDialog.columns = new String[] {"No", "Bill ID", "Member", "Status", "Borrow date"};
+			ReportDialog.option = "bill";
+			ReportDialog reportDialog = new ReportDialog();
+			reportDialog.setVisible(true);
+		}
+	}
+
+	private void newMemberAm_mouseClicked(MouseEvent e) {
+		if(newMembers != null) {
+			ReportDialog.titlePanel = "New Member";
+			ReportDialog.newMembers = newMembers;
+			ReportDialog.columns = new String[] {"No", "ID", "Name", "ID Card", "Created date"};
+			ReportDialog.option = "member";
+			ReportDialog reportDialog = new ReportDialog();
+			reportDialog.setVisible(true);
+		}
+	}
 	// ======= Reusability Function=========
 
 	// Show error message

@@ -206,7 +206,6 @@ public class MemberModel {
 				newMember.setMember_ID(resultSet.getString("member_ID"));
 				newMember.setCard_number(resultSet.getString("card_number"));
 				newMember.setName(resultSet.getString("name"));
-				newMember.setPhone(resultSet.getString("phone"));
 				newMembers.add(newMember);
 			}
 		} catch (Exception e) {
