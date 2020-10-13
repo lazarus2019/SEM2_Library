@@ -40,6 +40,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.BoxLayout;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.Toolkit;
 
 public class LoginFrame extends JFrame {
 
@@ -83,6 +84,7 @@ public class LoginFrame extends JFrame {
 	 * Create the frame
 	 */
 	public LoginFrame() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginFrame.class.getResource("/data/Main/app.ico")));
 		setUndecorated(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
