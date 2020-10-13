@@ -1,39 +1,33 @@
 package main;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.awt.Color;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import com.toedter.calendar.JYearChooser;
 
-import entities.Bor_book;
-import entities.Borrow_bill;
-import entities.Employee;
-import entities.FamousBook;
-import entities.FriendlyMember;
-import entities.ObseleteBook;
-import model.BooksModel;
-import model.MemberModel;
-import model.SendMail;
-
-import com.toedter.calendar.JMonthChooser;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
@@ -46,27 +40,24 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.Font;
-import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import java.awt.Cursor;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.toedter.calendar.JDayChooser;
-import javax.swing.JCheckBox;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
+
+import entities.Borrow_bill;
+import entities.Employee;
+import entities.FamousBook;
+import entities.FriendlyMember;
+import entities.ObseleteBook;
+import entities.Member;
+import model.BooksModel;
+import model.Borrow_billModel;
+import model.MemberModel;
+import model.SendMail;
 
 // Import apache poi excel
 
 public class reportPanel extends JPanel {
-	private static DefaultTableModel tableModel = null;
 	private JMonthChooser monthChooser;
 	private JYearChooser yearChooser;
 	private JTable tableFamousBook;
@@ -75,17 +66,23 @@ public class reportPanel extends JPanel {
 	private static BooksModel booksModel = new BooksModel();
 	private static SimpleDateFormat spdf = new SimpleDateFormat("MM/dd/yyyy");
 	private JComboBox statusBox;
+	private JMonthChooser monthChooser_1;
+	private JDayChooser dayChooser;
+	private JYearChooser yearChooser_1;
+	private JCheckBox chbxDay;
+	private JCheckBox chbxMonth;
+	private static DefaultTableModel tableModel = null;
+	private static DefaultTableModel fBookModel = null;
+	private static DefaultTableModel fMemberModel = null;
 
 	private static String[] columns = null;
 	private static List<ObseleteBook> obbs = null;
 
 	// Declare Direct mapping
 	public static Employee employeeMain = null;
-	private JMonthChooser monthChooser_1;
-	private JDayChooser dayChooser;
-	private JYearChooser yearChooser_1;
-	private JCheckBox chbxDay;
-	private JCheckBox chbxMonth;
+	private JLabel billBookAm;
+	private JLabel BookAm;
+	private JLabel newMemberAm;
 
 	/**
 	 * Create the panel.
@@ -208,7 +205,7 @@ public class reportPanel extends JPanel {
 		JLabel lblNewLabel = new JLabel("Obsolete Books");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel.setBounds(268, 0, 239, 34);
+		lblNewLabel.setBounds(268, 5, 239, 34);
 		panel_3.add(lblNewLabel);
 
 		statusBox = new JComboBox();
@@ -231,12 +228,12 @@ public class reportPanel extends JPanel {
 		panel_1.setLayout(null);
 
 		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(10, 308, 321, 270);
+		panel_6.setBounds(10, 308, 447, 270);
 		panel_1.add(panel_6);
 		panel_6.setLayout(null);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 48, 301, 211);
+		scrollPane_1.setBounds(10, 48, 427, 211);
 		panel_6.add(scrollPane_1);
 
 		tableFamousBook = new JTable();
@@ -245,25 +242,25 @@ public class reportPanel extends JPanel {
 		JLabel lblNewLabel_4 = new JLabel("Famous Books");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel_4.setBounds(72, 11, 176, 32);
+		lblNewLabel_4.setBounds(135, 10, 176, 32);
 		panel_6.add(lblNewLabel_4);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBounds(344, 308, 444, 270);
+		panel_7.setBounds(467, 308, 321, 270);
 		panel_1.add(panel_7);
 		panel_7.setLayout(null);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 49, 424, 210);
+		scrollPane_2.setBounds(10, 49, 302, 210);
 		panel_7.add(scrollPane_2);
 
 		tableFamousMember = new JTable();
 		scrollPane_2.setViewportView(tableFamousMember);
 
-		JLabel lblNewLabel_5 = new JLabel("Famous Members");
+		JLabel lblNewLabel_5 = new JLabel("Friendly Members");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel_5.setBounds(89, 11, 266, 34);
+		lblNewLabel_5.setBounds(27, 10, 266, 34);
 		panel_7.add(lblNewLabel_5);
 
 		JPanel panel_4 = new JPanel();
@@ -351,23 +348,36 @@ public class reportPanel extends JPanel {
 
 		JLabel lblNewLabel_1 = new JLabel("Bill book:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(10, 11, 132, 20);
+		lblNewLabel_1.setBounds(10, 46, 132, 20);
 		panel_8.add(lblNewLabel_1);
 
-		JLabel billBookAm = new JLabel("0");
+		billBookAm = new JLabel("0");
+		billBookAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		billBookAm.setFont(new Font("Tahoma", Font.BOLD, 14));
-		billBookAm.setBounds(156, 11, 54, 20);
+		billBookAm.setBounds(98, 46, 54, 20);
 		panel_8.add(billBookAm);
 
 		JLabel lblNewLabel_1_1 = new JLabel("New member:");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1_1.setBounds(10, 46, 132, 20);
+		lblNewLabel_1_1.setBounds(10, 81, 132, 20);
 		panel_8.add(lblNewLabel_1_1);
 
-		JLabel newMemberAm = new JLabel("0");
+		newMemberAm = new JLabel("0");
+		newMemberAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		newMemberAm.setFont(new Font("Tahoma", Font.BOLD, 14));
-		newMemberAm.setBounds(156, 46, 54, 20);
+		newMemberAm.setBounds(98, 81, 54, 20);
 		panel_8.add(newMemberAm);
+
+		JLabel lblNewLabel_1_2 = new JLabel("Books:");
+		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_1_2.setBounds(10, 11, 132, 20);
+		panel_8.add(lblNewLabel_1_2);
+
+		BookAm = new JLabel("0");
+		BookAm.setHorizontalAlignment(SwingConstants.RIGHT);
+		BookAm.setFont(new Font("Tahoma", Font.BOLD, 14));
+		BookAm.setBounds(98, 11, 54, 20);
+		panel_8.add(BookAm);
 
 		loadData();
 	}
@@ -376,6 +386,8 @@ public class reportPanel extends JPanel {
 	private void loadData() {
 		loadTableBook();
 		loadStatusBox();
+		loadTableFamousBook();
+		loadTableFriendlyMember();
 	}
 
 	// ======Obselete & Lost Book Manage
@@ -415,6 +427,56 @@ public class reportPanel extends JPanel {
 		comboBoxModel.addElement("Obselete");
 		comboBoxModel.addElement("Lost");
 		statusBox.setModel(comboBoxModel);
+	}
+
+	private void loadTableFamousBook() {
+		fBookModel = new DefaultTableModel() {
+			// Can't edit cell
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		columns = new String[] { "No", "Title", "Amount" };
+		fBookModel.setColumnIdentifiers(columns);
+		tableFamousBook.setModel(fBookModel);
+		tableFamousBook.getTableHeader().setReorderingAllowed(false);
+		tableFamousBook.getTableHeader().setResizingAllowed(false);
+		TableColumnModel columnModelFB = tableFamousBook.getColumnModel();
+		// Set columns width
+		columnModelFB.getColumn(0).setPreferredWidth(50);
+		columnModelFB.getColumn(1).setPreferredWidth(307);
+		columnModelFB.getColumn(2).setPreferredWidth(70);
+
+		// Set Header color
+		JTableHeader tableFindBookHeader = tableFamousBook.getTableHeader();
+		tableFindBookHeader.setBackground(new Color(223, 233, 242));
+		tableFindBookHeader.setForeground(Color.BLACK);
+	}
+
+	private void loadTableFriendlyMember() {
+		fMemberModel = new DefaultTableModel() {
+			// Can't edit cell
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		columns = new String[] { "No", "Name", "Amount Book" };
+		fMemberModel.setColumnIdentifiers(columns);
+		tableFamousMember.setModel(fMemberModel);
+		tableFamousMember.getTableHeader().setReorderingAllowed(false);
+		tableFamousMember.getTableHeader().setResizingAllowed(false);
+		TableColumnModel columnModelFM = tableFamousMember.getColumnModel();
+		// Set columns width
+		columnModelFM.getColumn(0).setPreferredWidth(50);
+		columnModelFM.getColumn(1).setPreferredWidth(152);
+		columnModelFM.getColumn(2).setPreferredWidth(100);
+
+		// Set Header color
+		JTableHeader tableFindBookHeader = tableFamousMember.getTableHeader();
+		tableFindBookHeader.setBackground(new Color(223, 233, 242));
+		tableFindBookHeader.setForeground(Color.BLACK);
 	}
 
 	// Search Obselete book
@@ -604,12 +666,41 @@ public class reportPanel extends JPanel {
 
 		// List of famous books
 		List<FamousBook> boks = BooksModel.getFamousBook(day, month, year, option);
+		MemberModel memberModel = new MemberModel();
 		// List of friendly members
-		List<FriendlyMember> members = MemberModel.getFriendlyMember(day, month, year, option);
+		List<FriendlyMember> members = memberModel.getFriendlyMember(day, month, year, option);
 		// Amount of new member
-		
+		List<Member> newMembers = memberModel.getAllNewMember(day, month, year, option);
+		int newMemberAmount = newMembers.size();
 		// Amount of bill
-		
+		List<Borrow_bill> bills = Borrow_billModel.getAllBills(day, month, year, option);
+		int billAmount = bills.size();
+
+		// SET VALUE
+		// Famous books
+		if (boks != null) {
+			fBookModel.getDataVector().removeAllElements();
+			fBookModel.fireTableDataChanged();
+			for (FamousBook bok : boks) {
+				fBookModel.addRow(new Object[] { fBookModel.getRowCount() + 1, bok.getTitle(), bok.getAmount() });
+			}
+			tableFamousBook.setModel(fBookModel);
+		}
+
+		// Friendly members
+		if (members != null) {
+			fMemberModel.getDataVector().removeAllElements();
+			fMemberModel.fireTableDataChanged();
+			for (FriendlyMember member : members) {
+				fMemberModel
+						.addRow(new Object[] { fMemberModel.getRowCount() + 1, member.getName(), member.getAmountB() });
+			}
+			tableFamousMember.setModel(fMemberModel);
+		}
+
+		// Set amount of bill
+		billBookAm.setText(String.valueOf(billAmount));
+		newMemberAm.setText(String.valueOf(newMemberAmount));
 	}
 
 	// ======= Reusability Function=========

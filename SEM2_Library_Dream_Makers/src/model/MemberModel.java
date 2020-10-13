@@ -79,7 +79,7 @@ public class MemberModel {
 		}
 	}
 	
-	
+	// GET NEW MEMBER BY MONTH - NTS
 	public static int getNewMember(int month) {
 		int memberAM = 0;
 		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ?";
@@ -96,7 +96,7 @@ public class MemberModel {
 		return memberAM;
 	}
 	
-	// GET FRIENDLY MEMBER
+	// GET FRIENDLY MEMBER - NTS
 	public static List<FriendlyMember> getFriendlyMember(int day, int month, int year, int option){
 		List<FriendlyMember> members = new ArrayList<FriendlyMember>();
 		
@@ -154,5 +154,65 @@ public class MemberModel {
 		}
 		
 		return members;
+	}
+
+	public static List<Member> getAllNewMember(int day, int month, int year, int option){
+		List<Member> newMembers = new ArrayList<Member>();
+		
+		// Switch condition
+		switch (option) {
+		case 0:
+			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ?";
+			break;
+		case 1:
+			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ? AND DAY(l.start_date) = ?";
+			break;
+		case 2:
+			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ? AND DAY(l.start_date) = ?";
+			break;
+		case 3:
+			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ?";
+			break;
+		default:
+			return null;
+		}
+		
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			switch (option) {
+			case 0:
+				preparedStatement.setInt(1, year);
+				break;
+			case 1:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				preparedStatement.setInt(3, day);
+				break;
+			case 2:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(3, day);
+				break;
+			case 3:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				break;
+			default:
+				return null;
+			}
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				Member newMember = new Member();
+				newMember.setMember_ID(resultSet.getString("member_ID"));
+				newMember.setCard_number(resultSet.getString("card_number"));
+				newMember.setName(resultSet.getString("name"));
+				newMember.setPhone(resultSet.getString("phone"));
+				newMembers.add(newMember);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return newMembers;
 	}
 }
