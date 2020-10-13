@@ -24,8 +24,10 @@ import entities.Bor_book;
 import entities.Borrow_bill;
 import entities.Employee;
 import entities.FamousBook;
+import entities.FriendlyMember;
 import entities.ObseleteBook;
 import model.BooksModel;
+import model.MemberModel;
 import model.SendMail;
 
 import com.toedter.calendar.JMonthChooser;
@@ -318,23 +320,23 @@ public class reportPanel extends JPanel {
 		btnSearch.setBackground(new Color(30, 106, 210));
 		btnSearch.setBounds(311, 218, 113, 35);
 		panel_5.add(btnSearch);
-		
+
 		JPanel panel_9 = new JPanel();
 		panel_9.setBackground(Color.WHITE);
 		panel_9.setBounds(311, 144, 123, 66);
 		panel_5.add(panel_9);
 		panel_9.setLayout(null);
-		
+
 		chbxDay = new JCheckBox("Day");
 		chbxDay.setBackground(Color.WHITE);
 		chbxDay.setBounds(0, 0, 97, 22);
 		panel_9.add(chbxDay);
-		
+
 		chbxMonth = new JCheckBox("Month");
 		chbxMonth.setBackground(Color.WHITE);
 		chbxMonth.setBounds(0, 22, 97, 22);
 		panel_9.add(chbxMonth);
-		
+
 		JCheckBox chbxYear = new JCheckBox("Year");
 		chbxYear.setSelected(true);
 		chbxYear.setEnabled(false);
@@ -376,7 +378,7 @@ public class reportPanel extends JPanel {
 		loadStatusBox();
 	}
 
-	//======Obselete & Lost Book Manage
+	// ======Obselete & Lost Book Manage
 	// Load table
 	private void loadTableBook() {
 		tableModel = new DefaultTableModel() {
@@ -386,7 +388,7 @@ public class reportPanel extends JPanel {
 				return false;
 			}
 		};
-		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Day late"};
+		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Day late" };
 		tableModel.setColumnIdentifiers(columns);
 		tableObsolete.setModel(tableModel);
 		tableObsolete.getTableHeader().setReorderingAllowed(false);
@@ -439,7 +441,7 @@ public class reportPanel extends JPanel {
 				diff = obb.getReturn_date().getTime() - obb.getTerm_date().getTime();
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, obb.getCard_number(),
 						obb.getEmployee_name(), obb.getTitle(), obb.getInvoice_ID(), spdf.format(obb.getReturn_date()),
-						TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + " days"});
+						TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + " days" });
 			}
 			tableObsolete.setModel(tableModel);
 		} else {
@@ -579,39 +581,37 @@ public class reportPanel extends JPanel {
 		}
 	}
 
-	
-	//======Famous Book & Friendly Member Statistical
-	// 
-	
+	// ======Famous Book & Friendly Member Statistical
+	//
+
 	private void btnSearch_mouseClicked(MouseEvent e) {
 		int day = dayChooser.getDay();
-		int month = monthChooser_1.getMonth()+1;
+		int month = monthChooser_1.getMonth() + 1;
 		int year = yearChooser_1.getYear();
-		
+
 		int option = 0;
-		if(chbxDay.isSelected() && chbxMonth.isSelected()) {
+		if (chbxDay.isSelected() && chbxMonth.isSelected()) {
 			option = 1;
 		}
-		
-		if(chbxDay.isSelected() && !chbxMonth.isSelected()) {
+
+		if (chbxDay.isSelected() && !chbxMonth.isSelected()) {
 			option = 2;
 		}
-		
-		if(!chbxDay.isSelected() && chbxMonth.isSelected()) {
+
+		if (!chbxDay.isSelected() && chbxMonth.isSelected()) {
 			option = 3;
 		}
-		
+
+		// List of famous books
 		List<FamousBook> boks = BooksModel.getFamousBook(day, month, year, option);
-		if(boks != null) {
-			for(FamousBook bok : boks) {
-				System.out.println(bok.getTitle());
-			}
-			System.out.println("----");
-		}
+		// List of friendly members
+		List<FriendlyMember> members = MemberModel.getFriendlyMember(day, month, year, option);
+		// Amount of new member
 		
+		// Amount of bill
 		
 	}
-	
+
 	// ======= Reusability Function=========
 
 	// Show error message

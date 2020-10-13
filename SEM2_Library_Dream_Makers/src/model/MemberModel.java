@@ -3,9 +3,12 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import connect.ConnectDB;
+import entities.FamousBook;
+import entities.FriendlyMember;
 import entities.Member;
 
 
@@ -91,5 +94,65 @@ public class MemberModel {
 			return 0;
 		}
 		return memberAM;
+	}
+	
+	// GET FRIENDLY MEMBER
+	public static List<FriendlyMember> getFriendlyMember(int day, int month, int year, int option){
+		List<FriendlyMember> members = new ArrayList<FriendlyMember>();
+		
+		// Switch condition
+		switch (option) {
+		case 0:
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			break;
+		case 1:
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			break;
+		case 2:
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			break;
+		case 3:
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			break;
+		default:
+			return null;
+		}
+		
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			switch (option) {
+			case 0:
+				preparedStatement.setInt(1, year);
+				break;
+			case 1:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				preparedStatement.setInt(3, day);
+				break;
+			case 2:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(3, day);
+				break;
+			case 3:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				break;
+			default:
+				return null;
+			}
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				FriendlyMember member = new FriendlyMember();
+				member.setMember_ID(resultSet.getString("memberID"));
+				member.setName(resultSet.getString("mbname"));
+				member.setAmountB(resultSet.getInt("amount"));
+				members.add(member);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return members;
 	}
 }

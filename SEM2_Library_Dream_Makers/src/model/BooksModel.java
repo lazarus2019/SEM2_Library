@@ -286,6 +286,7 @@ public class BooksModel {
 			break;
 		case 1:
 			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND MONTH(bb.borrow_date) = ? AND DAY(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
+			break;
 		case 2:
 			sql = "SELECT b.book_ID AS bookID, bs.title, COUNT(b.book_ID) AS 'amount' FROM bor_book b, borrow_bill bb, books bs WHERE YEAR(bb.borrow_date) = ? AND MONTH(bb.borrow_date) = ? AND DAY(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID AND b.book_ID = bs.book_ID GROUP BY b.book_ID ORDER BY COUNT(b.book_ID) DESC LIMIT 5";
 			break;
@@ -304,13 +305,13 @@ public class BooksModel {
 				break;
 			case 1:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(1, month);
-				preparedStatement.setInt(1, day);
+				preparedStatement.setInt(2, month);
+				preparedStatement.setInt(3, day);
 				break;
 			case 2:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(1, new Date().getMonth());
-				preparedStatement.setInt(1, day);
+				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(3, day);
 				break;
 			case 3:
 				preparedStatement.setInt(1, year);
