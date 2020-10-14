@@ -87,6 +87,7 @@ public class reportPanel extends JPanel {
 	private JLabel billBookAm;
 	private JLabel BookAm;
 	private JLabel newMemberAm;
+	private JLabel tableTitle;
 
 	/**
 	 * Create the panel.
@@ -206,11 +207,11 @@ public class reportPanel extends JPanel {
 		tableObsolete = new JTable();
 		scrollPane.setViewportView(tableObsolete);
 
-		JLabel lblNewLabel = new JLabel("Obsolete Books");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 26));
-		lblNewLabel.setBounds(268, 5, 239, 34);
-		panel_3.add(lblNewLabel);
+		tableTitle = new JLabel("Obsolete Books");
+		tableTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		tableTitle.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		tableTitle.setBounds(268, 5, 239, 34);
+		panel_3.add(tableTitle);
 
 		statusBox = new JComboBox();
 		statusBox.addActionListener(new ActionListener() {
@@ -467,8 +468,8 @@ public class reportPanel extends JPanel {
 				return false;
 			}
 		};
-		columns = new String[] { "No", "Title", "Amount" };
-		fBookModel.setColumnIdentifiers(columns);
+		String[] fBook = new String[] { "No", "Title", "Amount" };
+		fBookModel.setColumnIdentifiers(fBook);
 		tableFamousBook.setModel(fBookModel);
 		tableFamousBook.getTableHeader().setReorderingAllowed(false);
 		tableFamousBook.getTableHeader().setResizingAllowed(false);
@@ -492,8 +493,8 @@ public class reportPanel extends JPanel {
 				return false;
 			}
 		};
-		columns = new String[] { "No", "Name", "Amount Book" };
-		fMemberModel.setColumnIdentifiers(columns);
+		String[] fMember = new String[] { "No", "Name", "Amount Book" };
+		fMemberModel.setColumnIdentifiers(fMember);
 		tableFamousMember.setModel(fMemberModel);
 		tableFamousMember.getTableHeader().setReorderingAllowed(false);
 		tableFamousMember.getTableHeader().setResizingAllowed(false);
@@ -523,6 +524,11 @@ public class reportPanel extends JPanel {
 		int month = monthChooser.getMonth() + 1;
 		int year = yearChooser.getYear();
 		int status = statusBox.getSelectedIndex() == 0 ? 2 : 3;
+		if(status == 2) {
+			tableTitle.setText("Obselete Book");
+		}if(status == 3) {
+			tableTitle.setText("Lost Book");
+		}
 		List<Borrow_bill> books = booksModel.getBills(month, year);
 		if (books != null) {
 			obbs = booksModel.getObseleteBook(books, status);
@@ -732,7 +738,7 @@ public class reportPanel extends JPanel {
 		newMemberAm.setText(String.valueOf(newMemberAmount));
 	}
 
-	// Dialog
+	// Dialog details
 	private void billBookAm_mouseClicked(MouseEvent e) {
 		if(bills != null) {
 			ReportDialog.titlePanel = "Borrow Bill";

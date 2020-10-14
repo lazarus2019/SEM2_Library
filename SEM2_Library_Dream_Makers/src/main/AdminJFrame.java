@@ -95,7 +95,6 @@ public class AdminJFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public AdminJFrame() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AdminJFrame.class.getResource("/data/Main/app.ico")));
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 971, 650);

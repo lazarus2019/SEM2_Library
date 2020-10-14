@@ -84,7 +84,6 @@ public class LoginFrame extends JFrame {
 	 * Create the frame
 	 */
 	public LoginFrame() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginFrame.class.getResource("/data/Main/app.ico")));
 		setUndecorated(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
