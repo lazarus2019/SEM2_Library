@@ -16,7 +16,7 @@ public class BooksModel {
 
 	static String sql;
 
-	public List<Books> findAll() {
+	public static List<Books> findAll() {
 		List<Books> books = new ArrayList<Books>();
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection()
@@ -32,6 +32,7 @@ public class BooksModel {
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
 				books.add(book);
 
 			}
@@ -48,7 +49,7 @@ public class BooksModel {
 
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,quantity) values(?,?,?,?,?,?,?) ");
+					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity) values(?,?,?,?,?,?,?,?) ");
 
 			preparedStatement.setString(1, book.getBook_ID());
 			preparedStatement.setString(2, book.getCall_number());
@@ -56,7 +57,8 @@ public class BooksModel {
 			preparedStatement.setString(4, book.getTitle());
 			preparedStatement.setInt(5, book.getCategory_ID());
 			preparedStatement.setInt(6, book.getPublish_ID());
-			preparedStatement.setInt(7, book.getQuantity());
+			preparedStatement.setDouble(7, book.getPrice());
+			preparedStatement.setInt(8, book.getQuantity());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -69,14 +71,15 @@ public class BooksModel {
 
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" update books set call_number = ? , isbn = ? , title = ? , category_ID = ? , publish_ID = ? , quantity = ? where book_ID = ?  ");
+					" update books set call_number = ? , isbn = ? , title = ? , category_ID = ? , publish_ID = ? , price = ? , quantity = ? where book_ID = ?  ");
 			preparedStatement.setString(1, book.getCall_number());
 			preparedStatement.setString(2, book.getIsbn());
 			preparedStatement.setString(3, book.getTitle());
 			preparedStatement.setInt(4, book.getCategory_ID());
 			preparedStatement.setInt(5, book.getPublish_ID());
 			preparedStatement.setInt(6, book.getQuantity());
-			preparedStatement.setString(7, book_ID);
+			preparedStatement.setDouble(7, book.getPrice());
+			preparedStatement.setString(8, book_ID);
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -177,6 +180,7 @@ public class BooksModel {
 				book.setTitle(resultSet.getString("title"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
 			}
 		} catch (SQLException e) {
@@ -204,6 +208,7 @@ public class BooksModel {
 				book.setTitle(resultSet.getString("title"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				books.add(book);
 			}
@@ -229,6 +234,7 @@ public class BooksModel {
 				book.setTitle(resultSet.getString("title"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				books.add(book);
 			}

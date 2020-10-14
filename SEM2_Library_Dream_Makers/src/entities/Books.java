@@ -8,14 +8,15 @@ public class Books {
 	private String title;
 	private int category_ID;
 	private int publish_ID;
+	private double price ; 
 	private int quantity;
 
 	public Books() {
 		super();
 	}
-
+	
 	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, int publish_ID,
-			int quantity) {
+			double price, int quantity) {
 		super();
 		this.book_ID = book_ID;
 		this.call_number = call_number;
@@ -23,8 +24,20 @@ public class Books {
 		this.title = title;
 		this.category_ID = category_ID;
 		this.publish_ID = publish_ID;
+		this.price = price;
 		this.quantity = quantity;
 	}
+
+
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 
 	public String getBook_ID() {
 		return book_ID;

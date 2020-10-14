@@ -22,16 +22,20 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import entities.Author;
 import entities.Books;
 import entities.Category;
 import entities.Publish_house;
+import model.AuthorModel;
 import model.BooksModel;
 import model.CategoryModel;
 import model.PublishModel;
 import javax.swing.border.EtchedBorder;
 import java.awt.Font;
+import javax.swing.border.LineBorder;
 
 public class bookPanel extends JPanel {
 
@@ -48,6 +52,22 @@ public class bookPanel extends JPanel {
 	private JTextField textFieldAuthor;
 	private JButton btnSearch;
 	private JComboBox comboBoxCateSearch;
+	private JTextField textFieldPrice;
+	private JTextField textFieldAddTitle;
+	private JComboBox comboBoxAddCate;
+	private JTextField textFieldAddPrice;
+	private JTextField textFieldAddQuan;
+	private JPanel panel_4;
+	private JTable tableAddAuthor;
+	private JTextField textFieldAddAuthor;
+	private JTextField textFieldAddNation;
+	private JButton btnAddBook;
+	private JComboBox comboBoxAddAuthor;
+	private JComboBox comboBoxAddPublish;
+	DefaultTableModel defaultTableModelAuthor = new DefaultTableModel();
+	int noAddAuthor = 1 ; 
+	private JButton btnAddAuthor;
+
 
 	/**
 	 * Create the panel.
@@ -60,17 +80,17 @@ public class bookPanel extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 		tabbedPane.setBackground(Color.GRAY);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		tabbedPane.addTab("Manage Books", null, panel, null);
-		panel.setLayout(null);
+		JPanel panelManage = new JPanel();
+		panelManage.setBackground(Color.WHITE);
+		tabbedPane.addTab("Manage Books", null, panelManage, null);
+		panelManage.setLayout(null);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(
 				new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Search ", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(245, 244, 252));
 		panel_2.setBounds(10, 11, 778, 89);
-		panel.add(panel_2);
+		panelManage.add(panel_2);
 		panel_2.setLayout(null);
 
 		textFieldSearch = new JTextField();
@@ -131,7 +151,7 @@ public class bookPanel extends JPanel {
 		scrollPane.setBorder(new TitledBorder(null, "List Books", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
 				new Color(59, 59, 59)));
 		scrollPane.setBounds(10, 376, 778, 202);
-		panel.add(scrollPane);
+		panelManage.add(scrollPane);
 
 		jtableBooks = new JTable() {
 			public boolean isCellEditable(int row,int column){  
@@ -154,7 +174,7 @@ public class bookPanel extends JPanel {
 		panel_3.setBorder(new TitledBorder(null, "Edit", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
 				new Color(59, 59, 59)));
 		panel_3.setBounds(10, 111, 778, 254);
-		panel.add(panel_3);
+		panelManage.add(panel_3);
 		panel_3.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Book ID : ");
@@ -220,7 +240,7 @@ public class bookPanel extends JPanel {
 				btnReset_actionPerformed(e) ;
 			}
 		});
-		btnReset.setBounds(656, 145, 90, 28);
+		btnReset.setBounds(656, 180, 90, 28);
 		panel_3.add(btnReset);
 		
 		comboBoxCategory1 = new JComboBox();
@@ -245,14 +265,14 @@ public class bookPanel extends JPanel {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnUpdate.setForeground(Color.WHITE);
-		btnUpdate.setBounds(422, 148, 107, 23);
+		btnUpdate.setBounds(422, 185, 107, 23);
 		btnUpdate.setBackground(new Color(30, 106, 210));
 		panel_3.add(btnUpdate);
 
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnDelete.setForeground(Color.WHITE);
-		btnDelete.setBounds(539, 148, 107, 23);
+		btnDelete.setBounds(539, 185, 107, 23);
 		btnDelete.setBackground(new Color(30, 106, 210));
 		panel_3.add(btnDelete);
 
@@ -264,14 +284,147 @@ public class bookPanel extends JPanel {
 		textFieldAuthor.setColumns(10);
 		textFieldAuthor.setBounds(149, 184, 228, 28);
 		panel_3.add(textFieldAuthor);
-
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
-		panel_1.setLayout(null);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(10, 11, 778, 260);
-		panel_1.add(panel_4);
+		textFieldPrice = new JTextField();
+		textFieldPrice.setColumns(10);
+		textFieldPrice.setBounds(561, 145, 185, 28);
+		panel_3.add(textFieldPrice);
+		
+		JLabel lblPrice = new JLabel("Price :");
+		lblPrice.setBounds(422, 151, 116, 16);
+		panel_3.add(lblPrice);
+
+		JPanel panelAdd = new JPanel();
+		panelAdd.setBackground(Color.WHITE);
+		tabbedPane.addTab("Add Book", null, panelAdd, null);
+		panelAdd.setLayout(null);
+		
+		panel_4 = new JPanel();
+		panel_4.setBackground(Color.LIGHT_GRAY);
+		panel_4.setBorder(new TitledBorder(null, "Create Book", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
+		panel_4.setBounds(10, 11, 393, 547);
+		panelAdd.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Title : ");
+		lblNewLabel_1.setBounds(10, 35, 104, 23);
+		panel_4.add(lblNewLabel_1);
+		
+		textFieldAddTitle = new JTextField();
+		textFieldAddTitle.setBounds(10, 69, 359, 23);
+		panel_4.add(textFieldAddTitle);
+		textFieldAddTitle.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Category : ");
+		lblNewLabel_2.setBounds(10, 103, 104, 14);
+		panel_4.add(lblNewLabel_2);
+		
+		
+		comboBoxAddCate = new JComboBox();
+		comboBoxAddCate.setBounds(10, 128, 161, 22);
+		comboBoxAddCate.addItem("");
+		for( Category category : categories ) {
+			comboBoxAddCate.addItem(category.getName());
+		}
+		panel_4.add(comboBoxAddCate);
+		
+		JLabel lblPublisher = new JLabel("Publisher : ");
+		lblPublisher.setBounds(208, 103, 104, 14);
+		panel_4.add(lblPublisher);
+		
+		comboBoxAddPublish = new JComboBox();
+		comboBoxAddPublish.setBounds(208, 128, 161, 22);
+		comboBoxAddPublish.addItem("");
+		for ( Publish_house publish : publishes ) {
+			comboBoxAddPublish.addItem(publish.getName() );
+		}
+		panel_4.add(comboBoxAddPublish);
+		
+		textFieldAddPrice = new JTextField();
+		textFieldAddPrice.setColumns(10);
+		textFieldAddPrice.setBounds(10, 189, 161, 23);
+		panel_4.add(textFieldAddPrice);
+		
+		JLabel lblPrice_1 = new JLabel("Price : ");
+		lblPrice_1.setBounds(10, 158, 104, 23);
+		panel_4.add(lblPrice_1);
+		
+		JLabel lblQuantity_1 = new JLabel("Quantity :");
+		lblQuantity_1.setBounds(208, 158, 104, 23);
+		panel_4.add(lblQuantity_1);
+		
+		textFieldAddQuan = new JTextField();
+		textFieldAddQuan.setColumns(10);
+		textFieldAddQuan.setBounds(208, 189, 161, 23);
+		panel_4.add(textFieldAddQuan);
+		
+		JLabel lblAuthor_1 = new JLabel("Author :");
+		lblAuthor_1.setBounds(10, 238, 122, 14);
+		panel_4.add(lblAuthor_1);
+		
+		comboBoxAddAuthor = new JComboBox();
+		comboBoxAddAuthor.setBounds(10, 265, 161, 22);
+		
+		panel_4.add(comboBoxAddAuthor);
+		
+		btnAddAuthor = new JButton("Add Author");
+		btnAddAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddAuthor_actionPerformed(e) ;
+			}
+		});
+		btnAddAuthor.setBounds(197, 265, 122, 23);
+		panel_4.add(btnAddAuthor);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 310, 359, 151);
+		panel_4.add(scrollPane_1);
+		 		
+		tableAddAuthor = new JTable() ; 
+		scrollPane_1.setViewportView(tableAddAuthor);
+		
+		btnAddBook = new JButton("Add Book ");
+		btnAddBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnAddBook_actionPerformed(arg0) ;
+			}
+		});
+		btnAddBook.setBounds(10, 494, 122, 23);
+		panel_4.add(btnAddBook);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.LIGHT_GRAY);
+		panel_5.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Create Author", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
+		panel_5.setBounds(413, 11, 362, 237);
+		panelAdd.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblName = new JLabel("Name :");
+		lblName.setBounds(10, 35, 104, 23);
+		panel_5.add(lblName);
+		
+		textFieldAddAuthor = new JTextField();
+		textFieldAddAuthor.setColumns(10);
+		textFieldAddAuthor.setBounds(10, 69, 306, 23);
+		panel_5.add(textFieldAddAuthor);
+		
+		textFieldAddNation = new JTextField();
+		textFieldAddNation.setColumns(10);
+		textFieldAddNation.setBounds(10, 128, 306, 23);
+		panel_5.add(textFieldAddNation);
+		
+		JLabel lblNation = new JLabel("Nation : ");
+		lblNation.setBounds(10, 103, 104, 23);
+		panel_5.add(lblNation);
+		
+		JButton btnCreateAuthor = new JButton("Create ");
+		btnCreateAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCreateAuthor_actionPerformed(e) ;
+			}
+		});
+		btnCreateAuthor.setBounds(10, 189, 104, 23);
+		panel_5.add(btnCreateAuthor);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDelete_actionPerformed(e);
@@ -284,8 +437,115 @@ public class bookPanel extends JPanel {
 		});
 
 		loadData();
+		loadDataAdd() ; 
+		
+		
+		String[] columns = { "No. ", "Name" };
+		for (String cl : columns) {
+			defaultTableModelAuthor.addColumn(cl);
+		}
+		tableAddAuthor.setModel(defaultTableModelAuthor);
+		tableAddAuthor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tableAddAuthor.getColumnModel().getColumn(0).setPreferredWidth(75);
+		tableAddAuthor.getColumnModel().getColumn(1).setPreferredWidth(284);
 	}
 
+	// Add Book 
+	public void btnAddAuthor_actionPerformed(ActionEvent e) {
+
+		String name = (String) comboBoxAddAuthor.getSelectedItem(); 			
+		defaultTableModelAuthor.addRow(new Object[] { noAddAuthor, name });
+		System.out.println(name);
+		tableAddAuthor.setModel(defaultTableModelAuthor);
+		noAddAuthor++ ; 
+		
+	}
+	public void btnCreateAuthor_actionPerformed(ActionEvent e) {
+		Author author = new Author() ; 
+		AuthorModel authorModel = new AuthorModel() ; 
+		String author_ID = "" ;
+		String[] words=textFieldAddAuthor.getText().trim().split("\\s");
+		for ( int i = 0 ; i < 2 ; i++ ) {
+			author_ID += words[i].toUpperCase().charAt(0) ;
+			author_ID += words[i].toUpperCase().charAt(1) ;
+		}
+		System.out.println(author_ID); 
+		author.setAuthor_ID(author_ID); 
+		author.setName(textFieldAddAuthor.getText().trim());
+		author.setNation(textFieldAddNation.getText().trim());
+		if (authorModel.create(author)) {
+			comboBoxAddAuthor.removeAllItems();
+			textFieldAddAuthor.setText("");
+			textFieldAddNation.setText("");
+			JOptionPane.showMessageDialog(null, "Add Successfully ! ");
+			loadDataAdd() ; 
+		} else {
+			JOptionPane.showMessageDialog(null, "Failed");
+		}
+	}
+	
+	public void btnAddBook_actionPerformed(ActionEvent arg0) {
+		int id = 1 ; 
+		String book_ID = "BK";
+		if( id < 10 ) {
+			book_ID += "0" + id ; 
+		}
+		else {
+			book_ID += id ; 
+		}
+		// book_ID = BK01 
+		List<Books> books = BooksModel.findAll() ;
+		for( int i = 0 ; i < books.size() ; i++ ) {
+			if( book_ID.equals(books.get(i).getBook_ID())) {
+				System.out.println(books.get(i).getBook_ID()+" ha ");
+				id++ ;
+			}
+			if( id < 10 ) {
+				book_ID = "BK" + "0" + id ; 
+			}
+			else {
+				book_ID = "BK" + id ; 
+			}
+			System.out.println(book_ID +" th ");
+		}
+//		
+//		String title = textFieldAddTitle.getText().trim() ; 
+//		String isbn = "" ;
+//		String call_number = "" ;
+//		call_number += title.charAt(0) ;
+//		call_number += title.charAt(1) + "-" ;
+//		
+//		
+//		int category_ID = comboBoxAddCate.getSelectedIndex() ;
+//		int publish_ID = comboBoxAddPublish.getSelectedIndex() ; 
+//		double price = Integer.parseInt(textFieldAddPrice.getText().trim()) ;
+//		int quantity = Integer.parseInt(textFieldAddQuan.getText().trim()) ; 
+//		
+	}
+	
+	private void loadDataAdd() {
+		// cbBox Author
+		AuthorModel authorModel = new AuthorModel() ; 
+		List<Author> authors = authorModel.findAll() ;
+		comboBoxAddAuthor.addItem("") ;
+		for( Author author1 : authors ) {
+			comboBoxAddAuthor.addItem(author1.getName());
+		}
+		// tableAuthor Selected
+		DefaultTableModel defaultTableModelAuthor = new DefaultTableModel();
+		String[] columns = { "No. ", "Name" };
+		for (String cl : columns) {
+			defaultTableModelAuthor.addColumn(cl);
+		}
+		tableAddAuthor.setModel(defaultTableModelAuthor);
+		
+	}
+	
+	
+	
+	
+	
+	// Manage Book 
 	public void btnReset_actionPerformed(ActionEvent e) {
 		textFieldBookID.setText("");
 		textFieldCallnumber.setText("");
@@ -293,6 +553,7 @@ public class bookPanel extends JPanel {
 		textFieldIsbn.setText("");
 		comboBoxCategory1.setSelectedIndex(0);
 		comboBoxPublish.setSelectedIndex(0);
+		textFieldPrice.setText("");
 		textFieldQuantity.setText("");
 		textFieldAuthor.setText("");
 	}
@@ -318,6 +579,9 @@ public class bookPanel extends JPanel {
 		if( comboBoxPublish.getSelectedIndex() !=  0 ) {
 			book.setPublish_ID(comboBoxPublish.getSelectedIndex());
 		}
+		if( textFieldPrice.getText().trim() != null ) {
+			book.setPrice(Double.parseDouble(textFieldPrice.getText().trim()));
+		}
 		if( textFieldQuantity.getText().trim() != null) {
 			book.setQuantity(Integer.parseInt(textFieldQuantity.getText().trim()));
 		}		
@@ -338,7 +602,7 @@ public class bookPanel extends JPanel {
 
 	public void btnDelete_actionPerformed(ActionEvent e) {
 		try {
-			BooksModel accountModel = new BooksModel();
+			BooksModel booksModel = new BooksModel();
 			int selectedIndex = jtableBooks.getSelectedRow();
 			String id = jtableBooks.getValueAt(selectedIndex, 1).toString();
 			if( id == null ) {
@@ -347,7 +611,7 @@ public class bookPanel extends JPanel {
 			else {
 				int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm", JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
-					if (accountModel.delete(id)) {
+					if (booksModel.delete(id)) {
 						loadData();
 					} else {
 						JOptionPane.showMessageDialog(null, "Failed");
@@ -375,6 +639,7 @@ public class bookPanel extends JPanel {
 		comboBoxCategory1.setSelectedIndex(book.getCategory_ID());
 		comboBoxPublish.setSelectedIndex(book.getPublish_ID());;
 		textFieldQuantity.setText(book.getQuantity()+"");
+		textFieldPrice.setText(book.getPrice()+"");
 		String authorName = "" ;
 		int lengthAu = booksModel.findAuthor(book_ID).size() ;
 		for ( Author author : booksModel.findAuthor(book_ID) ) {
@@ -389,7 +654,7 @@ public class bookPanel extends JPanel {
 	
 	public void comboBoxCateSearch_actionPerformed(ActionEvent e) {
 		BooksModel booksModel = new BooksModel();		
-		String[] columns = { "No. ", "Book ID", "Call Number", "ISBN", "Title", "Category", "Publish House","Quantity" };
+		String[] columns = { "No. ", "Book ID", "Title", "Category", "Publish House" , "Price" ,"Quantity" };
 		int category_ID = comboBoxCateSearch.getSelectedIndex() ; 
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		for (String cl : columns) {
@@ -397,15 +662,16 @@ public class bookPanel extends JPanel {
 		}
 		int no = 1;
 		for (Books book : booksModel.searchBooksbyCate(category_ID)) {
-			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), book.getCall_number(), book.getIsbn(),
-					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()), book.getQuantity() });
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(),
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()) , book.getPrice() , book.getQuantity() });
 			no++;
 		}
 		jtableBooks.setModel(defaultTableModel);
 	}
+	
 	public void btnSearch_actionPerformed(ActionEvent e) {
 		BooksModel booksModel = new BooksModel();		
-		String[] columns = { "No. ", "Book ID", "Call Number", "ISBN", "Title", "Category", "Publish House","Quantity" };
+		String[] columns = { "No. ", "Book ID",  "Title", "Category", "Publish House" , "Price","Quantity" };
 		String key = textFieldSearch.getText() ; 
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		for (String cl : columns) {
@@ -413,8 +679,8 @@ public class bookPanel extends JPanel {
 		}
 		int no = 1;
 		for (Books book : booksModel.searchBooks(key)) {
-			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), book.getCall_number(), book.getIsbn(),
-					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()), book.getQuantity() });
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), 
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()),book.getPrice(), book.getQuantity() });
 			no++;
 		}
 		jtableBooks.setModel(defaultTableModel);
@@ -430,15 +696,15 @@ public class bookPanel extends JPanel {
 	
 	private void loadData() {
 		BooksModel booksModel = new BooksModel();		
-		String[] columns = { "No. ", "Book ID", "Call Number", "ISBN", "Title", "Category", "Publish House","Quantity" };
+		String[] columns = { "No. ", "Book ID",  "Title", "Category", "Publish House","Price","Quantity" };
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		for (String cl : columns) {
 			defaultTableModel.addColumn(cl);
 		}
 		int no = 1;
 		for (Books book : booksModel.findAll()) {
-			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), book.getCall_number(), book.getIsbn(),
-					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()), book.getQuantity() });
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), 
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()), book.getPrice() ,book.getQuantity() });
 			no++;
 		}
 		jtableBooks.setModel(defaultTableModel);

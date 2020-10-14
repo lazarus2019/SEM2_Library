@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 
 import connect.ConnectDB;
 import entities.Author;
+import entities.Books;
 
 public class AuthorModel {
 
@@ -28,7 +29,22 @@ public class AuthorModel {
 			return null;
 		}
 	}
+	public static boolean create(Author author) {
 
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" insert into author(author_ID , name , nation )  values(?,?,?) ");
+
+			preparedStatement.setString(1, author.getAuthor_ID());
+			preparedStatement.setString(2, author.getName());
+			preparedStatement.setString(3, author.getNation());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
 	public List<Author> searchBooks(String book_ID) {
 		List<Author> authors = new ArrayList<Author>();
 		try {
