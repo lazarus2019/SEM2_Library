@@ -200,28 +200,28 @@ public class BooksModel {
 	// Get Obselete bills by month and year - NTS
 	public static List<Borrow_bill> getBills(int month, int year, int op) {
 		List<Borrow_bill> bills = new ArrayList<Borrow_bill>();
-		
+
 		// Switch condition
 		switch (op) {
 		case 1:
-			sql = "SELECT * FROM borrow_bill b WHERE status = 1 YEAR(b.return_date) = ?";
+			sql = "SELECT * FROM borrow_bill b WHERE status = 1 AND YEAR(b.return_date) = ?";
 			break;
 		case 2:
-			sql = "SELECT * FROM borrow_bill b WHERE status = 1 AND MONTH(b.return_date) = ? AND YEAR(b.return_date) = ?";
+			sql = "SELECT * FROM borrow_bill b WHERE status = 1 AND YEAR(b.return_date) = ? AND MONTH(b.return_date) = ?";
 			break;
 		default:
 			return null;
 		}
-		
+
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			switch (op) {
 			case 1:
 				preparedStatement.setInt(1, year);
 				break;
-			case 2: 
-				preparedStatement.setInt(1, month);
-				preparedStatement.setInt(2, year);
+			case 2:
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
 				break;
 			default:
 				return null;

@@ -536,15 +536,15 @@ public class reportPanel extends JPanel {
 	private void getObselectData() {
 		int month = monthChooser.getMonth() + 1;
 		int year = yearChooser.getYear();
-		int status = statusBox.getSelectedIndex() == 0 ? 2 : 3;
+		int status = statusBox.getSelectedIndex() == 0 ? 1 : 3;
 		int op = 1;
 		if(chbxMonthM.isSelected()) {
 			op = 2;
 		}
-		if(status == 2) {
-			tableTitle.setText("Obselete Book");
+		if(status == 1) {
+			tableTitle.setText("Obselete Books");
 		}if(status == 3) {
-			tableTitle.setText("Lost Book");
+			tableTitle.setText("Lost Books");
 		}
 		List<Borrow_bill> books = booksModel.getBills(month, year, op);
 		if (books != null) {
