@@ -88,6 +88,7 @@ public class reportPanel extends JPanel {
 	private JLabel BookAm;
 	private JLabel newMemberAm;
 	private JLabel tableTitle;
+	private JCheckBox chbxMonthM;
 
 	/**
 	 * Create the panel.
@@ -160,7 +161,7 @@ public class reportPanel extends JPanel {
 
 		yearChooser = new JYearChooser();
 		yearChooser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		yearChooser.setBounds(168, 11, 96, 29);
+		yearChooser.setBounds(151, 11, 113, 29);
 		panel_2.add(yearChooser);
 
 		monthChooser = new JMonthChooser();
@@ -190,8 +191,20 @@ public class reportPanel extends JPanel {
 		btnSearchObsolete.setOpaque(true);
 		btnSearchObsolete.setFont(new Font("Arial", Font.BOLD, 15));
 		btnSearchObsolete.setHorizontalAlignment(SwingConstants.CENTER);
-		btnSearchObsolete.setBounds(80, 60, 113, 35);
+		btnSearchObsolete.setBounds(151, 61, 113, 35);
 		panel_2.add(btnSearchObsolete);
+		
+		chbxMonthM = new JCheckBox("Month");
+		chbxMonthM.setBackground(new Color(245, 244, 252));
+		chbxMonthM.setBounds(10, 47, 97, 23);
+		panel_2.add(chbxMonthM);
+		
+		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Year");
+		chckbxNewCheckBox_1.setEnabled(false);
+		chckbxNewCheckBox_1.setSelected(true);
+		chckbxNewCheckBox_1.setBackground(new Color(245, 244, 252));
+		chckbxNewCheckBox_1.setBounds(10, 73, 97, 23);
+		panel_2.add(chckbxNewCheckBox_1);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(245, 244, 252));
@@ -524,12 +537,16 @@ public class reportPanel extends JPanel {
 		int month = monthChooser.getMonth() + 1;
 		int year = yearChooser.getYear();
 		int status = statusBox.getSelectedIndex() == 0 ? 2 : 3;
+		int op = 1;
+		if(chbxMonthM.isSelected()) {
+			op = 2;
+		}
 		if(status == 2) {
 			tableTitle.setText("Obselete Book");
 		}if(status == 3) {
 			tableTitle.setText("Lost Book");
 		}
-		List<Borrow_bill> books = booksModel.getBills(month, year);
+		List<Borrow_bill> books = booksModel.getBills(month, year, op);
 		if (books != null) {
 			obbs = booksModel.getObseleteBook(books, status);
 			tableModel.getDataVector().removeAllElements();
