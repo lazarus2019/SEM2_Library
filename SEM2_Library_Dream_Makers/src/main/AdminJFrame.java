@@ -67,7 +67,6 @@ public class AdminJFrame extends JFrame {
 	private employeePanel employeePanel = new employeePanel();
 	private memberPanel memberPanel = new memberPanel();
 	private reportPanel reportPanel = new reportPanel();
-	private invoicePanel invoicePanel = new invoicePanel();
 	private JPanel btnDashboard;
 	private JPanel btnEmployee;
 	private JPanel btnAuthor;
@@ -77,6 +76,7 @@ public class AdminJFrame extends JFrame {
 	private JPanel btnStatistical;
 	private JPanel btnInfo;
 	private JPanel btnLogout;
+	private JLabel setting;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -136,9 +136,9 @@ public class AdminJFrame extends JFrame {
 		panel_2.setBounds(23, 45, 121, 2);
 		panel.add(panel_2);
 
-		JLabel lblNewLabel_1 = new JLabel("sadasdasdasdas");
-		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+		setting = new JLabel("");
+		setting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		setting.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
@@ -148,9 +148,9 @@ public class AdminJFrame extends JFrame {
 				}
 			}
 		});
-		lblNewLabel_1.setForeground(SystemColor.control);
-		lblNewLabel_1.setBounds(59, 51, 49, 49);
-		panel.add(lblNewLabel_1);
+		setting.setForeground(SystemColor.control);
+		setting.setBounds(59, 51, 49, 49);
+		panel.add(setting);
 
 		JLabel usernamelavf = new JLabel("Username:");
 		usernamelavf.setForeground(SystemColor.control);
@@ -567,8 +567,10 @@ public class AdminJFrame extends JFrame {
 	// Load data
 	private void loadData() {
 		// Load logo
+		ImageIcon settingIcon = resizeImg("src/data/icon/admin.png", setting);
 		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 		logo.setIcon(logoImage);
+		setting.setIcon(settingIcon);
 		// When user login success
 		usernameTxt.setText(employeeMain.getUsername());
 		levelTxt.setText(employeeMain.getLevel());
@@ -600,6 +602,8 @@ public class AdminJFrame extends JFrame {
 		report.add(reportPanel);
 		// Invoice
 		invoice.setLayout(null);
+		invoicePanel.employee = employeeMain;
+		invoicePanel invoicePanel = new invoicePanel();
 		invoicePanel.setBounds(0, 0, 803, 617);
 		invoice.add(invoicePanel);
 
