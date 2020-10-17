@@ -41,6 +41,8 @@ import java.awt.event.FocusEvent;
 import javax.swing.BoxLayout;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginFrame extends JFrame {
 
@@ -182,6 +184,14 @@ public class LoginFrame extends JFrame {
 		panel_1.add(FGPassword);
 
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode()==KeyEvent.VK_ENTER){
+					loginApp();
+			    }
+			}
+		});
 		passwordField.setBorder(null);
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		passwordField.setBounds(31, 183, 276, 37);
@@ -321,6 +331,10 @@ public class LoginFrame extends JFrame {
 
 	// Login to system
 	private void btnLogin_actionPerformed(ActionEvent e) {
+		loginApp();
+	}
+	
+	private void loginApp() {
 		username = usernameField.getText().trim();
 		password = String.valueOf(passwordField.getPassword());
 		if (username.isEmpty() || password.isEmpty()) {

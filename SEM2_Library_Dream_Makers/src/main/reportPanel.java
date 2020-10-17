@@ -213,7 +213,7 @@ public class reportPanel extends JPanel {
 		panel_3.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(Color.WHITE);
+		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.setBounds(10, 45, 758, 383);
 		panel_3.add(scrollPane);
 
@@ -246,11 +246,13 @@ public class reportPanel extends JPanel {
 		panel_1.setLayout(null);
 
 		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(new Color(245, 244, 252));
 		panel_6.setBounds(10, 308, 447, 270);
 		panel_1.add(panel_6);
 		panel_6.setLayout(null);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.getViewport().setBackground(Color.white);
 		scrollPane_1.setBounds(10, 48, 427, 211);
 		panel_6.add(scrollPane_1);
 
@@ -264,11 +266,13 @@ public class reportPanel extends JPanel {
 		panel_6.add(lblNewLabel_4);
 
 		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(new Color(245, 244, 252));
 		panel_7.setBounds(467, 308, 321, 270);
 		panel_1.add(panel_7);
 		panel_7.setLayout(null);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.getViewport().setBackground(Color.white);
 		scrollPane_2.setBounds(10, 49, 302, 210);
 		panel_7.add(scrollPane_2);
 
@@ -282,6 +286,7 @@ public class reportPanel extends JPanel {
 		panel_7.add(lblNewLabel_5);
 
 		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(245, 244, 252));
 		panel_4.setBounds(10, 11, 778, 286);
 		panel_1.add(panel_4);
 		panel_4.setLayout(null);
@@ -364,6 +369,7 @@ public class reportPanel extends JPanel {
 		panel_9.add(chbxYear);
 
 		JPanel panel_8 = new JPanel();
+		panel_8.setBackground(new Color(245, 244, 252));
 		panel_8.setBounds(464, 11, 304, 136);
 		panel_4.add(panel_8);
 		panel_8.setLayout(null);

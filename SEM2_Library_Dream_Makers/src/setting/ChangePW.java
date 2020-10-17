@@ -90,14 +90,14 @@ public class ChangePW extends JDialog {
 				}
 			}
 		});
-		panelTitle.setBackground(new Color(51, 51, 51));
+		panelTitle.setBackground(new Color(0, 102, 204));
 		panelTitle.setBounds(0, 0, 307, 34);
 		contentPanel.add(panelTitle);
 		panelTitle.setLayout(null);
 
 		JPanel panelClose = new JPanel();
 		panelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelClose.setBackground(new Color(51, 51, 51));
+		panelClose.setBackground(new Color(0, 102, 204));
 		panelClose.setBounds(273, 0, 34, 34);
 		panelTitle.add(panelClose);
 		panelClose.setLayout(null);
@@ -115,15 +115,15 @@ public class ChangePW extends JDialog {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelClose.setBackground(new Color(87, 87, 87));
+				panelClose.setBackground(new Color(0, 112, 224));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelClose.setBackground(new Color(51, 51, 51));
+				panelClose.setBackground(new Color(0, 102, 204));
 			}
 		});
-		btnClose.setForeground(Color.RED);
+		btnClose.setForeground(Color.WHITE);
 		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
 		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnClose.setBounds(0, 0, 34, 34);

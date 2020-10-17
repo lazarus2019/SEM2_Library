@@ -78,6 +78,8 @@ public class settingDialog extends JDialog {
 	private JLabel emailIcon_1;
 	private JLabel addressIcon;
 	private JLabel calendarIcon;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Launch the application.
@@ -125,14 +127,14 @@ public class settingDialog extends JDialog {
 				}
 			}
 		});
-		panelTitle.setBackground(new Color(51, 51, 51));
+		panelTitle.setBackground(new Color(0, 102, 204));
 		panelTitle.setBounds(0, 0, 406, 34);
 		contentPanel.add(panelTitle);
 		panelTitle.setLayout(null);
 
 		JPanel panelClose = new JPanel();
 		panelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelClose.setBackground(new Color(51, 51, 51));
+		panelClose.setBackground(new Color(0, 102, 204));
 		panelClose.setBounds(372, 0, 34, 34);
 		panelTitle.add(panelClose);
 		panelClose.setLayout(null);
@@ -150,15 +152,15 @@ public class settingDialog extends JDialog {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelClose.setBackground(new Color(87, 87, 87));
+				panelClose.setBackground(new Color(0, 112, 224));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelClose.setBackground(new Color(51, 51, 51));
+				panelClose.setBackground(new Color(0, 102, 204));
 			}
 		});
-		btnClose.setForeground(Color.RED);
+		btnClose.setForeground(Color.WHITE);
 		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
 		btnClose.setBounds(0, 0, 34, 34);
@@ -229,40 +231,23 @@ public class settingDialog extends JDialog {
 		editEmail.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		editEmail.setBounds(339, 152, 25, 25);
 		panelAdmin.add(editEmail);
-
-		JPanel panelPW = new JPanel();
-		panelPW.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelPW.setBackground(new Color(30, 144, 255));
-		panelPW.setBounds(36, 209, 145, 36);
-		panelAdmin.add(panelPW);
-		panelPW.setLayout(null);
-
-		JLabel btnChangePW = new JLabel("Change Password");
-		btnChangePW.addMouseListener(new MouseAdapter() {
+		
+		lblNewLabel = new JLabel("Change Password");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent arg0) {
 				try {
-					btnChangePW_mouseClicked(e);
-				} catch (Exception e2) {
+					btnChangePW_mouseClicked(arg0);
+				} catch (Exception e) {
 					showMessenger("Something was wrong! Please try again");
 				}
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panelPW.setBackground(new Color(255, 51, 51));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				panelPW.setBackground(new Color(30, 144, 255));
-			}
 		});
-		btnChangePW.setForeground(new Color(255, 255, 255));
-		btnChangePW.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnChangePW.setHorizontalAlignment(SwingConstants.CENTER);
-		btnChangePW.setBounds(0, 0, 145, 36);
-		panelPW.add(btnChangePW);
+		lblNewLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblNewLabel.setForeground(Color.BLUE);
+		lblNewLabel.setBounds(36, 214, 109, 22);
+		panelAdmin.add(lblNewLabel);
 
 		JPanel panelEmployee = new JPanel();
 		panelEmployee.setLayout(null);
@@ -319,41 +304,6 @@ public class settingDialog extends JDialog {
 		});
 		editEmail_1.setBounds(343, 300, 25, 25);
 		panelEmployee.add(editEmail_1);
-
-		JPanel panelPW_1 = new JPanel();
-		panelPW_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelPW_1.setLayout(null);
-		panelPW_1.setBackground(new Color(30, 144, 255));
-		panelPW_1.setBounds(36, 492, 145, 36);
-		panelEmployee.add(panelPW_1);
-
-		JLabel btnChangePW_1 = new JLabel("Change Password");
-		btnChangePW_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnChangePW_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					btnChangePW_mouseClicked(e);
-				} catch (Exception e2) {
-					showMessenger("Something was wrong! Please try again");
-				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panelPW_1.setBackground(new Color(255, 51, 51));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				panelPW_1.setBackground(new Color(30, 144, 255));
-			}
-		});
-		btnChangePW_1.setHorizontalAlignment(SwingConstants.CENTER);
-		btnChangePW_1.setForeground(Color.WHITE);
-		btnChangePW_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnChangePW_1.setBounds(0, 0, 145, 36);
-		panelPW_1.add(btnChangePW_1);
 
 		nameIcon = new JLabel("");
 		nameIcon.setBounds(36, 71, 25, 25);
@@ -413,7 +363,7 @@ public class settingDialog extends JDialog {
 		panelPW_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1_1.setLayout(null);
 		panelPW_1_1.setBackground(new Color(30, 144, 255));
-		panelPW_1_1.setBounds(130, 553, 145, 36);
+		panelPW_1_1.setBounds(130, 525, 145, 36);
 		panelEmployee.add(panelPW_1_1);
 
 		JLabel btnSubmit = new JLabel("SUBMIT");
@@ -464,6 +414,9 @@ public class settingDialog extends JDialog {
 		scrollPane.setViewportView(txtEaddress);
 
 		btnEdit = new JButton("Edit");
+		btnEdit.setBackground(new Color(30, 144, 255));
+		btnEdit.setForeground(Color.WHITE);
+		btnEdit.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -487,6 +440,13 @@ public class settingDialog extends JDialog {
 		genderGroup.add(radioMale);
 		radioMale.setBounds(188, 450, 109, 23);
 		panelEmployee.add(radioMale);
+		
+		lblNewLabel_1 = new JLabel("Change Password");
+		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel_1.setForeground(Color.BLUE);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblNewLabel_1.setBounds(36, 480, 119, 22);
+		panelEmployee.add(lblNewLabel_1);
 
 		loadData();
 	}
