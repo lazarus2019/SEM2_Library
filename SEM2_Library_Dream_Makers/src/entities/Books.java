@@ -9,13 +9,15 @@ public class Books {
 	private int category_ID;
 	private String publish_ID;
 	private int quantity;
+	private double price;
 
 	public Books() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, String publish_ID,
-			int quantity) {
+			int quantity, double price) {
 		super();
 		this.book_ID = book_ID;
 		this.call_number = call_number;
@@ -24,6 +26,7 @@ public class Books {
 		this.category_ID = category_ID;
 		this.publish_ID = publish_ID;
 		this.quantity = quantity;
+		this.price = price;
 	}
 
 	public String getBook_ID() {
@@ -81,5 +84,15 @@ public class Books {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	
 
 }

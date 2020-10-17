@@ -23,4 +23,20 @@ public class LibCardModel {
 		}
 		return created;
 	}
+	
+	public Date getExpirationDate(String idCard) {
+		try {
+			Date expiration_date = null;
+			PreparedStatement preparedStatement = connect.ConnectDB.getConnection().prepareStatement("select expiration_date from lib_card where card_number = ?");
+			preparedStatement.setString(1, idCard);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				expiration_date = resultSet.getDate("expiration_date");
+			}
+			return expiration_date;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
 }

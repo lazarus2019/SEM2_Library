@@ -1,29 +1,32 @@
 package entities;
 
-import java.util.Date;
-
 public class Bor_book {
 
+	private int no;
 	private String book_ID;
-	private String borrow_ID;
-	private Date borrow_date;
-	private Date return_date;
-	private Date term_date;
-	private double fee;
+	private int borrow_ID;
+	private int status;
+	private String description;
 
 	public Bor_book() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Bor_book(String book_ID, String borrow_ID, Date borrow_date, Date return_date, Date term_date, double fee) {
+	public Bor_book(int no, String book_ID, int borrow_ID, int status, String description) {
 		super();
+		this.no = no;
 		this.book_ID = book_ID;
 		this.borrow_ID = borrow_ID;
-		this.borrow_date = borrow_date;
-		this.return_date = return_date;
-		this.term_date = term_date;
-		this.fee = fee;
+		this.status = status;
+		this.description = description;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
 	}
 
 	public String getBook_ID() {
@@ -34,45 +37,28 @@ public class Bor_book {
 		this.book_ID = book_ID;
 	}
 
-	public String getBorrow_ID() {
+	public int getBorrow_ID() {
 		return borrow_ID;
 	}
 
-	public void setBorrow_ID(String borrow_ID) {
+	public void setBorrow_ID(int borrow_ID) {
 		this.borrow_ID = borrow_ID;
 	}
 
-	public Date getBorrow_date() {
-		return borrow_date;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setBorrow_date(Date borrow_date) {
-		this.borrow_date = borrow_date;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
-	public Date getReturn_date() {
-		return return_date;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setReturn_date(Date return_date) {
-		this.return_date = return_date;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public Date getTerm_date() {
-		return term_date;
-	}
-
-	public void setTerm_date(Date term_date) {
-		this.term_date = term_date;
-	}
-
-	public double getFee() {
-		return fee;
-	}
-
-	public void setFee(double fee) {
-		this.fee = fee;
-	}
-	
-	
 }

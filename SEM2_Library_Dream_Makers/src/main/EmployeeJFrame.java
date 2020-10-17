@@ -67,7 +67,6 @@ public class EmployeeJFrame extends JFrame {
 	private authorPanel authorPanel = new authorPanel();
 //	private bookPanel bookPanel = new bookPanel();
 	private memberPanel memberPanel = new memberPanel();
-	private invoicePanel invoicePanel = new invoicePanel();
 	private JLabel titleTxt;
 	private JLabel usernameTxt;
 	private JLabel levelTxt;
@@ -531,8 +530,10 @@ public class EmployeeJFrame extends JFrame {
 		member.add(memberPanel);
 		// Invoice
 		invoice.setLayout(null);
-		invoicePanel.setBounds(0, 0, 803, 617);
-		invoice.add(invoicePanel);
+		invoicePanel.employee = employeeMain;
+		invoicePanel invoicePanelx = new invoicePanel();
+		invoicePanelx.setBounds(0, 0, 803, 617);
+		invoice.add(invoicePanelx);
 
 		// Set Dashboard is the first layout
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());

@@ -2,6 +2,7 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +56,100 @@ public class Borrow_billModel {
 		}
 	}
 
+	// Start NNHV
+	public Borrow_bill showBorrowBook(String card_number, int status) {
+		Borrow_bill borrow_bill = null;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from borrow_bill bi, member m, bor_book bo "
+							+ " where m.card_number = ? and bo.status = ? and bi.member_ID = m.member_ID and bo.borrow_ID = bi.borrow_ID ");
+			preparedStatement.setString(1, card_number);
+			preparedStatement.setInt(2, status);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				borrow_bill = new Borrow_bill();
+				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
+				borrow_bill.setTerm_date(resultSet.getDate("term_Date"));
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return borrow_bill;
+	}
+
+	public boolean create(Borrow_bill borrow_bill) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(
+					" insert into borrow_bill(member_ID, employee_ID, status, borrow_date, term_date, deposit_fee, description) values(?,?,?,?,?,?, '')");
+			preparedStatement.setString(1, borrow_bill.getMember_ID());
+			preparedStatement.setString(2, borrow_bill.getEmployee_ID());
+			preparedStatement.setBoolean(3, borrow_bill.isStatus());
+			preparedStatement.setDate(4, new java.sql.Date(borrow_bill.getBorrow_date().getTime()));
+			preparedStatement.setDate(5, new java.sql.Date(borrow_bill.getTerm_date().getTime()));
+			preparedStatement.setDouble(6, borrow_bill.getDeposit_fee());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	public boolean update(Borrow_bill borrow_bill, String member_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(
+					"update borrow_bill set status = ?, return_date = ?, late_fee = ?, compen_fee = ? where member_ID = ? and status = false");
+			preparedStatement.setBoolean(1, borrow_bill.isStatus());
+			preparedStatement.setDate(2, new java.sql.Date(borrow_bill.getReturn_date().getTime()));
+			preparedStatement.setDouble(3, borrow_bill.getLate_fee());
+			preparedStatement.setDouble(4, borrow_bill.getCompensation_fee());
+			preparedStatement.setString(5, member_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+
+	public Integer getBorrowId() {
+		int id = 0;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select borrow_ID from borrow_bill order by borrow_ID desc limit 1");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				id = resultSet.getInt("borrow_ID");
+			}
+
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
+		return id;
+	}
+	
+	public Integer getReturnId(String member_ID, boolean status) {
+		int id = 0;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select borrow_ID from borrow_bill where member_ID = ? and status = ?");
+			preparedStatement.setString(1, member_ID);
+			preparedStatement.setBoolean(2, status);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				id = resultSet.getInt("borrow_ID");
+			}
+			
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
+		return id;
+	}
+	// End NNHV
+	
+	// GET BILLS BY MONTH AND YEAR - NST
 	public static List<Borrow_bill> getAllBills(int day, int month, int year, int option) {
 		List<Borrow_bill> bills = new ArrayList<Borrow_bill>();
 

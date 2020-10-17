@@ -603,9 +603,9 @@ public class AdminJFrame extends JFrame {
 		// Invoice
 		invoice.setLayout(null);
 		invoicePanel.employee = employeeMain;
-		invoicePanel invoicePanel = new invoicePanel();
-		invoicePanel.setBounds(0, 0, 803, 617);
-		invoice.add(invoicePanel);
+		invoicePanel invoicePanelx = new invoicePanel();
+		invoicePanelx.setBounds(0, 0, 803, 617);
+		invoice.add(invoicePanelx);
 
 		// Set Dashboard is the first layout
 		CardLayout mainLayout = (CardLayout) (mainPanel.getLayout());

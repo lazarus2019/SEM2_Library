@@ -1,6 +1,6 @@
 package entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Borrow_bill {
 
@@ -14,13 +14,15 @@ public class Borrow_bill {
 	private Date return_date;
 	private Double deposit_fee;
 	private Double late_fee;
+	private Double compensation_fee;
 
 	public Borrow_bill() {
 		super();
 	}
 
 	public Borrow_bill(int borrow_ID, String member_ID, String employee_ID, String description, boolean status,
-			Date borrow_date, Date term_date, Date return_date, Double deposit_fee, Double late_fee) {
+			Date borrow_date, Date term_date, Date return_date, Double deposit_fee, Double late_fee,
+			Double compensation_fee) {
 		super();
 		this.borrow_ID = borrow_ID;
 		this.member_ID = member_ID;
@@ -32,6 +34,7 @@ public class Borrow_bill {
 		this.return_date = return_date;
 		this.deposit_fee = deposit_fee;
 		this.late_fee = late_fee;
+		this.compensation_fee = compensation_fee;
 	}
 
 	public int getBorrow_ID() {
@@ -112,6 +115,14 @@ public class Borrow_bill {
 
 	public void setLate_fee(Double late_fee) {
 		this.late_fee = late_fee;
+	}
+
+	public Double getCompensation_fee() {
+		return compensation_fee;
+	}
+
+	public void setCompensation_fee(Double compensation_fee) {
+		this.compensation_fee = compensation_fee;
 	}
 
 }

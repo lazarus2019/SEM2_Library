@@ -38,6 +38,7 @@ public class BooksModel {
 				book.setPublish_ID(resultSet.getString("publish_ID"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
 				books.add(book);
 
 			}
@@ -133,7 +134,7 @@ public class BooksModel {
 					.prepareStatement(" select * from category where category_ID = ?  ");
 			preparedStatement.setInt(1, category_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-
+			
 			if (resultSet.next()) {
 				name = resultSet.getString("name");
 			}
@@ -145,6 +146,8 @@ public class BooksModel {
 		return name;
 	}
 
+	
+	// Start NNHV
 	public Books find(String id) {
 
 		Books book = new Books();
@@ -161,6 +164,7 @@ public class BooksModel {
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setPublish_ID(resultSet.getString("publish_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -188,6 +192,7 @@ public class BooksModel {
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setPublish_ID(resultSet.getString("publish_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
 				books.add(book);
 			}
 		} catch (Exception e) {
@@ -196,6 +201,57 @@ public class BooksModel {
 		}
 		return books;
 	}
+
+	public List<Books> getTitleBook(int borrow_ID, int status) {
+		try {
+			List<Books> books = new ArrayList<Books>();
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(
+					"select * from bor_book bo, books b where bo.borrow_ID = ? and bo.status = ? and bo.book_ID = b.book_ID");
+			preparedStatement.setInt(1, borrow_ID);
+			preparedStatement.setInt(2, status);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Books book = new Books();
+				book.setBook_ID(resultSet.getString("book_ID"));
+				book.setTitle(resultSet.getString("title"));
+				books.add(book);
+			}
+			return books;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
+
+	public double getPrice(String idBook) {
+		try {
+			double price = 0;
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select price from books where book_ID = ?");
+			preparedStatement.setString(1, idBook);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				price = resultSet.getDouble("price");
+			}
+			return price;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	public boolean updateBookLost(String book_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("update books set quantity = quantity - 1 where book_ID = ?");
+			preparedStatement.setString(1, book_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	// End NNHV
 
 	// Get Obselete bills by month and year - NTS
 	public static List<Borrow_bill> getBills(int month, int year, int op) {
@@ -284,7 +340,6 @@ public class BooksModel {
 	// AMOUNT OF BOOK BY MONTH - NTS
 	public static int getAmountBookByMonth(int month) {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		System.out.println(year);
 		int amountBook = 0;
 		sql = "SELECT COUNT(b.book_ID) AS amountB FROM bor_book b, borrow_bill bb WHERE MONTH(bb.borrow_date) = ? AND YEAR(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID";
 		try {
