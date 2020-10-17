@@ -3,6 +3,7 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class Borrow_billModel {
 				break;
 			case 2:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(2, Calendar.getInstance().get(Calendar.MONTH) + 1);
 				preparedStatement.setInt(3, day);
 				break;
 			case 3:

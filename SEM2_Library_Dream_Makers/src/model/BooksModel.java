@@ -283,11 +283,14 @@ public class BooksModel {
 
 	// AMOUNT OF BOOK BY MONTH - NTS
 	public static int getAmountBookByMonth(int month) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		System.out.println(year);
 		int amountBook = 0;
-		sql = "SELECT COUNT(b.book_ID) AS amountB FROM bor_book b, borrow_bill bb WHERE MONTH(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID";
+		sql = "SELECT COUNT(b.book_ID) AS amountB FROM bor_book b, borrow_bill bb WHERE MONTH(bb.borrow_date) = ? AND YEAR(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setInt(1, month);
+			preparedStatement.setInt(2, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			amountBook = resultSet.getInt("amountB");
@@ -332,7 +335,7 @@ public class BooksModel {
 				break;
 			case 2:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(2, Calendar.getInstance().get(Calendar.MONTH) + 1);
 				preparedStatement.setInt(3, day);
 				break;
 			case 3:

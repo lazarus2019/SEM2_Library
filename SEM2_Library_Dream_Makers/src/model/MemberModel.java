@@ -3,6 +3,7 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -81,11 +82,14 @@ public class MemberModel {
 	
 	// GET NEW MEMBER BY MONTH - NTS
 	public static int getNewMember(int month) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		System.out.println(year);
 		int memberAM = 0;
-		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ?";
+		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ? AND YEAR(l.start_date) = ?";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setInt(1, month);
+			preparedStatement.setInt(2, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			memberAM  = resultSet.getInt("amount");
@@ -131,7 +135,7 @@ public class MemberModel {
 				break;
 			case 2:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(2, Calendar.getInstance().get(Calendar.MONTH) + 1);
 				preparedStatement.setInt(3, day);
 				break;
 			case 3:

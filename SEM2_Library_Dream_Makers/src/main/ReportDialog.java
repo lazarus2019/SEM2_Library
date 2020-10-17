@@ -74,7 +74,7 @@ public class ReportDialog extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 510, 33);
-		panel.setBackground(new Color(51, 51, 51));
+		panel.setBackground(new Color(0, 102, 204));
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
@@ -110,9 +110,9 @@ public class ReportDialog extends JDialog {
 			}
 		});
 		btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnClose.setForeground(Color.RED);
+		btnClose.setForeground(Color.WHITE);
 		btnClose.setOpaque(true);
-		btnClose.setBackground(new Color(51, 51, 51));
+		btnClose.setBackground(new Color(0, 102, 204));
 		btnClose.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnClose.setHorizontalAlignment(SwingConstants.CENTER);
 		btnClose.setBounds(477, 0, 33, 33);
@@ -193,7 +193,7 @@ public class ReportDialog extends JDialog {
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			label.setBackground(new Color(51, 51, 51));
+			label.setBackground(new Color(0, 102, 204));
 		}
 
 		@Override
