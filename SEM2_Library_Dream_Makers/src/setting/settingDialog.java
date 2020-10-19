@@ -101,7 +101,7 @@ public class settingDialog extends JDialog {
 	public settingDialog() {
 		setModal(true);
 		setUndecorated(true);
-		setBounds(100, 100, 406, 645);
+		setBounds(100, 100, 406, 600);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -175,7 +175,7 @@ public class settingDialog extends JDialog {
 		panelTitle.add(titleLable);
 
 		panelInfo = new JPanel();
-		panelInfo.setBounds(0, 34, 406, 611);
+		panelInfo.setBounds(0, 34, 406, 571);
 		contentPanel.add(panelInfo);
 		panelInfo.setLayout(new CardLayout(0, 0));
 
@@ -364,7 +364,7 @@ public class settingDialog extends JDialog {
 		panelPW_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPW_1_1.setLayout(null);
 		panelPW_1_1.setBackground(new Color(30, 144, 255));
-		panelPW_1_1.setBounds(130, 525, 145, 36);
+		panelPW_1_1.setBounds(130, 504, 145, 36);
 		panelEmployee.add(panelPW_1_1);
 
 		JLabel btnSubmit = new JLabel("SUBMIT");
@@ -463,6 +463,7 @@ public class settingDialog extends JDialog {
 	}
 
 	private void loadData() {
+		employee = EmployeeModel.getById(employee_ID);
 		// Declare Image
 		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
 		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", emailIcon);

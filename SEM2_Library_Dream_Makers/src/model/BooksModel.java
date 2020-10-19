@@ -231,8 +231,8 @@ public class BooksModel {
 			preparedStatement.setString(3, book.getTitle());
 			preparedStatement.setInt(4, book.getCategory_ID());
 			preparedStatement.setInt(5, book.getPublish_ID());
-			preparedStatement.setInt(6, book.getQuantity());
-			preparedStatement.setDouble(7, book.getPrice());
+			preparedStatement.setDouble(6, book.getPrice());
+			preparedStatement.setInt(7, book.getQuantity());
 			preparedStatement.setString(8, book_ID);
 			
 			return preparedStatement.executeUpdate() > 0;

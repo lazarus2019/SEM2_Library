@@ -220,7 +220,6 @@ public class BorrowDetailDailog extends JDialog {
 		setVisible(false);
 	}
 	public void showInformation() {
-		int number = 1;
 		String borrowDate = simpleDateFormat.format(borrowbill.getBorrow_date());
 		lblBorrowDate.setText(borrowDate); 
 		String termDate = simpleDateFormat.format(borrowbill.getTerm_date());
@@ -251,7 +250,7 @@ public class BorrowDetailDailog extends JDialog {
 		
 		for (int i = 0 ; i < books.size() ; i++ ) {
 			
-			defaultTableModelListBook.addRow(new Object[] { number , books.get(i).getBook_ID() , books.get(i).getTitle()
+			defaultTableModelListBook.addRow(new Object[] { defaultTableModelListBook.getRowCount() + 1 , books.get(i).getBook_ID() , books.get(i).getTitle()
 					, authorNames.get(i) });
 			tableBookBorrow.setModel(defaultTableModelListBook);
 		}

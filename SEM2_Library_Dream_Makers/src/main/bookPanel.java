@@ -728,9 +728,7 @@ public class bookPanel extends JPanel {
 	 					for ( int i = 0 ; i < 2 ; i++ ) {
 	 						author_ID += w[i].toUpperCase().charAt(0) ;
 	 						author_ID += w[i].toUpperCase().charAt(1) ;
-	 						System.out.println(author_ID);
 	 					}
-	 					System.out.println(author_ID + "    lllll ");
 	 					author.setAuthor_ID(author_ID); 
 	 					author.setName(a);
 	 					authorModel.create(author) ; 					
@@ -859,6 +857,8 @@ public class bookPanel extends JPanel {
 	
 	private void loadData() {
 		BooksModel booksModel = new BooksModel();	
+		defaultTableModel.getDataVector().removeAllElements();
+		defaultTableModel.fireTableDataChanged();
 		int no = 1;
 		for (Books book : booksModel.findAll()) {
 			if(!book.getIsDeleteBoolean()) {
