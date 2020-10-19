@@ -1250,22 +1250,29 @@ public class invoicePanel extends JPanel {
 	
 	public void loadDataBorrowBill() {
 		// set Data
-		loadWidthTable();
+		loadWidthTable() ;
 		BooksModel bookModel = new BooksModel();
 		AuthorModel authorModel = new AuthorModel();
 		MemberModel memberModel = new MemberModel();
 		Borrow_billModel borrow_billModel = new Borrow_billModel();
 		List<Borrow_bill> borrowbills = borrow_billModel.findAll();
+		
+		int number = 1;
 		String status = "";
 		for (Borrow_bill bill : borrowbills) {
-//			double forfeit_fee = bill.getLate_fee() + bill.getCompensation_fee();
+			double forfeit_fee = bill.getLate_fee()+ bill.getCompensation_fee() ;
 			String memberName = memberModel.findByID(bill.getMember_ID()).getName();
 			int totalBook = borrow_billModel.countBook(bill.getBorrow_ID());
+			if (bill.isStatus()) {
+				status = "Returned";
+			} else {
+				status = "Not Returned";
+			}
 
-			defaultTableModelBorrowBill.addRow(new Object[] { defaultTableModelBorrowBill.getRowCount() + 1, bill.getBorrow_ID(), memberName, totalBook,
-					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), "", bill.isStatus()? "Returned" : "Not Returned" });
+			defaultTableModelBorrowBill.addRow(new Object[] { number++, bill.getBorrow_ID(), memberName, totalBook,
+					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), forfeit_fee , status });
+			tableBorrowBill.setModel(defaultTableModelBorrowBill);
 		}
-		tableBorrowBill.setModel(defaultTableModelBorrowBill);
 	}
 
 	// End NVT

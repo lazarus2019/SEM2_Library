@@ -743,7 +743,7 @@ public class AdminJFrame extends JFrame {
 
 	// Reset color
 	private void resetBtnColor(JPanel panel) {
-		JPanel[] panels = { btnDashboard, btnEmployee, btnAuthor, btnStatistical,
+		JPanel[] panels = { btnDashboard, btnEmployee, btnAuthor, btnStatistical, btnBook,
 				btnInvoice, btnLogout, btnInfo, btnMember };
 		for (int i = 0; i < panels.length; i++) {
 				panels[i].setBackground(new Color(22, 33, 53));

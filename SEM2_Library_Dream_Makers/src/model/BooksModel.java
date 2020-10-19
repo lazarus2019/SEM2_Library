@@ -40,6 +40,7 @@ public class BooksModel {
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getDouble("price"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
 				books.add(book);
 
 			}
@@ -70,6 +71,7 @@ public class BooksModel {
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getDouble("price"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -98,6 +100,7 @@ public class BooksModel {
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
 				books.add(book);
 			}
 		} catch (Exception e) {
@@ -183,7 +186,7 @@ public class BooksModel {
 
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity) values(?,?,?,?,?,?,?,?) ");
+					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity , isDelete) values(?,?,?,?,?,?,?,?) ");
 
 			preparedStatement.setString(1, book.getBook_ID());
 			preparedStatement.setString(2, book.getCall_number());
@@ -193,6 +196,7 @@ public class BooksModel {
 			preparedStatement.setInt(6, book.getPublish_ID());
 			preparedStatement.setDouble(7, book.getPrice());
 			preparedStatement.setInt(8, book.getQuantity());
+			
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -201,6 +205,22 @@ public class BooksModel {
 		}
 	}
 	
+	public static boolean updateIsDelete(int isDelete , String book_ID) {
+
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" update books set isDelete = ?  where book_ID = ?  ");
+
+			preparedStatement.setInt(1, isDelete);
+			preparedStatement.setString(2, book_ID);
+			
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
 	public static boolean update(Books book, String book_ID) {
 
 		try {
@@ -214,6 +234,7 @@ public class BooksModel {
 			preparedStatement.setInt(6, book.getQuantity());
 			preparedStatement.setDouble(7, book.getPrice());
 			preparedStatement.setString(8, book_ID);
+			
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -256,6 +277,7 @@ public class BooksModel {
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getDouble("price"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
 				books.add(book);
 
 			}
@@ -309,6 +331,8 @@ public class BooksModel {
 				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
+				
 				books.add(book);
 			}
 		} catch (Exception e) {

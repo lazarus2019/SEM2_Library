@@ -10,10 +10,20 @@ public class Books {
 	private int publish_ID;
 	private double price ; 
 	private int quantity;
+	private Boolean isDeleteBoolean ; 
+
+	public Boolean getIsDeleteBoolean() {
+		return isDeleteBoolean;
+	}
+
+	public void setIsDeleteBoolean(Boolean isDeleteBoolean) {
+		this.isDeleteBoolean = isDeleteBoolean;
+	}
 
 	public Books() {
 		super();
 	}
+	
 	
 	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, int publish_ID,
 			double price, int quantity) {
@@ -27,7 +37,6 @@ public class Books {
 		this.price = price;
 		this.quantity = quantity;
 	}
-
 
 	public double getPrice() {
 		return price;

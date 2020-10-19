@@ -25,6 +25,7 @@ public class Borrow_billModel {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Borrow_bill borrow_bill = new Borrow_bill();
+				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
 				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
 				borrow_bill.setEmployee_ID(resultSet.getString("employee_ID"));
 				borrow_bill.setDescription(resultSet.getString("description"));
@@ -34,6 +35,8 @@ public class Borrow_billModel {
 				borrow_bill.setReturn_date(resultSet.getDate("return_date"));
 				borrow_bill.setDeposit_fee(resultSet.getDouble("deposit_fee"));
 				borrow_bill.setLate_fee(resultSet.getDouble("late_fee"));
+				borrow_bill.setCompensation_fee(resultSet.getDouble("compen_fee"));
+				
 				borrow_bills.add(borrow_bill);
 			}
 			return borrow_bills;
