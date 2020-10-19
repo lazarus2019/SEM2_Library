@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import connect.ConnectDB;
+import entities.Author;
 import entities.FamousBook;
 import entities.FriendlyMember;
 import entities.Member;
@@ -15,6 +16,7 @@ import entities.Member;
 public class MemberModel {
 	static String sql;
 
+	//	Start NTA
 	public List<Member> findAll() {
 		try {
 			List<Member> members = new ArrayList<Member>();
@@ -36,6 +38,144 @@ public class MemberModel {
 			return null;
 		}
 	}
+
+	// Create - NTanh
+	public static boolean Add(Member member) {
+		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, photo) values(?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, member.getMember_ID());
+			preparedStatement.setString(2, member.getName());
+			preparedStatement.setDate(3, new java.sql.Date(member.getDob().getTime()));
+			preparedStatement.setBoolean(4, member.isGender());
+			preparedStatement.setString(5, member.getAddress());
+			preparedStatement.setString(6, member.getPhone());
+			preparedStatement.setString(7, member.getCard_number());
+			preparedStatement.setString(8, member.getPhoto());
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	// Update - NTanh
+	public static boolean update(Member member, String member_ID) {
+		sql = " update member set member_ID = ? , name = ? , dob = ? , gender = ? , address = ? , phone = ? , card_number = ? , photo = ? where member_ID = ? ";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+
+			preparedStatement.setString(1, member.getMember_ID());
+			preparedStatement.setString(2, member.getName());
+			preparedStatement.setDate(3, new java.sql.Date(member.getDob().getTime()));
+			preparedStatement.setBoolean(4, member.isGender());
+			preparedStatement.setString(5, member.getAddress());
+			preparedStatement.setString(6, member.getPhone());
+			preparedStatement.setString(7, member.getCard_number());
+			preparedStatement.setString(8, member.getPhoto());
+			preparedStatement.setString(9, member_ID);
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	// Delete - NTanh
+
+	public static boolean delete(String member_ID) {
+
+		sql = "DELETE FROM member WHERE member_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, member_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+	}
+	// Search Member
+
+	public List<Member> searchMember(String keyword) {
+		List<Member> members = new ArrayList<Member>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from member where name like ?");
+			preparedStatement.setString(1, "%" + keyword + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Member member = new Member();
+				member.setMember_ID(resultSet.getString("member_ID"));
+				member.setName(resultSet.getString("name"));
+				member.setDob(resultSet.getDate("dob"));
+				member.setGender(resultSet.getBoolean("gender"));
+				member.setAddress(resultSet.getString("address"));
+				member.setPhone(resultSet.getString("phone"));
+				member.setCard_number(resultSet.getString("card_number"));
+				member.setPhoto(resultSet.getString("photo"));
+				members.add(member);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return members;
+	}
+
+	public List<Member> searchMemberGender(int keyword) {
+		List<Member> members = new ArrayList<Member>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from member where gender like ?");
+			preparedStatement.setString(1, "%" + keyword + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Member member = new Member();
+				member.setMember_ID(resultSet.getString("member_ID"));
+				member.setName(resultSet.getString("name"));
+				member.setDob(resultSet.getDate("dob"));
+				member.setGender(resultSet.getBoolean("gender"));
+				member.setAddress(resultSet.getString("address"));
+				member.setPhone(resultSet.getString("phone"));
+				member.setCard_number(resultSet.getString("card_number"));
+				member.setPhoto(resultSet.getString("photo"));
+				members.add(member);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return members;
+	}
+
+	public List<Author> findAuthor(String book_ID) {
+		List<Author> authors = new ArrayList<Author>();
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" SELECT books.title as bookTitle , author.name as authorName FROM author, books ,"
+							+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
+			preparedStatement.setString(1, book_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Author author = new Author();
+				author.setName(resultSet.getString("authorName"));
+				authors.add(author);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			authors = null;
+		}
+		return authors;
+
+	}
+	// End NTA
 
 	// Start NNHV
 	public Member find(String idCard) {
@@ -75,15 +215,16 @@ public class MemberModel {
 		return member_ID;
 	}
 	// End NNHV
-	
-	// Start NVT
+
+	// Start NVT - NTA
 	public Member findByID(String member_ID) {
 		Member member = null;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select * from member where member_ID = ?");
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from member where member_ID = ?");
 			preparedStatement.setString(1, member_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
+			if (resultSet.next()) {
 				member = new Member();
 				member.setMember_ID(resultSet.getString("member_ID"));
 				member.setName(resultSet.getString("name"));
