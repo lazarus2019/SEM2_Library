@@ -2,225 +2,859 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.print.Book;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import entities.Books;
-import model.BooksModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
-public class bookPanel extends JFrame {
+import entities.Author;
+import entities.Books;
+import entities.Category;
+import entities.Publish_house;
+import model.Au_BookModel;
+import model.AuthorModel;
+import model.BooksModel;
+import model.CategoryModel;
+import model.PublishModel;
+import javax.swing.border.EtchedBorder;
+import java.awt.Font;
+import javax.swing.border.LineBorder;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import javax.swing.JMenuItem;
+
+public class bookPanel extends JPanel {
 
 	private JPanel contentPane;
 	private JTextField textFieldSearch;
-	private JComboBox comboBoxCategory;
 	private JTable jtableBooks;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField textFieldTitle;
+	private JTextField textFieldIsbn;
+	private JTextField textFieldQuantity;
 	private JTextField textFieldBookID;
 	private JTextField textFieldCallnumber;
+	private JComboBox comboBoxCategory1;
+	private JComboBox comboBoxPublish;
+	private JTextField textFieldAuthor;
+	private JButton btnSearch;
+	private JComboBox comboBoxCateSearch;
+	private JTextField textFieldPrice;
+	private JTextField textFieldAddTitle;
+	private JComboBox comboBoxAddCate;
+	private JTextField textFieldAddPrice;
+	private JTextField textFieldAddQuan;
+	private JPanel panel_4;
+	private JTable tableAddAuthor;
+	private JTextField textFieldAddAuthor;
+	private JTextField textFieldAddNation;
+	private JButton btnAddBook;
+	private JComboBox comboBoxAddAuthor;
+	private JComboBox comboBoxAddPublish;
+	DefaultTableModel defaultTableModelAuthor = new DefaultTableModel();
+	int noAddAuthor = 1 ; 
+	private JButton btnAddAuthor;
+	private JComboBox comboBoxAuthor;
+	private JButton btnAuthor;
+	private JMenuItem mntmDelete;
+
 
 	/**
-	 * Launch the application.
-	 */
-	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
 	public bookPanel() {
-		setUndecorated(true);
-		setTitle("Book Panel");
 		setBounds(0, 0, 803, 617);
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+		setLayout(new BorderLayout(0, 0));
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		add(tabbedPane, BorderLayout.CENTER);
 		tabbedPane.setBackground(Color.GRAY);
-		getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		tabbedPane.addTab("New tab", null, panel, null);
-		panel.setLayout(null);
-		
+
+		JPanel panelManage = new JPanel();
+		panelManage.setBackground(Color.WHITE);
+		tabbedPane.addTab("Manage Books", null, panelManage, null);
+		panelManage.setLayout(null);
+
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "More function", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
-		panel_2.setBackground(Color.LIGHT_GRAY);
-		panel_2.setBounds(10, 6, 778, 125);
-		panel.add(panel_2);
+		panel_2.setBorder(
+				new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Search ", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
+		panel_2.setBackground(new Color(245, 244, 252));
+		panel_2.setBounds(10, 11, 778, 89);
+		panelManage.add(panel_2);
 		panel_2.setLayout(null);
-		
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/update.png")));
-		btnUpdate.setBounds(18, 28, 107, 23);
-		panel_2.add(btnUpdate);
-		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/delete.png")));
-		btnDelete.setBounds(137, 28, 107, 23);
-		panel_2.add(btnDelete);
-		
-		JButton btnDetails = new JButton("Details");
-		btnDetails.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/details.png")));
-		btnDetails.setBounds(256, 28, 107, 23);
-		panel_2.add(btnDetails);
-		
+
 		textFieldSearch = new JTextField();
-		textFieldSearch.setBounds(18, 70, 316, 28);
+		textFieldSearch.setBounds(10, 39, 316, 28);
 		panel_2.add(textFieldSearch);
 		textFieldSearch.setColumns(10);
-		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/search.png")));
-		btnSearch.setBounds(349, 70, 122, 28);
+
+		btnSearch = new JButton("Search");
+		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setBackground(new Color(30, 106, 210));
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSearch_actionPerformed(e) ;
+			}
+		});
+//		btnSearch.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/search.png")));
+		btnSearch.setBounds(336, 39, 122, 28);
 		panel_2.add(btnSearch);
 		
-		comboBoxCategory = new JComboBox();
-		comboBoxCategory.setBounds(636, 71, 122, 27);
-		panel_2.add(comboBoxCategory);
-		
 		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/refresh.png")));
-		btnRefresh.setBounds(626, 25, 122, 28);
+		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRefresh.setForeground(Color.WHITE);
+		btnRefresh.setBackground(new Color(30, 106, 210));
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnRefresh_actionPerformed(e) ;
+			}
+		});
+//		btnRefresh.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/refresh.png")));
+		btnRefresh.setBounds(626, 21, 122, 28);
 		panel_2.add(btnRefresh);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(Color.LIGHT_GRAY);
-		scrollPane.setBorder(new TitledBorder(null, "List Books", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(59, 59, 59)));
-		scrollPane.setBounds(10, 341, 778, 202);
-		panel.add(scrollPane);
+		CategoryModel categoryModel = new CategoryModel() ; 
+		List<Category> categories = categoryModel.findAll() ;
 		
-		jtableBooks = new JTable();
-		jtableBooks.addMouseListener(new MouseAdapter() {
+		comboBoxCateSearch = new JComboBox();
+		comboBoxCateSearch.addItem("") ;
+		for( Category category : categories ) {
+			comboBoxCateSearch.addItem(category.getName());
+		}
+		comboBoxCateSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				comboBoxCateSearch_actionPerformed(e) ; 
+			}
+		});
+		comboBoxCateSearch.setBounds(626, 50, 122, 28);
+		panel_2.add(comboBoxCateSearch);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
 			}
 		});
-		jtableBooks.setBackground(Color.LIGHT_GRAY);
+		scrollPane.setBackground(new Color(245, 244, 252));
+		scrollPane.setBorder(new TitledBorder(null, "List Books", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
+				new Color(59, 59, 59)));
+		scrollPane.setBounds(10, 376, 778, 202);
+		panelManage.add(scrollPane);
+
+		jtableBooks = new JTable() {
+			public boolean isCellEditable(int row,int column){  
+				return false;  
+		       } 
+		};
+		jtableBooks.addMouseListener(new MouseAdapter() {
+			@Override			
+			public void mouseClicked(MouseEvent e) {
+				jtableBooks_mouseClicked(e) ;
+			}
+		});		
+		jtableBooks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jtableBooks.setForeground(Color.BLACK);
+		jtableBooks.setBackground(Color.WHITE);
 		scrollPane.setViewportView(jtableBooks);
-		
+
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.LIGHT_GRAY);
-		panel_3.setBorder(new TitledBorder(null, "Edit", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(59, 59, 59)));
-		panel_3.setBounds(10, 143, 771, 196);
-		panel.add(panel_3);
+		panel_3.setBackground(new Color(245, 244, 252));
+		panel_3.setBorder(new TitledBorder(null, "Edit", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
+				new Color(59, 59, 59)));
+		panel_3.setBounds(10, 111, 778, 254);
+		panelManage.add(panel_3);
 		panel_3.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Book ID : ");
 		lblNewLabel.setBounds(21, 30, 74, 16);
 		panel_3.add(lblNewLabel);
-		
+
 		textFieldBookID = new JTextField();
-		textFieldBookID.setBounds(149, 24, 152, 28);
+		textFieldBookID.setEditable(false);
+		textFieldBookID.setBounds(149, 24, 228, 28);
 		panel_3.add(textFieldBookID);
 		textFieldBookID.setColumns(10);
-		
+
 		JLabel lblCallNumber = new JLabel("Call Number :");
 		lblCallNumber.setBounds(21, 71, 116, 16);
 		panel_3.add(lblCallNumber);
-		
+
 		textFieldCallnumber = new JTextField();
 		textFieldCallnumber.setColumns(10);
-		textFieldCallnumber.setBounds(149, 65, 152, 28);
+		textFieldCallnumber.setBounds(149, 65, 228, 28);
 		panel_3.add(textFieldCallnumber);
-		
+
 		JLabel lblTiltle = new JLabel("Tiltle :");
 		lblTiltle.setBounds(21, 111, 105, 16);
 		panel_3.add(lblTiltle);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(149, 105, 152, 28);
-		panel_3.add(textField_2);
-		
+
+		textFieldTitle = new JTextField();
+		textFieldTitle.setColumns(10);
+		textFieldTitle.setBounds(149, 105, 228, 28);
+		panel_3.add(textFieldTitle);
+
 		JLabel lblIsbn = new JLabel("ISBN :");
 		lblIsbn.setBounds(21, 151, 116, 16);
 		panel_3.add(lblIsbn);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(149, 145, 152, 28);
-		panel_3.add(textField_3);
-		
+
+		textFieldIsbn = new JTextField();
+		textFieldIsbn.setColumns(10);
+		textFieldIsbn.setBounds(149, 145, 228, 28);
+		panel_3.add(textFieldIsbn);
+
 		JLabel lblPublishHouse = new JLabel("Publish House :");
 		lblPublishHouse.setBounds(422, 30, 127, 16);
 		panel_3.add(lblPublishHouse);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(561, 24, 152, 28);
-		panel_3.add(textField_4);
-		
+
 		JLabel lblCategory = new JLabel("Category :");
 		lblCategory.setBounds(422, 71, 116, 16);
 		panel_3.add(lblCategory);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(561, 65, 152, 28);
-		panel_3.add(textField_5);
-		
+
 		JLabel lblQuantity = new JLabel("Quantity :");
 		lblQuantity.setBounds(422, 111, 116, 16);
 		panel_3.add(lblQuantity);
-		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(561, 105, 152, 28);
-		panel_3.add(textField_6);
-		
-		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(422, 139, 90, 28);
-		panel_3.add(btnSave);
-		
+
+		textFieldQuantity = new JTextField();
+		textFieldQuantity.setColumns(10);
+		textFieldQuantity.setBounds(561, 105, 185, 28);
+		panel_3.add(textFieldQuantity);
+
 		JButton btnReset = new JButton("Reset");
-		btnReset.setBounds(543, 139, 90, 28);
+		btnReset.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnReset.setForeground(Color.WHITE);
+		btnReset.setBackground(new Color(30, 106, 210));
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnReset_actionPerformed(e) ;
+			}
+		});
+		btnReset.setBounds(656, 185, 90, 23);
 		panel_3.add(btnReset);
 		
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
+		comboBoxCategory1 = new JComboBox();
+		comboBoxCategory1.setBounds(561, 68, 185, 25);
+		comboBoxCategory1.addItem("");
+		for( Category category : categories ) {
+			comboBoxCategory1.addItem(category.getName());
+		}
+		panel_3.add(comboBoxCategory1);
 		
-		loadData() ;
+		PublishModel publishModel = new PublishModel() ; 
+		List<Publish_house> publishes = publishModel.findAll() ; 
+		comboBoxPublish = new JComboBox();
+		comboBoxPublish.setBounds(561, 27, 185, 25);
+		comboBoxPublish.addItem("");
+		for ( Publish_house publish : publishes ) {
+			comboBoxPublish.addItem(publish.getName() );
+		}
+		
+		panel_3.add(comboBoxPublish);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnUpdate.setBounds(422, 185, 107, 23);
+		btnUpdate.setForeground(Color.WHITE);
+		btnUpdate.setBackground(new Color(30, 106, 210));
+		panel_3.add(btnUpdate);
+
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBounds(539, 185, 107, 23);
+		btnDelete.setBackground(new Color(30, 106, 210));
+		panel_3.add(btnDelete);
+
+		JLabel lblAuthor = new JLabel("Author :");
+		lblAuthor.setBounds(21, 190, 116, 16);
+		panel_3.add(lblAuthor);
+
+		textFieldAuthor = new JTextField();
+		textFieldAuthor.setColumns(10);
+		textFieldAuthor.setBounds(149, 215, 228, 28);
+		panel_3.add(textFieldAuthor);
+		
+		textFieldPrice = new JTextField();
+		textFieldPrice.setColumns(10);
+		textFieldPrice.setBounds(561, 145, 185, 28);
+		panel_3.add(textFieldPrice);
+		
+		JLabel lblPrice = new JLabel("Price :");
+		lblPrice.setBounds(422, 151, 116, 16);
+		panel_3.add(lblPrice);
+		
+		comboBoxAuthor = new JComboBox();
+		comboBoxAuthor.setBounds(149, 184, 154, 23);
+		AuthorModel authorModel = new AuthorModel() ; 
+		List<Author> authors = authorModel.findAll() ;
+		comboBoxAuthor.addItem("") ;
+		for( Author author : authors ) {
+			comboBoxAuthor.addItem(author.getName());
+		}
+		panel_3.add(comboBoxAuthor);
+		
+		btnAuthor = new JButton("Add");
+		btnAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAuthor_actionPerformed(e);
+			}
+		});
+		btnAuthor.setBounds(303, 184, 74, 23);
+		panel_3.add(btnAuthor);
+
+		JPanel panelAdd = new JPanel();
+		panelAdd.setBackground(Color.WHITE);
+		tabbedPane.addTab("Add Book", null, panelAdd, null);
+		panelAdd.setLayout(null);
+		
+		panel_4 = new JPanel();
+		panel_4.setBackground(new Color(245, 244, 252));
+		panel_4.setBorder(new TitledBorder(null, "Create Book", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
+		panel_4.setBounds(10, 11, 393, 547);
+		panelAdd.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Title : ");
+		lblNewLabel_1.setBounds(10, 35, 104, 23);
+		panel_4.add(lblNewLabel_1);
+		
+		textFieldAddTitle = new JTextField();
+		textFieldAddTitle.setBounds(10, 69, 359, 23);
+		panel_4.add(textFieldAddTitle);
+		textFieldAddTitle.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Category : ");
+		lblNewLabel_2.setBounds(10, 103, 104, 14);
+		panel_4.add(lblNewLabel_2);
+		
+		
+		comboBoxAddCate = new JComboBox();
+		comboBoxAddCate.setBounds(10, 128, 161, 22);
+		comboBoxAddCate.addItem("");
+		for( Category category : categories ) {
+			comboBoxAddCate.addItem(category.getName());
+		}
+		panel_4.add(comboBoxAddCate);
+		
+		JLabel lblPublisher = new JLabel("Publisher : ");
+		lblPublisher.setBounds(208, 103, 104, 14);
+		panel_4.add(lblPublisher);
+		
+		comboBoxAddPublish = new JComboBox();
+		comboBoxAddPublish.setBounds(208, 128, 161, 22);
+		comboBoxAddPublish.addItem("");
+		for ( Publish_house publish : publishes ) {
+			comboBoxAddPublish.addItem(publish.getName() );
+		}
+		panel_4.add(comboBoxAddPublish);
+		
+		textFieldAddPrice = new JTextField();
+		textFieldAddPrice.setColumns(10);
+		textFieldAddPrice.setBounds(10, 189, 161, 23);
+		panel_4.add(textFieldAddPrice);
+		
+		JLabel lblPrice_1 = new JLabel("Price : ");
+		lblPrice_1.setBounds(10, 158, 104, 23);
+		panel_4.add(lblPrice_1);
+		
+		JLabel lblQuantity_1 = new JLabel("Quantity :");
+		lblQuantity_1.setBounds(208, 158, 104, 23);
+		panel_4.add(lblQuantity_1);
+		
+		textFieldAddQuan = new JTextField();
+		textFieldAddQuan.setColumns(10);
+		textFieldAddQuan.setBounds(208, 189, 161, 23);
+		panel_4.add(textFieldAddQuan);
+		
+		JLabel lblAuthor_1 = new JLabel("Author :");
+		lblAuthor_1.setBounds(10, 238, 122, 14);
+		panel_4.add(lblAuthor_1);
+		
+		comboBoxAddAuthor = new JComboBox();
+		comboBoxAddAuthor.setBounds(10, 265, 161, 22);
+		
+		
+		panel_4.add(comboBoxAddAuthor);
+		
+		btnAddAuthor = new JButton("Add Author");
+		btnAddAuthor.setForeground(Color.WHITE);
+		btnAddAuthor.setBackground(new Color(30, 106, 210));
+		btnAddAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddAuthor_actionPerformed(e) ;
+			}
+		});
+		btnAddAuthor.setBounds(197, 265, 122, 23);
+		panel_4.add(btnAddAuthor);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 310, 359, 151);
+		panel_4.add(scrollPane_1);
+		
+		tableAddAuthor = new JTable() ; 
+		scrollPane_1.setViewportView(tableAddAuthor);
+		
+		btnAddBook = new JButton("Add Book ");
+		btnAddBook.setForeground(Color.WHITE);
+		btnAddBook.setBackground(new Color(30, 106, 210));
+		btnAddBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnAddBook_actionPerformed(arg0) ;
+			}
+		});
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(scrollPane_1, popupMenu);
+
+		JMenuItem mnDeleteAuthor = new JMenuItem("Delete");
+		mnDeleteAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mnDeleteAuthor_actionPerformed(e) ;
+			}
+		});
+
+		popupMenu.add(mnDeleteAuthor);		
+
+		
+		btnAddBook.setBounds(10, 494, 122, 23);
+		panel_4.add(btnAddBook);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(new Color(245, 244, 252));
+		panel_5.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Create Author", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
+		panel_5.setBounds(413, 11, 362, 237);
+		panelAdd.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblName = new JLabel("Name :");
+		lblName.setBounds(10, 35, 104, 23);
+		panel_5.add(lblName);
+		
+		textFieldAddAuthor = new JTextField();
+		textFieldAddAuthor.setColumns(10);
+		textFieldAddAuthor.setBounds(10, 69, 306, 23);
+		panel_5.add(textFieldAddAuthor);
+		
+		textFieldAddNation = new JTextField();
+		textFieldAddNation.setColumns(10);
+		textFieldAddNation.setBounds(10, 128, 306, 23);
+		panel_5.add(textFieldAddNation);
+		
+		JLabel lblNation = new JLabel("Nation : ");
+		lblNation.setBounds(10, 103, 104, 23);
+		panel_5.add(lblNation);
+		
+		JButton btnCreateAuthor = new JButton("Create ");
+		btnCreateAuthor.setForeground(Color.WHITE);
+		btnCreateAuthor.setBackground(new Color(30, 106, 210));
+		btnCreateAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCreateAuthor_actionPerformed(e) ;
+			}
+		});
+		btnCreateAuthor.setBounds(10, 189, 104, 23);
+		panel_5.add(btnCreateAuthor);
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDelete_actionPerformed(e);
+			}
+		});
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnUpdate_eactionPerformed(arg0);
+			}
+		});
+
+		loadData();
+		loadDataAdd() ; 
+		
+		
+		String[] columns = { "No. ", "Name" };
+		for (String cl : columns) {
+			defaultTableModelAuthor.addColumn(cl);
+		}
+		tableAddAuthor.setModel(defaultTableModelAuthor);
+		tableAddAuthor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tableAddAuthor.getColumnModel().getColumn(0).setPreferredWidth(75);
+		tableAddAuthor.getColumnModel().getColumn(1).setPreferredWidth(282);
 	}
-	private void loadData() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy") ; 
+
+	// Add Book 
+	
+	public void mnDeleteAuthor_actionPerformed(ActionEvent e) {
 		
-		BooksModel booksModel = new BooksModel() ;
+		if(tableAddAuthor.getSelectedRow() != -1) {
+            // remove selected row from the model
+			int index = tableAddAuthor.getSelectedRow() ;
+			defaultTableModelAuthor.removeRow(index);
+			tableAddAuthor.setModel(defaultTableModelAuthor);
+         }
+	}
+	
+	public void btnAddAuthor_actionPerformed(ActionEvent e) {
+
+		String name = (String) comboBoxAddAuthor.getSelectedItem(); 			
+		defaultTableModelAuthor.addRow(new Object[] { noAddAuthor, name });
+		System.out.println(name);
+		tableAddAuthor.setModel(defaultTableModelAuthor);
+		noAddAuthor++ ; 
 		
-		DefaultTableModel defaultTableModel = new DefaultTableModel() ; 
-		String[] columns = { "ID" , "Call NUmber" , "ISBN" , "Title" , "Category" , "Publish House" , "Quantity" } ;
-		for ( String cl : columns ) {
+	}
+	public void btnCreateAuthor_actionPerformed(ActionEvent e) {
+		Author author = new Author() ; 
+		AuthorModel authorModel = new AuthorModel() ; 
+		String author_ID = "" ;
+		String[] words=textFieldAddAuthor.getText().trim().split("\\s");
+		for ( int i = 0 ; i < 2 ; i++ ) {
+			author_ID += words[i].toUpperCase().charAt(0) ;
+			author_ID += words[i].toUpperCase().charAt(1) ;
+		}
+		System.out.println(author_ID); 
+		author.setAuthor_ID(author_ID); 
+		author.setName(textFieldAddAuthor.getText().trim());
+		author.setNation(textFieldAddNation.getText().trim());
+		if (authorModel.create(author)) {
+			comboBoxAddAuthor.removeAllItems();
+			textFieldAddAuthor.setText("");
+			textFieldAddNation.setText("");
+			JOptionPane.showMessageDialog(null, "Add Successfully ! ");
+			loadDataAdd() ; 
+		} else {
+			JOptionPane.showMessageDialog(null, "Failed");
+		}
+	}
+	
+	public void btnAddBook_actionPerformed(ActionEvent arg0) {
+		BooksModel booksModel = new BooksModel() ; 
+		AuthorModel authorModel = new AuthorModel() ;
+		Au_BookModel au_BookModel = new Au_BookModel() ;
+		int id = 1 ; 
+		String book_ID = "BK01";
+		List<Books> books = BooksModel.findAll() ;
+		for( int i = 0 ; i < books.size() ; i++ ) {
+			if( book_ID.equals(books.get(i).getBook_ID())) {
+				id++ ;
+				if( id < 10 ) {
+					book_ID = "BK" + "0" + id ; 
+				}
+				else {
+					book_ID = "BK" + id ; 
+				}
+			}
+		}
+		System.out.println(book_ID );
+		
+		String title = textFieldAddTitle.getText().trim() ;
+		Random rand = new Random();
+		String isbn = ( rand.nextInt(900) + 100 ) + "-" + ( rand.nextInt(9000) + 1000 )  ;
+		System.out.println(isbn);
+		
+		String call_number = "" ;
+		call_number += title.charAt(0) ;
+		call_number += title.charAt(1) + "-" ;
+		call_number += comboBoxAddAuthor.getSelectedItem().toString().charAt(0) ;
+		call_number += comboBoxAddAuthor.getSelectedItem().toString().charAt(1) + "-"  +  (rand.nextInt(1000));
+		call_number = call_number.toUpperCase() ; 
+		System.out.println(call_number);
+		int category_ID = comboBoxAddCate.getSelectedIndex() ;
+		int publish_ID = comboBoxAddPublish.getSelectedIndex() ; 
+		double price = Integer.parseInt(textFieldAddPrice.getText().trim()) ;
+		int quantity = Integer.parseInt(textFieldAddQuan.getText().trim()) ; 
+		
+		List<String> authors_ID = new ArrayList<String>() ;  
+		
+		System.out.println(defaultTableModelAuthor.getRowCount());
+		for ( int i = 0 ; i < defaultTableModelAuthor.getRowCount() ; i++) {
+			String authorName = defaultTableModelAuthor.getValueAt(i , 1).toString().trim() ; 
+			String author_ID = authorModel.findAuthorbyName(authorName).getAuthor_ID() ;
+			authors_ID.add(author_ID) ;
+			
+		}
+		
+		Books addbook = new Books(book_ID, call_number, isbn, title, category_ID, publish_ID, price, quantity);		
+		
+		if (booksModel.create(addbook)) {			
+			// sai o day 
+			for ( String auid : authors_ID) {
+				
+				boolean flag = au_BookModel.createAu_Book(book_ID, auid) ;				
+			}			
+			JOptionPane.showMessageDialog(null, "Add Successfully ! ");			
+			loadData();
+			
+		} else {
+			JOptionPane.showMessageDialog(null, "Failed");
+		}
+		
+	}
+	
+	private void loadDataAdd() {
+		// cbBox Author
+		AuthorModel authorModel = new AuthorModel() ; 
+		List<Author> authors = authorModel.findAll() ;
+		comboBoxAddAuthor.addItem("") ;
+		for( Author author1 : authors ) {
+			comboBoxAddAuthor.addItem(author1.getName());
+		}
+		// tableAuthor Selected
+		DefaultTableModel defaultTableModelAuthor = new DefaultTableModel();
+		String[] columns = { "No. ", "Name" };
+		for (String cl : columns) {
+			defaultTableModelAuthor.addColumn(cl);
+			tableAddAuthor.setModel(defaultTableModelAuthor);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	// Manage Book 
+	public void btnAuthor_actionPerformed(ActionEvent e) {
+		String name = (String) comboBoxAuthor.getSelectedItem(); 
+		if( textFieldAuthor.getText().isEmpty() ) {
+			textFieldAuthor.setText(textFieldAuthor.getText() + name);
+		}
+		else {
+			textFieldAuthor.setText(textFieldAuthor.getText() + " & " + name);
+		}
+	}
+	public void btnReset_actionPerformed(ActionEvent e) {
+		textFieldBookID.setText("");
+		textFieldCallnumber.setText("");
+		textFieldTitle.setText("");
+		textFieldIsbn.setText("");
+		comboBoxCategory1.setSelectedIndex(0);
+		comboBoxPublish.setSelectedIndex(0);
+		textFieldPrice.setText("");
+		textFieldQuantity.setText("");
+		textFieldAuthor.setText("");
+	}
+	
+	public void btnUpdate_eactionPerformed(ActionEvent arg0) {
+		int selectedIndex = jtableBooks.getSelectedRow();
+		String book_ID = jtableBooks.getValueAt(selectedIndex, 1).toString();
+		System.out.println(book_ID);
+		if( book_ID == null ) {
+			JOptionPane.showMessageDialog(null, "Please select a book !");
+		} 
+		else {
+			BooksModel booksModel = new BooksModel();
+			Books book = booksModel.find(book_ID);
+			
+			if(textFieldCallnumber.getText().trim() != null) {
+				book.setCall_number(textFieldCallnumber.getText().trim());			
+			}
+			if(textFieldIsbn.getText().trim() != null) {
+				book.setIsbn(textFieldIsbn.getText().trim());			
+			}
+			if( textFieldTitle.getText().trim() != null) {
+				book.setTitle(textFieldTitle.getText().trim());
+			}
+			if( comboBoxCategory1.getSelectedIndex() !=  0 ) {
+				book.setCategory_ID(comboBoxCategory1.getSelectedIndex());
+			}
+			if( comboBoxPublish.getSelectedIndex() !=  0 ) {
+				book.setPublish_ID(comboBoxPublish.getSelectedIndex());
+			}
+			if( textFieldPrice.getText().trim() != null ) {
+				book.setPrice(Double.parseDouble(textFieldPrice.getText().trim()));
+			}
+			if( textFieldQuantity.getText().trim() != null) {
+				book.setQuantity(Integer.parseInt(textFieldQuantity.getText().trim()));
+			}		
+			if( textFieldAuthor.getText().trim() != null ) {
+				AuthorModel authorModel = new AuthorModel() ;
+				Au_BookModel au_BookModel = new Au_BookModel() ; 
+				
+				String[] authors =  textFieldAuthor.getText().trim().split("&") ;
+				
+				au_BookModel.delete(book_ID) ; 
+	 			for(String a : authors ) {
+	 				
+	 				Author author = new Author() ; 				
+	 				String author_ID = authorModel.findAuthorbyName(a).getAuthor_ID() ;
+	 				System.out.println(author_ID);
+	 				if( author_ID == null ) {
+	 					String[] w = a.trim().split("\\s") ;
+	 					author_ID = "" ; 
+	 					for ( int i = 0 ; i < 2 ; i++ ) {
+	 						author_ID += w[i].toUpperCase().charAt(0) ;
+	 						author_ID += w[i].toUpperCase().charAt(1) ;
+	 						System.out.println(author_ID);
+	 					}
+	 					System.out.println(author_ID + "    lllll ");
+	 					author.setAuthor_ID(author_ID); 
+	 					author.setName(a);
+	 					authorModel.create(author) ; 					
+	 				} 				
+	 				au_BookModel.createAu_Book(book_ID, author_ID);
+	 			}
+			}
+			if (booksModel.update(book, book_ID)  ) {
+				JOptionPane.showMessageDialog(null, "Update Sucessfully " );
+				loadData();
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
+			}
+		}
+		
+	}
+
+	public void btnDelete_actionPerformed(ActionEvent e) {
+		try {
+			BooksModel booksModel = new BooksModel();
+			Au_BookModel au_BookModel = new Au_BookModel();
+			int selectedIndex = jtableBooks.getSelectedRow();
+			String id = jtableBooks.getValueAt(selectedIndex, 1).toString();
+			
+			if( id == null ) {
+				JOptionPane.showMessageDialog(null, "Please select a book !");
+			}
+			else {
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					if(au_BookModel.delete(id) ) {
+						if (booksModel.delete(id) ) {
+							JOptionPane.showMessageDialog(null, "Successfully !");
+							loadData();
+						} else {
+							JOptionPane.showMessageDialog(null, "Failed");
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Failed");
+					}
+				}
+			}
+			
+
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null, e2.getMessage());
+		}
+	}
+	
+	public void jtableBooks_mouseClicked(MouseEvent e) {
+		int selectedIndex = jtableBooks.getSelectedRow();
+		String book_ID = jtableBooks.getValueAt(selectedIndex, 1).toString();
+		
+		BooksModel booksModel = new BooksModel();
+		Books book = booksModel.find(book_ID);
+		
+		textFieldBookID.setText(book_ID);
+		textFieldCallnumber.setText(book.getCall_number());
+		textFieldTitle.setText(book.getTitle());
+		textFieldIsbn.setText(book.getIsbn());
+		comboBoxCategory1.setSelectedIndex(book.getCategory_ID());
+		comboBoxPublish.setSelectedIndex(book.getPublish_ID());;
+		textFieldQuantity.setText(book.getQuantity()+"");
+		textFieldPrice.setText(book.getPrice()+"");
+		String authorName = "" ;
+		int lengthAu = booksModel.findAuthor(book_ID).size() ;
+		for ( Author author : booksModel.findAuthor(book_ID) ) {
+			authorName += author.getName() ; 			
+			if( lengthAu > 1) { 
+				authorName += " & " ;
+				lengthAu-- ; 
+			}
+		}
+		textFieldAuthor.setText(authorName); 
+	}
+	
+	public void comboBoxCateSearch_actionPerformed(ActionEvent e) {
+		BooksModel booksModel = new BooksModel();		
+		String[] columns = { "No. ", "Book ID", "Title", "Category", "Publish House" , "Price" ,"Quantity" };
+		int category_ID = comboBoxCateSearch.getSelectedIndex() ; 
+		DefaultTableModel defaultTableModel = new DefaultTableModel();
+		for (String cl : columns) {
 			defaultTableModel.addColumn(cl);
 		}
-		for(Books book : booksModel.findAll()) {
-			defaultTableModel.addRow(new Object[] {
-				book.getBook_ID() , 
-				book.getCall_number() , 
-				book.getIsbn() ,
-				book.getTitle() , 
-				book.getCategory_ID() , 
-				book.getPublish_ID()  , 
-				book.getQuantity()
-			});
+		int no = 1;
+		for (Books book : booksModel.searchBooksbyCate(category_ID)) {
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(),
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()) , book.getPrice() , book.getQuantity() });
+			no++;
 		}
 		jtableBooks.setModel(defaultTableModel);
 	}
+	
+	public void btnSearch_actionPerformed(ActionEvent e) {
+		BooksModel booksModel = new BooksModel();		
+		String[] columns = { "No. ", "Book ID",  "Title", "Category", "Publish House" , "Price","Quantity" };
+		String key = textFieldSearch.getText() ; 
+		DefaultTableModel defaultTableModel = new DefaultTableModel();
+		for (String cl : columns) {
+			defaultTableModel.addColumn(cl);
+		}
+		int no = 1;
+		for (Books book : booksModel.searchBooks(key)) {
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), 
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()),book.getPrice(), book.getQuantity() });
+			no++;
+		}
+		jtableBooks.setModel(defaultTableModel);
+		
+	}
+	
+	
+	public void btnRefresh_actionPerformed(ActionEvent e) {
+		textFieldSearch.setText("");
+		btnReset_actionPerformed(e);
+		loadData() ;
+	}
+	
+	private void loadData() {
+		BooksModel booksModel = new BooksModel();		
+		String[] columns = { "No. ", "Book ID",  "Title", "Category", "Publish House","Price","Quantity" };
+		DefaultTableModel defaultTableModel = new DefaultTableModel();
+		for (String cl : columns) {
+			defaultTableModel.addColumn(cl);
+		}
+		int no = 1;
+		for (Books book : booksModel.findAll()) {
+			defaultTableModel.addRow(new Object[] { no, book.getBook_ID(), 
+					book.getTitle(),booksModel.findCategory(book.getCategory_ID()) ,booksModel.findPublish(book.getPublish_ID()), book.getPrice() ,book.getQuantity() });
+			no++;
+		}
+		jtableBooks.setModel(defaultTableModel);
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 }
+

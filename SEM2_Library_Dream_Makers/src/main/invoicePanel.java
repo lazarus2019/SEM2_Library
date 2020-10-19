@@ -14,9 +14,12 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.SystemColor;
 
 import com.sun.java_cup.internal.runtime.virtual_parse_stack;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
 
 import entities.Author;
 import entities.Books;
@@ -83,34 +86,30 @@ public class invoicePanel extends JPanel {
 	private List<String> bookLost = new ArrayList<String>();
 
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	// Start NVT
+	private JPanel panel_9;
+	private JYearChooser yearChooser;
+	private JMonthChooser monthChooser;
+	private JLabel btnSearch;
+	private JTable tableBorrowBill;
 	private JTextField jtextFieldCompensationFee;
+	// End NVT
 	JPanel panel_2 = new JPanel();
-	
-	
+
 	public static List<String> bookID = new ArrayList<String>();
 	public static Member member = null;
 
 	DefaultTableModel defaultTableModelFindBook = new DefaultTableModel() {
-		public boolean isCellEditable(int arg0, int arg1) {
-			return false;
-		};
-	};
+		public boolean isCellEditable(int arg0,int arg1){return false;};};
 	DefaultTableModel defaultTableModelSelectedBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row, int column) {
-			return false;
-		};
-	};
+		public boolean isCellEditable(int row,int column){return false;};};
 	DefaultTableModel defaultTableModelBorrowedBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row, int column) {
-			return false;
-		};
-	};
+		public boolean isCellEditable(int row,int column){return false;};};
 	DefaultTableModel defaultTableModelReturningBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row, int column) {
-			return false;
-		};
-	};
-	
+		public boolean isCellEditable(int row,int column){return false;};};
+	DefaultTableModel defaultTableModelBorrowBill = new DefaultTableModel() {
+		public boolean isCellEditable(int arg0,int arg1){return false;};};
+	private JLabel lblNewLabelx;
 
 	/**
 	 * Create the panel.
@@ -302,8 +301,79 @@ public class invoicePanel extends JPanel {
 		jbtnReturnBook.setBounds(541, 24, 196, 37);
 		jpanelReturnBook.add(jbtnReturnBook);
 
+		// Start NVT
 		JPanel jpanelstatistics = new JPanel();
-		tabbedPane.addTab("New tab", null, jpanelstatistics, null);
+		tabbedPane.addTab("Manage bill", null, jpanelstatistics, null);
+		jpanelstatistics.setLayout(null);
+
+		panel_9 = new JPanel();
+		panel_9.setBounds(10, 11, 778, 567);
+		jpanelstatistics.add(panel_9);
+		panel_9.setLayout(null);
+
+		JPanel panel1 = new JPanel();
+		panel1.setLayout(null);
+		panel1.setBackground(new Color(245, 244, 252));
+		panel1.setBounds(10, 11, 758, 127);
+		panel_9.add(panel1);
+
+		yearChooser = new JYearChooser();
+		yearChooser.setBounds(135, 41, 96, 29);
+		panel1.add(yearChooser);
+
+		monthChooser = new JMonthChooser();
+		monthChooser.getComboBox().setBackground(SystemColor.menu);
+		monthChooser.setBounds(10, 41, 113, 29);
+		panel1.add(monthChooser);
+
+		btnSearch = new JLabel("Search");
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnSearch_mouseClicked(e);
+			}
+		});
+		btnSearch.setOpaque(true);
+		btnSearch.setHorizontalAlignment(SwingConstants.CENTER);
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setFont(new Font("Arial", Font.BOLD, 15));
+		btnSearch.setBackground(new Color(30, 106, 210));
+		btnSearch.setBounds(10, 81, 113, 35);
+		panel1.add(btnSearch);
+
+		JLabel lblNewLabel = new JLabel("Search by time  :");
+		lblNewLabel.setBounds(10, 16, 147, 14);
+		panel1.add(lblNewLabel);
+
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDelete_actionPerformed(e);
+			}
+		});
+		btnDelete.setBounds(443, 41, 89, 23);
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBackground(new Color(30, 106, 210));
+		panel1.add(btnDelete);
+
+		JButton btnDetails = new JButton("Details");
+		btnDetails.setForeground(Color.WHITE);
+		btnDetails.setBackground(new Color(30, 106, 210));
+		btnDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDetails_actionPerformed(e);
+			}
+		});
+		btnDetails.setBounds(559, 41, 89, 23);
+		panel1.add(btnDetails);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 152, 758, 282);
+		panel_9.add(scrollPane);
+
+		tableBorrowBill = new JTable();
+		scrollPane.setViewportView(tableBorrowBill);
+		// End NVT
 
 		JPanel jpanelMember = new JPanel();
 		jpanelMember.setBounds(22, 24, 536, 174);
@@ -389,7 +459,7 @@ public class invoicePanel extends JPanel {
 		jtextFieldLateFee.setBackground(Color.WHITE);
 		jtextFieldLateFee.setBounds(10, 179, 228, 30);
 		panel_2.add(jtextFieldLateFee);
-		
+
 		jtextFieldReturnDate = new JTextField();
 		jtextFieldReturnDate.addKeyListener(new KeyAdapter() {
 			@Override
@@ -448,11 +518,11 @@ public class invoicePanel extends JPanel {
 		panel_7.setBackground(new Color(245, 244, 252));
 		panel_7.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Create date:");
-		lblNewLabel.setBounds(9, 35, 184, 25);
-		panel_7.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblNewLabel.setForeground(Color.BLACK);
+		JLabel lblNewLabelc1 = new JLabel("Create date:");
+		lblNewLabelc1.setBounds(9, 35, 184, 25);
+		panel_7.add(lblNewLabelc1);
+		lblNewLabelc1.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblNewLabelc1.setForeground(Color.BLACK);
 
 		jdateChooserCreateDate = new JDateChooser();
 		jdateChooserCreateDate.getCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -482,11 +552,11 @@ public class invoicePanel extends JPanel {
 		jpanelBook.add(panel_3);
 		panel_3.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.getViewport().setBackground(Color.white);
-		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(11, 63, 722, 103);
-		panel_3.add(scrollPane);
+		JScrollPane scrollPane1 = new JScrollPane();
+		scrollPane1.getViewport().setBackground(Color.white);
+		scrollPane1.setBackground(Color.WHITE);
+		scrollPane1.setBounds(11, 63, 722, 103);
+		panel_3.add(scrollPane1);
 
 		jtableFindBook = new JTable();
 		jtableFindBook.addMouseListener(new MouseAdapter() {
@@ -498,7 +568,7 @@ public class invoicePanel extends JPanel {
 		jtableFindBook.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jtableFindBook.setForeground(Color.BLACK);
 		jtableFindBook.setBackground(Color.WHITE);
-		scrollPane.setViewportView(jtableFindBook);
+		scrollPane1.setViewportView(jtableFindBook);
 
 		JLabel lblNewLabel_3 = new JLabel("Title");
 		lblNewLabel_3.setBounds(11, 23, 45, 25);
@@ -561,6 +631,7 @@ public class invoicePanel extends JPanel {
 		loadDataSelectedBook();
 		loadDataBorrowedBook();
 		loadDataReturningBook();
+		loadDataBorrowBill();
 
 		bookID.add("");
 		bookLost.add("");
@@ -574,8 +645,8 @@ public class invoicePanel extends JPanel {
 			jtextFieldCompensationFee.setText("$" + result);
 		}
 	}
-	
-	//percent for Lost book
+
+	// percent for Lost book
 	public double percent(int selectedIndexRow) {
 		String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
 		BooksModel booksModel = new BooksModel();
@@ -617,7 +688,7 @@ public class invoicePanel extends JPanel {
 				lateFee = 0;
 			}
 			bookLost = new ArrayList<String>();
-			if(jradiobuttonLost.isSelected()) {
+			if (jradiobuttonLost.isSelected()) {
 				compendationFee += percent(selectedIndexRow);
 				bookLost.add(idBook);
 			}
@@ -657,7 +728,7 @@ public class invoicePanel extends JPanel {
 			return 0;
 		}
 	}
-	
+
 	public void jtextFieldReturnDate_keyReleased(KeyEvent arg0) {
 		if (getLateDate() > 0) {
 			long getDate = getLateDate();
@@ -672,7 +743,7 @@ public class invoicePanel extends JPanel {
 			jtextFieldCompensationFee.setText("$0.0");
 		}
 	}
-	
+
 	// click mouse select from Borrowed Books and show Info Check
 	public void jtableBorrowedBook_mouseClicked(MouseEvent arg0) {
 		int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
@@ -681,7 +752,7 @@ public class invoicePanel extends JPanel {
 		jtextFieldCompensationFee.setText("$0.0");
 		jradiobuttonReturn.setSelected(true);
 		try {
-			if(getLateDate() > 0) {
+			if (getLateDate() > 0) {
 				long getDate = getLateDate();
 				String day = Long.toString(getDate);
 				jtextFieldNumberofLateDate.setText(day);
@@ -693,7 +764,7 @@ public class invoicePanel extends JPanel {
 				jtextFieldLateFee.setText("$0.0");
 				jtextFieldCompensationFee.setText("$0.0");
 			}
-			
+
 		} catch (Exception e1) {
 			System.err.println(e1.getMessage());
 		}
@@ -701,7 +772,7 @@ public class invoicePanel extends JPanel {
 
 	// Show ReturnBookDialog
 	public void jbtnReturnBook_actionPerformed(ActionEvent arg0) {
-		if(!jtextFieldIDCardR.getText().isEmpty() && defaultTableModelReturningBook.getRowCount() > 0) {
+		if (!jtextFieldIDCardR.getText().isEmpty() && defaultTableModelReturningBook.getRowCount() > 0) {
 			try {
 				int rowR = defaultTableModelReturningBook.getRowCount();
 				int rowB = defaultTableModelBorrowedBook.getRowCount();
@@ -717,10 +788,10 @@ public class invoicePanel extends JPanel {
 					ReturnBookDialog.idBook = new ArrayList<String>();
 					ReturnBookDialog.title = new ArrayList<String>();
 					ReturnBookDialog.bookLost = new ArrayList<String>();
-					for(int i = 0; i < bookLost.size(); i++) {
+					for (int i = 0; i < bookLost.size(); i++) {
 						ReturnBookDialog.bookLost.add(bookLost.get(i));
 					}
-					if(bookLost.isEmpty()) {
+					if (bookLost.isEmpty()) {
 						compendationFee = 0;
 					}
 					ReturnBookDialog.compensationFee = compendationFee;
@@ -732,9 +803,9 @@ public class invoicePanel extends JPanel {
 					}
 					ReturnBookDialog returnBookDialog = new ReturnBookDialog();
 					returnBookDialog.setVisible(true);
-				} else if(rowR < rowB && rowR > 0) {
-							JOptionPane.showMessageDialog(null, "Not enough books to return!", "Notification",
-									JOptionPane.OK_OPTION);
+				} else if (rowR < rowB && rowR > 0) {
+					JOptionPane.showMessageDialog(null, "Not enough books to return!", "Notification",
+							JOptionPane.OK_OPTION);
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select the book to return!", "Notification",
 							JOptionPane.OK_OPTION);
@@ -781,11 +852,11 @@ public class invoicePanel extends JPanel {
 	public void jbtnDeleteR_actionPerformed(ActionEvent arg0) {
 		int selectedIndexRow = jtableReturningBook.getSelectedRow();
 		String idBook = jtableReturningBook.getValueAt(selectedIndexRow, 1).toString();
-		if(jtableReturningBook.isRowSelected(selectedIndexRow)) {
-			for(String idBookLost : bookLost) {
-				if(idBookLost == idBook) {
+		if (jtableReturningBook.isRowSelected(selectedIndexRow)) {
+			for (String idBookLost : bookLost) {
+				if (idBookLost == idBook) {
 					compendationFee -= percent(selectedIndexRow);
-					if(idBook.equals(idBookLost)) {
+					if (idBook.equals(idBookLost)) {
 						bookLost.remove(idBookLost);
 					}
 				} else {
@@ -806,7 +877,7 @@ public class invoicePanel extends JPanel {
 	public void jbtnDelete_actionPerformed(ActionEvent arg0) {
 		int selectedIndexRow = jtableSelectedBook.getSelectedRow();
 		for (int i = 0; i < bookID.size(); i++) {
-			String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString(); 
+			String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
 			if (idBook.equals(bookID.get(i))) {
 				bookID.remove(i);
 			}
@@ -1051,4 +1122,151 @@ public class invoicePanel extends JPanel {
 		header.setBackground(new Color(223, 233, 242));
 		header.setForeground(Color.BLACK);
 	}
+
+	// Start NVT
+	// Find Books header
+	public void btnDelete_actionPerformed(ActionEvent e) {
+		int selectedIndex = tableBorrowBill.getSelectedRow();
+		Borrow_billModel borrow_billModel = new Borrow_billModel();
+		Bor_bookModel bor_bookModel = new Bor_bookModel();
+
+		if (selectedIndex != -1) {
+			int borrow_ID = (int) tableBorrowBill.getValueAt(selectedIndex, 1);
+			int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm", JOptionPane.YES_NO_OPTION);
+			if (result == JOptionPane.YES_OPTION) {
+				if (bor_bookModel.delete(borrow_ID)) {
+					if (borrow_billModel.delete(borrow_ID)) {
+						loadDataBorrowBill();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed");
+				}
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Required to selected a bill !", "Notification", JOptionPane.OK_OPTION);
+		}
+	}
+
+	// Find Books header
+	public void btnDetails_actionPerformed(ActionEvent e) {
+		int selectedIndex = tableBorrowBill.getSelectedRow();
+		if (selectedIndex != -1) {
+			int borrow_ID = (int) tableBorrowBill.getValueAt(selectedIndex, 1);
+			System.out.println(borrow_ID);
+
+			Borrow_billModel borrow_billModel = new Borrow_billModel();
+			Borrow_bill bill = borrow_billModel.findByID(borrow_ID);
+
+			BooksModel booksModel = new BooksModel();
+			List<Books> books = booksModel.findByBill(borrow_ID);
+
+			MemberModel memberModel = new MemberModel();
+			Member member = memberModel.findByID(bill.getMember_ID());
+
+			List<String> authorNames = new ArrayList<String>();
+			for (Books book : books) {
+				String authorName = "";
+				int lengthAu = booksModel.findAuthor(book.getBook_ID()).size();
+				for (Author author : booksModel.findAuthor(book.getBook_ID())) {
+					authorName += author.getName();
+					if (lengthAu > 1) {
+						authorName += " & ";
+						lengthAu--;
+					}
+				}
+				authorNames.add(authorName);
+			}
+
+			BorrowDetailDailog.books = new ArrayList<Books>();
+			BorrowDetailDailog.books = books;
+			BorrowDetailDailog.member = member;
+			BorrowDetailDailog.borrowbill = bill;
+			BorrowDetailDailog.authorNames = new ArrayList<String>();
+			BorrowDetailDailog.authorNames = authorNames;
+
+			BorrowDetailDailog borrowDetailDailog = new BorrowDetailDailog();
+			borrowDetailDailog.setVisible(true);
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Required to selected a bill !", "Notification", JOptionPane.OK_OPTION);
+		}
+
+	}
+
+	public void btnSearch_mouseClicked(MouseEvent e) {
+		int month = monthChooser.getMonth() + 1;
+		int year = yearChooser.getYear();
+		loadWidthTable();
+		BooksModel bookModel = new BooksModel();
+		AuthorModel authorModel = new AuthorModel();
+		MemberModel memberModel = new MemberModel();
+		Borrow_billModel borrow_billModel = new Borrow_billModel();
+		List<Borrow_bill> borrowbills = borrow_billModel.findByDate(month, year);
+		int number = 1;
+		String status = "";
+		for (Borrow_bill bill : borrowbills) {
+			double forfeit_fee = bill.getLate_fee() + bill.getCompensation_fee();
+			String memberName = memberModel.findByID(bill.getMember_ID()).getName();
+			int totalBook = borrow_billModel.countBook(bill.getBorrow_ID());
+			if (bill.isStatus()) {
+				status = "Returned";
+			} else {
+				status = "Not Returned";
+			}
+
+			defaultTableModelBorrowBill.addRow(new Object[] { number++, bill.getBorrow_ID(), memberName, totalBook,
+					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), forfeit_fee, status });
+			tableBorrowBill.setModel(defaultTableModelBorrowBill);
+		}
+
+	}
+
+	public void loadWidthTable() {
+		String[] borrowColumn = { "No.", "Borrow ID", "Member Name", "Amount", "Borrow Date", "Term Date", "Return Date",
+				"Forfeit fee ", "Status" };
+		defaultTableModelBorrowBill = new DefaultTableModel();
+		for (String cl : borrowColumn) {
+			defaultTableModelBorrowBill.addColumn(cl);
+		}
+		tableBorrowBill.setModel(defaultTableModelBorrowBill);
+		tableBorrowBill.getTableHeader().setReorderingAllowed(false);
+		tableBorrowBill.getTableHeader().setResizingAllowed(false);
+		// set width
+		TableColumnModel columnModel = tableBorrowBill.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(50);
+		columnModel.getColumn(1).setPreferredWidth(75);
+		columnModel.getColumn(2).setPreferredWidth(150);
+		columnModel.getColumn(3).setPreferredWidth(75);
+		columnModel.getColumn(4).setPreferredWidth(90);
+		columnModel.getColumn(5).setPreferredWidth(90);
+		columnModel.getColumn(6).setPreferredWidth(90);
+		columnModel.getColumn(7).setPreferredWidth(90);
+		columnModel.getColumn(8).setPreferredWidth(90);
+		JTableHeader tableBorrowBillHeader = tableBorrowBill.getTableHeader();
+		tableBorrowBillHeader.setBackground(new Color(223, 233, 242));
+		tableBorrowBillHeader.setForeground(Color.BLACK);
+	}
+	
+	public void loadDataBorrowBill() {
+		// set Data
+		loadWidthTable();
+		BooksModel bookModel = new BooksModel();
+		AuthorModel authorModel = new AuthorModel();
+		MemberModel memberModel = new MemberModel();
+		Borrow_billModel borrow_billModel = new Borrow_billModel();
+		List<Borrow_bill> borrowbills = borrow_billModel.findAll();
+		String status = "";
+		for (Borrow_bill bill : borrowbills) {
+//			double forfeit_fee = bill.getLate_fee() + bill.getCompensation_fee();
+			String memberName = memberModel.findByID(bill.getMember_ID()).getName();
+			int totalBook = borrow_billModel.countBook(bill.getBorrow_ID());
+
+			defaultTableModelBorrowBill.addRow(new Object[] { defaultTableModelBorrowBill.getRowCount() + 1, bill.getBorrow_ID(), memberName, totalBook,
+					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), "", bill.isStatus()? "Returned" : "Not Returned" });
+		}
+		tableBorrowBill.setModel(defaultTableModelBorrowBill);
+	}
+
+	// End NVT
 }

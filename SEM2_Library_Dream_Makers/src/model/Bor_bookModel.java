@@ -2,6 +2,7 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,4 +92,19 @@ public class Bor_bookModel {
 		}
 	}
 
+	// Start NVT
+	public boolean delete( int borrow_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("delete from bor_book where borrow_ID = ?  "); 
+			preparedStatement.setInt(1, borrow_ID);
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	// End NVT
 }

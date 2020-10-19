@@ -42,20 +42,6 @@ public class Borrow_billModel {
 		}
 	}
 
-	public Integer count(boolean status) {
-		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select count(status) as number from borrow_bill where status = ?");
-			preparedStatement.setBoolean(1, status);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.next();
-			return resultSet.getInt("number");
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			return null;
-		}
-	}
-
 	// Start NNHV
 	public Borrow_bill showBorrowBook(String card_number, int status) {
 		Borrow_bill borrow_bill = null;
@@ -147,6 +133,34 @@ public class Borrow_billModel {
 		}
 		return id;
 	}
+
+	public Integer countBook(int borrow_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select count(book_ID) as totalBook from bor_book where borrow_ID = ?");
+			preparedStatement.setInt(1, borrow_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			return resultSet.getInt("totalBook");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		
+	}
+
+	public Integer count(boolean status) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select count(status) as number from borrow_bill where status = ?");
+			preparedStatement.setBoolean(1, status);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			return resultSet.getInt("number");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
 	// End NNHV
 	
 	// GET BILLS BY MONTH AND YEAR - NST
@@ -210,4 +224,74 @@ public class Borrow_billModel {
 		return bills;
 	}
 
+	// Start NVT
+	public List<Borrow_bill> findByDate(int month , int year ){
+		try {
+			List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from borrow_bill where MONTH(borrow_date) = ? and YEAR(borrow_date) = ? "); 
+			preparedStatement.setInt(1, month);
+			preparedStatement.setInt(2, year);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				Borrow_bill borrow_bill = new Borrow_bill();
+				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
+				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
+				borrow_bill.setEmployee_ID(resultSet.getString("employee_ID"));
+				borrow_bill.setDescription(resultSet.getString("description"));
+				borrow_bill.setStatus(resultSet.getBoolean("status"));
+				borrow_bill.setBorrow_date(resultSet.getDate("borrow_date"));
+				borrow_bill.setTerm_date(resultSet.getDate("term_date"));
+				borrow_bill.setReturn_date(resultSet.getDate("return_date"));
+				borrow_bill.setDeposit_fee(resultSet.getDouble("deposit_fee"));
+				borrow_bill.setLate_fee(resultSet.getDouble("late_fee"));
+				borrow_bill.setCompensation_fee(resultSet.getDouble("compen_fee"));
+				borrow_bills.add(borrow_bill);
+			}
+			return borrow_bills;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Borrow_bill findByID(int id){
+		try {
+			Borrow_bill borrow_bill = new Borrow_bill();
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from borrow_bill where borrow_ID = ?  "); 
+			preparedStatement.setInt(1, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
+				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
+				borrow_bill.setEmployee_ID(resultSet.getString("employee_ID"));
+				borrow_bill.setDescription(resultSet.getString("description"));
+				borrow_bill.setStatus(resultSet.getBoolean("status"));
+				borrow_bill.setBorrow_date(resultSet.getDate("borrow_date"));
+				borrow_bill.setTerm_date(resultSet.getDate("term_date"));
+				borrow_bill.setReturn_date(resultSet.getDate("return_date"));
+				borrow_bill.setDeposit_fee(resultSet.getDouble("deposit_fee"));
+				borrow_bill.setLate_fee(resultSet.getDouble("late_fee"));
+				borrow_bill.setCompensation_fee(resultSet.getDouble("compen_fee"));
+			}
+			return borrow_bill;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public boolean delete( int borrow_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("delete from borrow_bill where borrow_ID = ?  "); 
+			preparedStatement.setInt(1, borrow_ID);
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	// End NVT
 }

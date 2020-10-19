@@ -7,17 +7,16 @@ public class Books {
 	private String isbn;
 	private String title;
 	private int category_ID;
-	private String publish_ID;
+	private int publish_ID;
+	private double price ; 
 	private int quantity;
-	private double price;
 
 	public Books() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, String publish_ID,
-			int quantity, double price) {
+	
+	public Books(String book_ID, String call_number, String isbn, String title, int category_ID, int publish_ID,
+			double price, int quantity) {
 		super();
 		this.book_ID = book_ID;
 		this.call_number = call_number;
@@ -25,9 +24,20 @@ public class Books {
 		this.title = title;
 		this.category_ID = category_ID;
 		this.publish_ID = publish_ID;
+		this.price = price;
 		this.quantity = quantity;
+	}
+
+
+	public double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(double price) {
 		this.price = price;
 	}
+
 
 	public String getBook_ID() {
 		return book_ID;
@@ -69,12 +79,12 @@ public class Books {
 		this.category_ID = category_ID;
 	}
 
-	public String getPublish_ID() {
+	public int getPublish_ID() {
 		return publish_ID;
 	}
 
-	public void setPublish_ID(String publish_ID) {
-		this.publish_ID = publish_ID;
+	public void setPublish_ID(int i) {
+		this.publish_ID = i;
 	}
 
 	public int getQuantity() {
@@ -84,15 +94,5 @@ public class Books {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	
-	
 
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import com.sun.mail.imap.protocol.Status;
 
 import connect.ConnectDB;
+import entities.Author;
 import entities.Books;
 import entities.Bor_book;
 import entities.Borrow_bill;
@@ -21,7 +22,7 @@ public class BooksModel {
 
 	static String sql;
 
-	public List<Books> findAll() {
+	public static List<Books> findAll() {
 		List<Books> books = new ArrayList<Books>();
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection()
@@ -35,7 +36,7 @@ public class BooksModel {
 				book.setCall_number(resultSet.getString("call_number"));
 				book.setIsbn(resultSet.getString("isbn"));
 				book.setTitle(resultSet.getString("title"));
-				book.setPublish_ID(resultSet.getString("publish_ID"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getDouble("price"));
@@ -51,102 +52,6 @@ public class BooksModel {
 		return books;
 	}
 
-	public static boolean create(Books book) {
-
-		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,quantity) values(?,?,?,?,?,?,?) ");
-
-			preparedStatement.setString(1, book.getBook_ID());
-			preparedStatement.setString(2, book.getCall_number());
-			preparedStatement.setString(3, book.getIsbn());
-			preparedStatement.setString(4, book.getTitle());
-			preparedStatement.setInt(5, book.getCategory_ID());
-			preparedStatement.setString(6, book.getPublish_ID());
-			preparedStatement.setInt(7, book.getQuantity());
-			return preparedStatement.executeUpdate() > 0;
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println(e.getMessage());
-			return false;
-		}
-	}
-
-	public static boolean update(Books book, String book_ID) {
-
-		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" update books set call_number = ? , isbn = ? , title = ? , category_ID = ? , publish_ID = ? , quantity = ? where book_ID = ?  ");
-			preparedStatement.setString(1, book.getCall_number());
-			preparedStatement.setString(2, book.getIsbn());
-			preparedStatement.setString(3, book.getTitle());
-			preparedStatement.setInt(4, book.getCategory_ID());
-			preparedStatement.setString(5, book.getPublish_ID());
-			preparedStatement.setInt(6, book.getQuantity());
-			preparedStatement.setString(7, book_ID);
-			return preparedStatement.executeUpdate() > 0;
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println(e.getMessage());
-			return false;
-		}
-	}
-
-	public static boolean delete(String book_ID) {
-		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement("delete from books where book_ID = ? ");
-			preparedStatement.setString(1, book_ID);
-			return preparedStatement.executeUpdate() > 0;
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
-			return false;
-		}
-
-	}
-
-	public String findPublish(String publish_ID) {
-		String name = null;
-		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement(" select * from publish_house where publish_ID = ?  ");
-			preparedStatement.setString(1, publish_ID);
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				name = resultSet.getString("name");
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println(e.getMessage() + " 456");
-			name = null;
-		}
-		return name;
-
-	}
-
-	public String findCategory(int category_ID) {
-		String name = null;
-		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement(" select * from category where category_ID = ?  ");
-			preparedStatement.setInt(1, category_ID);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			
-			if (resultSet.next()) {
-				name = resultSet.getString("name");
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.err.println(e.getMessage() + " 123");
-			name = null;
-		}
-		return name;
-	}
-
-	
 	// Start NNHV
 	public Books find(String id) {
 
@@ -162,7 +67,7 @@ public class BooksModel {
 				book.setIsbn(resultSet.getString("isbn"));
 				book.setTitle(resultSet.getString("title"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
-				book.setPublish_ID(resultSet.getString("publish_ID"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getDouble("price"));
 			}
@@ -190,9 +95,9 @@ public class BooksModel {
 				book.setIsbn(resultSet.getString("isbn"));
 				book.setTitle(resultSet.getString("title"));
 				book.setCategory_ID(resultSet.getInt("category_ID"));
-				book.setPublish_ID(resultSet.getString("publish_ID"));
-				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
 				book.setPrice(resultSet.getDouble("price"));
+				book.setQuantity(resultSet.getInt("quantity"));
 				books.add(book);
 			}
 		} catch (Exception e) {
@@ -252,6 +157,186 @@ public class BooksModel {
 		}
 	}
 	// End NNHV
+
+	// Start NVT
+	public String findPublish(int publish_ID) {
+		String name = null;
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement(" select * from publish_house where publish_ID = ?  ");
+			preparedStatement.setInt(1, publish_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				name = resultSet.getString("name");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			name = null;
+		}
+		return name;
+
+	}
+	
+	public static boolean create(Books book) {
+
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity) values(?,?,?,?,?,?,?,?) ");
+
+			preparedStatement.setString(1, book.getBook_ID());
+			preparedStatement.setString(2, book.getCall_number());
+			preparedStatement.setString(3, book.getIsbn());
+			preparedStatement.setString(4, book.getTitle());
+			preparedStatement.setInt(5, book.getCategory_ID());
+			preparedStatement.setInt(6, book.getPublish_ID());
+			preparedStatement.setDouble(7, book.getPrice());
+			preparedStatement.setInt(8, book.getQuantity());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	public static boolean update(Books book, String book_ID) {
+
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" update books set call_number = ? , isbn = ? , title = ? , category_ID = ? , publish_ID = ? , price = ? , quantity = ? where book_ID = ?  ");
+			preparedStatement.setString(1, book.getCall_number());
+			preparedStatement.setString(2, book.getIsbn());
+			preparedStatement.setString(3, book.getTitle());
+			preparedStatement.setInt(4, book.getCategory_ID());
+			preparedStatement.setInt(5, book.getPublish_ID());
+			preparedStatement.setInt(6, book.getQuantity());
+			preparedStatement.setDouble(7, book.getPrice());
+			preparedStatement.setString(8, book_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+
+	public static boolean delete(String book_ID) {
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement("delete from books where book_ID = ? ");
+			preparedStatement.setString(1, book_ID);
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	public static List<Books> findByBill(int borrow_ID ) {
+		List<Books> books = new ArrayList<Books>();
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement("SELECT borrow_bill.borrow_ID , books.* FROM bor_book , borrow_bill, books WHERE borrow_bill.borrow_ID = ? and borrow_bill.borrow_ID = bor_book.borrow_ID and bor_book.book_ID = books.book_ID");
+			
+			preparedStatement.setInt(1, borrow_ID );
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Books book = new Books();
+				book.setBook_ID(resultSet.getString("book_ID"));
+				book.setCall_number(resultSet.getString("call_number"));
+				book.setIsbn(resultSet.getString("isbn"));
+				book.setTitle(resultSet.getString("title"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setCategory_ID(resultSet.getInt("category_ID"));
+				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
+				books.add(book);
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			books = null;
+		}
+
+		return books;
+	}
+
+	public List<Author> findAuthor(String book_ID) {
+		List<Author> authors = new ArrayList<Author>();
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" SELECT books.title as bookTitle , author.author_ID as authorID , author.name as authorName FROM author, books ,"
+					+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
+			preparedStatement.setString(1, book_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Author author = new Author();
+				author.setAuthor_ID("authorID");
+				author.setName(resultSet.getString("authorName"));
+				authors.add(author);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			authors = null;
+		}
+		return authors;
+
+	}
+
+	public List<Books> searchBooksbyCate(int category_ID) {
+		List<Books> books = new ArrayList<Books>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from books where category_ID = ?");
+			preparedStatement.setInt(1, category_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Books book = new Books();
+				book.setBook_ID(resultSet.getString("book_ID"));
+				book.setCall_number(resultSet.getString("call_number"));
+				book.setIsbn(resultSet.getString("isbn"));
+				book.setTitle(resultSet.getString("title"));
+				book.setCategory_ID(resultSet.getInt("category_ID"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setPrice(resultSet.getDouble("price"));
+				book.setQuantity(resultSet.getInt("quantity"));
+				books.add(book);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return books;
+	}
+	
+	public String findCategory(int category_ID) {
+		String name = null;
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement(" select * from category where category_ID = ?  ");
+			preparedStatement.setInt(1, category_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				name = resultSet.getString("name");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			name = null;
+		}
+		return name;
+	}
+	// End NVT
 
 	// Get Obselete bills by month and year - NTS
 	public static List<Borrow_bill> getBills(int month, int year, int op) {
@@ -355,7 +440,7 @@ public class BooksModel {
 		return amountBook;
 	}
 
-	// GET FAMOUS BOOKS
+	// GET FAMOUS BOOKS - NTS
 	public static List<FamousBook> getFamousBook(int day, int month, int year, int option) {
 		List<FamousBook> books = new ArrayList<FamousBook>();
 
@@ -401,7 +486,7 @@ public class BooksModel {
 				return null;
 			}
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				FamousBook book = new FamousBook();
 				book.setAmount(resultSet.getInt("amount"));
 				book.setBook_ID(resultSet.getString("bookID"));

@@ -48,4 +48,42 @@ public class AuthorModel {
 		}	
 	}
 
+	// Start NVT
+	public Author findAuthorbyName(String name) {
+		Author author = new Author();
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" SELECT * FROM author where name = ? ");
+			preparedStatement.setString(1, name.trim());
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if(resultSet.next()) {
+				author.setAuthor_ID(resultSet.getString("author_ID"));
+				author.setName(resultSet.getString("name"));
+				author.setNation(resultSet.getString("nation"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			author = null;
+		}
+		return author;
+
+	}
+	public static boolean create(Author author) {
+
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					" insert into author(author_ID , name )  values(?,?) ");
+			
+			preparedStatement.setString(1, author.getAuthor_ID());
+			preparedStatement.setString(2, author.getName());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	// End NVT
 }

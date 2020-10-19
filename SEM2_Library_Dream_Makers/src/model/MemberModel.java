@@ -37,7 +37,7 @@ public class MemberModel {
 		}
 	}
 
-//Start NNHV
+	// Start NNHV
 	public Member find(String idCard) {
 		Member member = null;
 		try {
@@ -74,7 +74,33 @@ public class MemberModel {
 		}
 		return member_ID;
 	}
-//End NNHV
+	// End NNHV
+	
+	// Start NVT
+	public Member findByID(String member_ID) {
+		Member member = null;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select * from member where member_ID = ?");
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				member = new Member();
+				member.setMember_ID(resultSet.getString("member_ID"));
+				member.setName(resultSet.getString("name"));
+				member.setDob(resultSet.getDate("dob"));
+				member.setGender(resultSet.getBoolean("gender"));
+				member.setAddress(resultSet.getString("address"));
+				member.setPhone(resultSet.getString("phone"));
+				member.setCard_number(resultSet.getString("card_number"));
+				member.setPhoto(resultSet.getString("photo"));
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			member = null;
+		}
+		return member;
+	}
+	// End NVT
 
 	// Get card number by id - NTS
 	public static String getCardNoById(String member_ID) {
@@ -173,6 +199,7 @@ public class MemberModel {
 		return members;
 	}
 
+	// GET NEW MEMBER - NTS
 	public static List<Member> getAllNewMember(int day, int month, int year, int option) {
 		List<Member> newMembers = new ArrayList<Member>();
 

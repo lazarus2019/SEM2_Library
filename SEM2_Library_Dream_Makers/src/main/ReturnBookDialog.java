@@ -231,23 +231,24 @@ public class ReturnBookDialog extends JDialog {
 		borrow_bill.setReturn_date(new java.sql.Date(date.getTime()));
 		borrow_bill.setLate_fee(lateFee);
 		borrow_bill.setCompensation_fee(compensationFee);
+		// update bor_book
+		Bor_bookModel bor_bookModel = new Bor_bookModel();
+		int borrow_ID = borrow_billModel.getReturnId(member_ID, false);
+		int status = 1;
+		bor_bookModel.update(status, borrow_ID);
+		System.out.println(borrow_ID);
+		//update quantity of Books when Lost
+		BooksModel booksModel = new BooksModel();
+		for(String idBookLost : bookLost) {
+			booksModel.updateBookLost(idBookLost);			
+		}
 		if (borrow_billModel.update(borrow_bill, member_ID)) {
 			JOptionPane.showMessageDialog(null, "Successful!", "Notification", JOptionPane.OK_OPTION);
 		} else {
 			JOptionPane.showMessageDialog(null, "Failed", "Notification", JOptionPane.OK_OPTION);
 		}
 
-		// update bor_book
-		Bor_bookModel bor_bookModel = new Bor_bookModel();
-		int borrow_ID = borrow_billModel.getReturnId(member_ID, false);
-		int status = 1;
-		bor_bookModel.update(status, borrow_ID);
-		
-		//update quantity of Books when Lost
-		BooksModel booksModel = new BooksModel();
-		for(String idBookLost : bookLost) {
-			booksModel.updateBookLost(idBookLost);			
-		}
+
 
 		
 		this.dispose();
