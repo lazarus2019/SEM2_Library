@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 
+import com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations.PrivateKeyResolver;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
@@ -442,6 +443,16 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(radioMale);
 		
 		lblNewLabel_1 = new JLabel("Change Password");
+		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					btnChangePW_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_1.setForeground(Color.BLUE);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 11));
@@ -452,8 +463,6 @@ public class settingDialog extends JDialog {
 	}
 
 	private void loadData() {
-		// Get Employee Data
-		getEmployee(employee_ID);
 		// Declare Image
 		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
 		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", emailIcon);
@@ -495,12 +504,7 @@ public class settingDialog extends JDialog {
 			}
 		}
 	}
-
-	// Get Employee
-	private void getEmployee(String employee_ID) {
-		employee = EmployeeModel.getById(employee_ID);
-	}
-
+	
 	// Change email after submit
 	public static void changeRealEmail(String email) {
 		txtEmail.setText(email);
