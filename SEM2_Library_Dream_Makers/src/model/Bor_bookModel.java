@@ -80,11 +80,12 @@ public class Bor_bookModel {
 		}
 	}
 	
-	public boolean update(int status, int borrow_ID) {
+	public boolean update(int status, int borrow_ID, String book_ID) {
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("update bor_book set status = ? where borrow_ID = ?");
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("update bor_book set status = ? where borrow_ID = ? and book_ID = ?");
 			preparedStatement.setInt(1, status);
 			preparedStatement.setInt(2, borrow_ID);
+			preparedStatement.setString(3, book_ID);
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

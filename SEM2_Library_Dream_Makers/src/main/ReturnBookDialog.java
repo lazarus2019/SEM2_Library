@@ -34,6 +34,7 @@ import model.MemberModel;
 import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 
 public class ReturnBookDialog extends JDialog {
 
@@ -195,6 +196,7 @@ public class ReturnBookDialog extends JDialog {
 		scrollPane.getViewport().setBackground(Color.WHITE);
 
 		JButton jbtnReturn = new JButton("Return");
+		jbtnReturn.setIcon(new ImageIcon(ReturnBookDialog.class.getResource("/data/icon/return.png")));
 		jbtnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnReturn_actionPerformed(arg0);
@@ -206,6 +208,7 @@ public class ReturnBookDialog extends JDialog {
 		panel_1.add(jbtnReturn);
 
 		JButton jbtnBack = new JButton("Back");
+		jbtnBack.setIcon(new ImageIcon(ReturnBookDialog.class.getResource("/data/icon/back.png")));
 		jbtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnBack_actionPerformed(arg0);
@@ -231,26 +234,26 @@ public class ReturnBookDialog extends JDialog {
 		borrow_bill.setReturn_date(new java.sql.Date(date.getTime()));
 		borrow_bill.setLate_fee(lateFee);
 		borrow_bill.setCompensation_fee(compensationFee);
+		
 		// update bor_book
-		Bor_bookModel bor_bookModel = new Bor_bookModel();
-		int borrow_ID = borrow_billModel.getReturnId(member_ID, false);
-		int status = 1;
-		bor_bookModel.update(status, borrow_ID);
-		System.out.println(borrow_ID);
-		//update quantity of Books when Lost
 		BooksModel booksModel = new BooksModel();
-		for(String idBookLost : bookLost) {
-			booksModel.updateBookLost(idBookLost);			
+		Bor_bookModel bor_bookModel = new Bor_bookModel();
+		int borrow_ID = borrow_billModel.getReturnId(member_ID);
+		for(String id : idBook) {
+			bor_bookModel.update(1, borrow_ID, id);
 		}
+		if(!bookLost.isEmpty()) {
+			for(String idbooklost : bookLost) {
+				booksModel.updateBookLost(idbooklost);	 //update quantity of Books when Lost
+				bor_bookModel.update(3, borrow_ID, idbooklost);
+			}
+		}
+		
 		if (borrow_billModel.update(borrow_bill, member_ID)) {
 			JOptionPane.showMessageDialog(null, "Successful!", "Notification", JOptionPane.OK_OPTION);
 		} else {
 			JOptionPane.showMessageDialog(null, "Failed", "Notification", JOptionPane.OK_OPTION);
 		}
-
-
-
-		
 		this.dispose();
 		setVisible(false);
 	}
@@ -278,20 +281,21 @@ public class ReturnBookDialog extends JDialog {
 	// Show all Information when return
 	public void showInformation() {
 		int number = 1;
-		String idBook = null;
-		String title = null;
+		String idBookc = null;
+		String titlec = null;
 		String lateFeeString = Double.toString(lateFee);
-		String compensationFeeString = Double.toString(compensationFee);
+		double c = Math.ceil(compensationFee*100)/100;
+		String compensationFeeString = Double.toString(c);
 		jtextFieldLibrarian.setText(librarian);
 		jtextFieldIDCard.setText(idCard);
 		jtextFieldName.setText(name);
 		jtextFieldDateReturn.setText(simpleDateFormat.format(date));
 		jtextFieldLateFee.setText("$" + lateFeeString);
 		jtextFieldCompensationFee.setText("$" + compensationFeeString);
-		for (int i = 0; i < ReturnBookDialog.idBook.size(); i++) {
-			idBook = ReturnBookDialog.idBook.get(i);
-			title = ReturnBookDialog.title.get(i);
-			defaultTableModelListBook.addRow(new Object[] { number++, idBook, title });
+		for (int i = 0; i < idBook.size(); i++) {
+			idBookc = idBook.get(i);
+			titlec = title.get(i);
+			defaultTableModelListBook.addRow(new Object[] { number++, idBookc, titlec });
 			jtableListofBookReturn.setModel(defaultTableModelListBook);
 		}
 

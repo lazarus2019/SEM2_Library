@@ -429,6 +429,7 @@ public class invoicePanel extends JPanel {
 		jpanelMember.add(jtextFieldName);
 
 		JButton jbtnBorrowBook = new JButton("Borrow Book");
+		jbtnBorrowBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/borrowBook.png")));
 		jbtnBorrowBook.setBounds(580, 24, 196, 37);
 		jpanelissueBook.add(jbtnBorrowBook);
 		jbtnBorrowBook.addActionListener(new ActionListener() {
@@ -687,7 +688,6 @@ public class invoicePanel extends JPanel {
 			} else {
 				lateFee = 0;
 			}
-			bookLost = new ArrayList<String>();
 			if (jradiobuttonLost.isSelected()) {
 				compendationFee += percent(selectedIndexRow);
 				bookLost.add(idBook);
@@ -784,7 +784,6 @@ public class invoicePanel extends JPanel {
 					ReturnBookDialog.date = simpleDateFormat.parse(jtextFieldReturnDate.getText());
 					ReturnBookDialog.lateFee = lateFee * defaultTableModelReturningBook.getRowCount();
 					ReturnBookDialog.librarian = employee.getName();
-					ReturnBookDialog.status = jtextAreaStatus.getText();
 					ReturnBookDialog.idBook = new ArrayList<String>();
 					ReturnBookDialog.title = new ArrayList<String>();
 					ReturnBookDialog.bookLost = new ArrayList<String>();
@@ -821,8 +820,18 @@ public class invoicePanel extends JPanel {
 
 	// Show BorrowBookDialog
 	public void jbtnBorrowBook_actionPerformed(ActionEvent arg0) {
+		Borrow_billModel borrow_billModel = new Borrow_billModel();
+		MemberModel memberModel = new MemberModel();
+		String idCard = jtextFieldIDCardB.getText();
+		String member_ID = memberModel.getMemberID(idCard);
 		if (!jtextFieldName.getText().isEmpty() && defaultTableModelSelectedBook.getRowCount() > 0) {
-			if (getExpirationDate(jtextFieldIDCardB.getText()) >= 0) {
+			if (getExpirationDate(jtextFieldIDCardB.getText()) < 0) {
+				JOptionPane.showMessageDialog(null, "The card has expired!", "Notification", JOptionPane.OK_OPTION);
+
+			} else if (borrow_billModel.countNotReturn(member_ID) == 1) {
+				JOptionPane.showMessageDialog(null, "Return the book before borrowing, please!", "Notification",
+						JOptionPane.OK_OPTION);
+			} else {
 				Date createDate = jdateChooserCreateDate.getDate();
 				BorrowBookDialog.idCard = jtextFieldIDCardB.getText();
 				BorrowBookDialog.name = jtextFieldName.getText();
@@ -839,8 +848,6 @@ public class invoicePanel extends JPanel {
 				}
 				BorrowBookDialog BorrowBookDialog = new BorrowBookDialog();
 				BorrowBookDialog.setVisible(true);
-			} else {
-				JOptionPane.showMessageDialog(null, "The card has expired!", "Notification", JOptionPane.OK_OPTION);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Required to enter information!", "Notification",
@@ -850,15 +857,15 @@ public class invoicePanel extends JPanel {
 
 	// Remove 1 row of Returning Books: Delete button
 	public void jbtnDeleteR_actionPerformed(ActionEvent arg0) {
+		int number = 1;
 		int selectedIndexRow = jtableReturningBook.getSelectedRow();
 		String idBook = jtableReturningBook.getValueAt(selectedIndexRow, 1).toString();
 		if (jtableReturningBook.isRowSelected(selectedIndexRow)) {
-			for (String idBookLost : bookLost) {
-				if (idBookLost == idBook) {
+			for (int i = 0; i < bookLost.size(); i++) {
+				if (idBook.equals(bookLost.get(i))) {
+					bookLost.remove(idBook);
 					compendationFee -= percent(selectedIndexRow);
-					if (idBook.equals(idBookLost)) {
-						bookLost.remove(idBookLost);
-					}
+
 				} else {
 					compendationFee -= 0;
 				}
@@ -871,19 +878,28 @@ public class invoicePanel extends JPanel {
 		}
 		defaultTableModelReturningBook.removeRow(selectedIndexRow);
 		jtableReturningBook.setModel(defaultTableModelReturningBook);
+		for (int i = 0; i < defaultTableModelReturningBook.getRowCount(); i++) {
+			jtableReturningBook.setValueAt(number, i, 0);
+			number++;
+		}
 	}
 
 	// Remove 1 row of Selected Books: Delete button
 	public void jbtnDelete_actionPerformed(ActionEvent arg0) {
+		int number = 1;
 		int selectedIndexRow = jtableSelectedBook.getSelectedRow();
+		String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
 		for (int i = 0; i < bookID.size(); i++) {
-			String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
 			if (idBook.equals(bookID.get(i))) {
 				bookID.remove(i);
 			}
 		}
 		defaultTableModelSelectedBook.removeRow(selectedIndexRow);
 		jtableSelectedBook.setModel(defaultTableModelSelectedBook);
+		for (int i = 0; i < defaultTableModelSelectedBook.getRowCount(); i++) {
+			jtableSelectedBook.setValueAt(number, i, 0);
+			number++;
+		}
 	}
 
 	// click mouse select from Find Books into Selected Books
@@ -978,7 +994,6 @@ public class invoicePanel extends JPanel {
 		jtextFieldNumberofLateDate.setText(null);
 		jtextFieldLateFee.setText(null);
 		jradiobuttonReturn.isSelected();
-		jtextAreaStatus.setText(null);
 		jtextFieldCompensationFee.setText(null);
 		/**/
 		String idCard = jtextFieldIDCardR.getText();
@@ -1021,7 +1036,9 @@ public class invoicePanel extends JPanel {
 		jtextFieldTitle.setText("");
 		String idCard = jtextFieldIDCardB.getText();
 		if (!idCard.isEmpty()) {
+			Borrow_billModel borrow_billModel = new Borrow_billModel();
 			MemberModel memberModel = new MemberModel();
+			String member_ID = memberModel.getMemberID(idCard);
 			member = memberModel.find(idCard);
 			if (member == null) {
 				jtextFieldName.setText("");
@@ -1033,6 +1050,9 @@ public class invoicePanel extends JPanel {
 				ImageIcon icon = new ImageIcon(photo);
 				jlabelImage.setIcon(icon);
 				JOptionPane.showMessageDialog(null, "The card has expired!", "Notification", JOptionPane.OK_OPTION);
+			} else if (borrow_billModel.countNotReturn(member_ID) == 1) {
+				JOptionPane.showMessageDialog(null, "Return the book before borrowing, please!", "Notification",
+						JOptionPane.OK_OPTION);
 			} else {
 				String name = member.getName();
 				String photo = member.getPhoto().toString();

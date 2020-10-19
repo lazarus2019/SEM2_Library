@@ -186,7 +186,7 @@ public class BooksModel {
 
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity , isDelete) values(?,?,?,?,?,?,?,?) ");
+					" insert into books(book_ID,call_number,isbn,title,category_ID,publish_ID,price,quantity,isDelete) values(?,?,?,?,?,?,?,?,?) ");
 
 			preparedStatement.setString(1, book.getBook_ID());
 			preparedStatement.setString(2, book.getCall_number());
@@ -196,6 +196,7 @@ public class BooksModel {
 			preparedStatement.setInt(6, book.getPublish_ID());
 			preparedStatement.setDouble(7, book.getPrice());
 			preparedStatement.setInt(8, book.getQuantity());
+			preparedStatement.setBoolean(9, false);
 			
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {

@@ -164,6 +164,37 @@ public class Borrow_billModel {
 			return null;
 		}
 	}
+	
+	public Integer getReturnId(String memberId) {
+		int id = 0;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select borrow_ID from borrow_bill where status = false and member_ID = ?");
+			preparedStatement.setString(1, memberId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				id = resultSet.getInt("borrow_ID");
+			}		
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
+		return id;
+	}
+	
+	public Integer countNotReturn(String member_ID) {
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select count(status) as number from borrow_bill where member_ID = ? and status = false");
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			return resultSet.getInt("number");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
 	// End NNHV
 	
 	// GET BILLS BY MONTH AND YEAR - NST
