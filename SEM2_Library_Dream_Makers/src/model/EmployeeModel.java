@@ -3,7 +3,9 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,6 +17,146 @@ import main.bookPanel;
 public class EmployeeModel {
 	static String sql;
 	static String charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+	// Start NTA
+	// Find all - NTannh
+	public List<Employee> findAll() {
+		sql = "SELECT * FROM employee";
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Employee employee = new Employee();
+				employee.setEmployee_ID(resultSet.getString("employee_ID"));
+				employee.setUsername(resultSet.getString("username"));
+				employee.setName(resultSet.getString("name"));
+				employee.setDob(simpleDateFormat.parse(resultSet.getString("dob")));
+				employee.setGender(resultSet.getBoolean("gender"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setPhone(resultSet.getString("phone"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setLevel(resultSet.getString("level"));
+				employees.add(employee);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			employees = null;
+		}
+		return employees;
+	}
+
+	// Search Size
+
+	public static List<Employee> searchEmployee(String keyword) {
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from employee where employee_ID like ?");
+			preparedStatement.setString(1, "%" + keyword + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Employee employee = new Employee();
+				employee.setEmployee_ID(resultSet.getString("employee_ID"));
+				employee.setName(resultSet.getString("name"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setLevel(resultSet.getString("level"));
+				employees.add(employee);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return employees;
+	}
+
+	// Search Combobox
+	public static List<Employee> searchEmployeeCom(String keyword) {
+		List<Employee> employees = new ArrayList<Employee>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from employee where level like ?");
+			preparedStatement.setString(1, "%" + keyword + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Employee employee = new Employee();
+				employee.setEmployee_ID(resultSet.getString("employee_ID"));
+				employee.setName(resultSet.getString("name"));
+				employee.setAddress(resultSet.getString("address"));
+				employee.setEmail(resultSet.getString("email"));
+				employee.setLevel(resultSet.getString("level"));
+				employees.add(employee);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return employees;
+	}
+
+	// Delete - NTanh
+	public static boolean delete(String employee_ID) {
+		sql = "delete from employee where employee_ID = ?";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, employee_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	// Add employee - NT
+	public static boolean Add(Employee employee) {
+		sql = "INSERT into employee(employee_ID, username, password, name, dob, gender, address, phone, email, level) values(?,?,?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, employee.getEmployee_ID());
+			preparedStatement.setString(2, employee.getUsername());
+			preparedStatement.setString(3, employee.getPassword());
+			preparedStatement.setString(4, employee.getName());
+			preparedStatement.setDate(5, new java.sql.Date(employee.getDob().getTime()));
+			preparedStatement.setBoolean(6, employee.isGender());
+			preparedStatement.setString(7, employee.getAddress());
+			preparedStatement.setString(8, employee.getPhone());
+			preparedStatement.setString(9, employee.getEmail());
+			preparedStatement.setString(10, employee.getLevel());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	// Update - NTanh
+	public static boolean update(Employee employee, String employee_ID) {
+		sql = " update employee set employee_ID = ? , username = ? , password = ? , name = ? , dob = ? , gender = ? , address = ? , phone = ? , email = ? , level = ? where employee_ID = ? ";
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+
+			preparedStatement.setString(1, employee.getEmployee_ID());
+			preparedStatement.setString(2, employee.getUsername());
+			preparedStatement.setString(3, employee.getPassword());
+			preparedStatement.setString(4, employee.getName());
+			preparedStatement.setDate(5, new java.sql.Date(employee.getDob().getTime()));
+			preparedStatement.setBoolean(6, employee.isGender());
+			preparedStatement.setString(7, employee.getAddress());
+			preparedStatement.setString(8, employee.getPhone());
+			preparedStatement.setString(9, employee.getEmail());
+			preparedStatement.setString(10, employee.getLevel());
+			preparedStatement.setString(11, employee_ID);
+			return preparedStatement.executeUpdate() > 0;
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+
+	}
+	// End NTA
 
 	// Get amount employee - NTS
 	public static int getAmountEmployee() {

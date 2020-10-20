@@ -64,12 +64,12 @@ public class CheckValidate {
 		}
 	}
 
-//	
-//	// Check password validate
-//	public static boolean checkPassword(String password) {
-//		
-//	}
-//	
+	
+	// Check password validate
+	public static boolean checkPassword(String password) {
+		return password.length() >= 5;
+	}
+	
 	// Check username validate
 	public static boolean checkUsername(String username) {
 		if (username.length() > 18) {

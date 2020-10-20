@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import checking.CheckValidate;
 import entities.Employee;
 import model.EmployeeModel;
 
@@ -253,13 +254,17 @@ public class ChangePW extends JDialog {
 					showMessenger("New password must be different from old password");
 				} else {
 					if (newPass.equals(repeatPass)) {
-						String password_hash = employeeModel.encryptPassword(newPass);
-						if (employeeModel.changePassword(employee.getEmployee_ID(), password_hash)) {
-							showMessenger("Change password success!");
-							this.setVisible(false);
-							this.dispose();
-						} else {
-							showMessenger("Something was wrong! Please try again");
+						if (CheckValidate.checkPassword(newPass)) {
+							String password_hash = employeeModel.encryptPassword(newPass);
+							if (employeeModel.changePassword(employee.getEmployee_ID(), password_hash)) {
+								showMessenger("Change password success!");
+								this.setVisible(false);
+								this.dispose();
+							} else {
+								showMessenger("Something was wrong! Please try again");
+							}
+						}else {
+							showMessenger("Password must at least 5 characters");							
 						}
 					} else {
 						showMessenger("Repeat Password not match!");

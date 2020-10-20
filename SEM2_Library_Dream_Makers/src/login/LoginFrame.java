@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import checking.CheckValidate;
 import entities.Employee;
 import main.AdminJFrame;
 import main.EmployeeJFrame;
@@ -187,9 +188,9 @@ public class LoginFrame extends JFrame {
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode()==KeyEvent.VK_ENTER){
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					loginApp();
-			    }
+				}
 			}
 		});
 		passwordField.setBorder(null);
@@ -264,6 +265,7 @@ public class LoginFrame extends JFrame {
 					showMessenger("Something was wrong! Please try again");
 				}
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				panelMininize.setBackground(new Color(87, 87, 87));
@@ -333,7 +335,7 @@ public class LoginFrame extends JFrame {
 	private void btnLogin_actionPerformed(ActionEvent e) {
 		loginApp();
 	}
-	
+
 	private void loginApp() {
 		username = usernameField.getText().trim();
 		password = String.valueOf(passwordField.getPassword());
@@ -344,24 +346,28 @@ public class LoginFrame extends JFrame {
 			if (employee == null) {
 				showMessenger("Username does not exist!");
 			} else {
-				String password_hash = employee.getPassword();
-				if (BCrypt.checkpw(password, password_hash)) {
-					String level = employee.getLevel();
-					if(level.equals("admin")) {
-						this.setVisible(false);
-						AdminJFrame.employeeMain = employee;
-						AdminJFrame adminJFrame = new AdminJFrame();
-						adminJFrame.setVisible(true);
-						this.dispose();						
-					}else if(level.equals("librarian")){
-						this.setVisible(false);
-						EmployeeJFrame.employeeMain = employee;
-						EmployeeJFrame employeeJFrame = new EmployeeJFrame();
-						employeeJFrame.setVisible(true);
-						this.dispose();		
+				if (CheckValidate.checkPassword(password)) {
+					String password_hash = employee.getPassword();
+					if (BCrypt.checkpw(password, password_hash)) {
+						String level = employee.getLevel();
+						if (level.equals("admin")) {
+							this.setVisible(false);
+							AdminJFrame.employeeMain = employee;
+							AdminJFrame adminJFrame = new AdminJFrame();
+							adminJFrame.setVisible(true);
+							this.dispose();
+						} else if (level.equals("librarian")) {
+							this.setVisible(false);
+							EmployeeJFrame.employeeMain = employee;
+							EmployeeJFrame employeeJFrame = new EmployeeJFrame();
+							employeeJFrame.setVisible(true);
+							this.dispose();
+						}
+					} else {
+						showMessenger("Wrong password!");
 					}
-				}else {
-					showMessenger("Wrong password!");
+				} else {
+					showMessenger("Password must at least 5 characters");		
 				}
 			}
 		}
@@ -411,7 +417,7 @@ public class LoginFrame extends JFrame {
 			return null;
 		}
 	}
-	
+
 	// Show error message
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);

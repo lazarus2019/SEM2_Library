@@ -197,7 +197,7 @@ public class ChangeEmail extends JDialog {
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_1.setBounds(56, 88, 141, 25);
 		panel.add(lblNewLabel_1_1);
-		
+
 		newEmail = new JTextField();
 		newEmail.setBounds(24, 47, 258, 25);
 		panel.add(newEmail);
@@ -205,80 +205,84 @@ public class ChangeEmail extends JDialog {
 
 		loadData();
 	}
-	
-	// Load data
-		private void loadData() {			
-			ImageIcon lockIconn = resizeImg("src/data/loginForm/lock.png", lockIcon);			
-			lockIcon.setIcon(lockIconn);
-			ImageIcon mailIconn = resizeImg("src/data/loginForm/mail.png", mailIcon);
-			mailIcon.setIcon(mailIconn);
-			
-		}
 
-		// Submit change password
-		private void btnSubmit_mouseClicked(MouseEvent e) {
-			String newE = newEmail.getText().trim();
-			String password = String.valueOf(txtPW.getPassword());
-			if(newE.isEmpty() || password.isEmpty()) {
-				showMessenger("Please fill out all fields!");
-			}else {
-				CheckValidate checkValidate = new CheckValidate();
-				if(checkValidate.checkEmail(newE)) {
+	// Load data
+	private void loadData() {
+		ImageIcon lockIconn = resizeImg("src/data/loginForm/lock.png", lockIcon);
+		lockIcon.setIcon(lockIconn);
+		ImageIcon mailIconn = resizeImg("src/data/loginForm/mail.png", mailIcon);
+		mailIcon.setIcon(mailIconn);
+
+	}
+
+	// Submit change password
+	private void btnSubmit_mouseClicked(MouseEvent e) {
+		String newE = newEmail.getText().trim();
+		String password = String.valueOf(txtPW.getPassword());
+		if (newE.isEmpty() || password.isEmpty()) {
+			showMessenger("Please fill out all fields!");
+		} else {
+			CheckValidate checkValidate = new CheckValidate();
+			if (checkValidate.checkEmail(newE)) {
+				if (CheckValidate.checkPassword(password)) {
 					Employee employee_check = employeeModel.checkLogin(employee.getUsername());
 					String passDB = employee_check.getPassword();
-					if(BCrypt.checkpw(password, passDB)){
-						if(employeeModel.changeEmail(employee.getEmployee_ID(), newE)) {
+					if (BCrypt.checkpw(password, passDB)) {
+						if (employeeModel.changeEmail(employee.getEmployee_ID(), newE)) {
 							showMessenger("Change email success!");
 							this.setVisible(false);
 							settingDialog.changeRealEmail(newE);
 							this.dispose();
-						}else {
+						} else {
 							showMessenger("Something was wrong! Please try again");
 						}
-					}else {
+					} else {
 						showMessenger("Wrong password!");
 					}
 				}else {
-					showMessenger("Wrong type mail\n" + "Sample: abcxyz@gmail.com\n" + "Or: abcxyz@GMAIL.COM");
+					showMessenger("Password must at least 5 characters");			
 				}
-			}
-		}
-
-		// Close the dialog
-		private void btnClose_mouseClicked(MouseEvent e) {
-			this.setVisible(false);
-			this.dispose();
-		}
-
-		// Show error message
-		private void showMessenger(String mess) {
-			JOptionPane.showMessageDialog(null, mess);
-		}
-
-		// Drag & move window
-		private void panelTitle_mouseDragged(MouseEvent e) {
-			xPosition = e.getXOnScreen();
-			yPosition = e.getYOnScreen();
-			this.setLocation(xPosition - mouseX, yPosition - mouseY);
-		}
-
-		private void panelTitle_mouseMoved(MouseEvent e) {
-			mouseX = e.getX();
-			mouseY = e.getY();
-		}
-
-		// Resize Image
-		private ImageIcon resizeImg(String imgPath, JLabel jName) {
-			if (imgPath != null) {
-				ImageIcon myImg = null;
-				myImg = new ImageIcon(imgPath);
-				Image img = myImg.getImage();
-				Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
-				ImageIcon icon = new ImageIcon(img2);
-				return icon;
 			} else {
-				showMessenger("Image direction not path!");
-				return null;
+				showMessenger("Wrong type mail\n" + "Sample: abcxyz@gmail.com\n" + "Or: abcxyz@GMAIL.COM");
 			}
 		}
+	}
+
+	// Close the dialog
+	private void btnClose_mouseClicked(MouseEvent e) {
+		this.setVisible(false);
+		this.dispose();
+	}
+
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
+	}
+
+	// Drag & move window
+	private void panelTitle_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+
+	private void panelTitle_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+
+	// Resize Image
+	private ImageIcon resizeImg(String imgPath, JLabel jName) {
+		if (imgPath != null) {
+			ImageIcon myImg = null;
+			myImg = new ImageIcon(imgPath);
+			Image img = myImg.getImage();
+			Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon icon = new ImageIcon(img2);
+			return icon;
+		} else {
+			showMessenger("Image direction not path!");
+			return null;
+		}
+	}
 }
