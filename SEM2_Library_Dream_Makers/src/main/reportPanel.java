@@ -84,9 +84,9 @@ public class reportPanel extends JPanel {
 	private static DefaultTableModel tableModel = null;
 	private static DefaultTableModel fBookModel = null;
 	private static DefaultTableModel fMemberModel = null;
-	
+
 	// Next, previous pageIndex
-	private final TableRowSorter<TableModel> sorter = null;
+	private static TableRowSorter<TableModel> sorter = null;
 	private final int itemsPerPage = 21;
 	private int maxPageIndex;
 	private int currentPageIndex = 1;
@@ -215,12 +215,12 @@ public class reportPanel extends JPanel {
 		btnSearchObsolete.setHorizontalAlignment(SwingConstants.CENTER);
 		btnSearchObsolete.setBounds(151, 61, 113, 35);
 		panel_2.add(btnSearchObsolete);
-		
+
 		chbxMonthM = new JCheckBox("Month");
 		chbxMonthM.setBackground(new Color(245, 244, 252));
 		chbxMonthM.setBounds(10, 47, 97, 23);
 		panel_2.add(chbxMonthM);
-		
+
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Year");
 		chckbxNewCheckBox_1.setEnabled(false);
 		chckbxNewCheckBox_1.setSelected(true);
@@ -260,44 +260,80 @@ public class reportPanel extends JPanel {
 		});
 		statusBox.setBounds(679, 11, 89, 25);
 		panel_3.add(statusBox);
-		
+
 		firstBtn = new JButton("|<");
+		firstBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					firstBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		firstBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		firstBtn.setBackground(new Color(30, 106, 210));
 		firstBtn.setForeground(new Color(255, 255, 255));
 		firstBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		firstBtn.setBounds(482, 415, 50, 25);
 		panel_3.add(firstBtn);
-		
+
 		preBtn = new JButton("<");
+		preBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					preBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		preBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		preBtn.setBackground(new Color(30, 106, 210));
 		preBtn.setForeground(new Color(255, 255, 255));
 		preBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		preBtn.setBounds(540, 415, 50, 25);
 		panel_3.add(preBtn);
-		
+
 		lastBtn = new JButton(">|");
+		lastBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					lastBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		lastBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lastBtn.setBackground(new Color(30, 106, 210));
 		lastBtn.setForeground(new Color(255, 255, 255));
 		lastBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lastBtn.setBounds(721, 415, 50, 25);
 		panel_3.add(lastBtn);
-		
+
 		nextBtn = new JButton(">");
+		nextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					nextBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		nextBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		nextBtn.setBackground(new Color(30, 106, 210));
 		nextBtn.setForeground(new Color(255, 255, 255));
 		nextBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		nextBtn.setBounds(663, 415, 50, 25);
 		panel_3.add(nextBtn);
-		
+
 		maxIndex = new JLabel("");
 		maxIndex.setFont(new Font("Tahoma", Font.BOLD, 11));
 		maxIndex.setBounds(626, 415, 34, 25);
 		panel_3.add(maxIndex);
-		
+
 		numPage = new JTextField();
 		numPage.setBounds(596, 415, 27, 25);
 		panel_3.add(numPage);
@@ -517,6 +553,7 @@ public class reportPanel extends JPanel {
 		};
 		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Day late" };
 		tableModel.setColumnIdentifiers(columns);
+		sorter = new TableRowSorter<TableModel>(tableModel);
 		tableObsolete.setModel(tableModel);
 
 		tableObsolete.getTableHeader().setReorderingAllowed(false);
@@ -536,7 +573,31 @@ public class reportPanel extends JPanel {
 		tableFindBookHeader.setBackground(new Color(223, 233, 242));
 		tableFindBookHeader.setForeground(Color.BLACK);
 	}
-	
+
+	// Go to first page
+	private void firstBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex = 1;
+		initFilterAndButton();
+	}
+
+	// Go to previous page
+	private void preBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex -= 1;
+		initFilterAndButton();
+	}
+
+	// Go to next page
+	private void nextBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex += 1;
+		initFilterAndButton();
+	}
+
+	// Go to last page
+	private void lastBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex = maxPageIndex;
+		initFilterAndButton();
+	}
+
 	// Change value of table
 	private void initFilterAndButton() {
 		sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
@@ -627,24 +688,28 @@ public class reportPanel extends JPanel {
 		int year = yearChooser.getYear();
 		int status = statusBox.getSelectedIndex() == 0 ? 1 : 3;
 		int op = 1;
-		if(chbxMonthM.isSelected()) {
+		if (chbxMonthM.isSelected()) {
 			op = 2;
 		}
-		if(status == 1) {
+		if (status == 1) {
 			tableTitle.setText("Obselete Books");
-		}if(status == 3) {
+		}
+		if (status == 3) {
 			tableTitle.setText("Lost Books");
 		}
 		List<Borrow_bill> books = booksModel.getBills(month, year, op, status);
 		if (books != null) {
 			obbs = booksModel.getObseleteBook(books, status);
+			tableObsolete.setFillsViewportHeight(true);
+			tableObsolete.setRowSorter(sorter);
 			tableModel.getDataVector().removeAllElements();
 			tableModel.fireTableDataChanged();
 			for (ObseleteBook obb : obbs) {
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, obb.getCard_number(),
 						obb.getEmployee_name(), obb.getTitle(), obb.getInvoice_ID(), spdf.format(obb.getReturn_date()),
-						spdf.format(obb.getTerm_date())});
+						spdf.format(obb.getTerm_date()) });
 			}
+			tableObsolete.setModel(tableModel);
 			int rowCount = tableModel.getRowCount();
 			int v = rowCount % itemsPerPage == 0 ? 0 : 1;
 			maxPageIndex = rowCount / itemsPerPage + v;
@@ -667,7 +732,6 @@ public class reportPanel extends JPanel {
 					initFilterAndButton();
 				}
 			});
-			tableObsolete.setModel(tableModel);
 		} else {
 			showMessenger("Don't have any record");
 		}
@@ -866,10 +930,10 @@ public class reportPanel extends JPanel {
 
 	// Dialog details
 	private void billBookAm_mouseClicked(MouseEvent e) {
-		if(bills != null) {
+		if (bills != null) {
 			ReportDialog.titlePanel = "Borrow Bill";
 			ReportDialog.bills = bills;
-			ReportDialog.columns = new String[] {"No", "Bill ID", "Member", "Status", "Borrow date"};
+			ReportDialog.columns = new String[] { "No", "Bill ID", "Member", "Status", "Borrow date" };
 			ReportDialog.option = "bill";
 			ReportDialog reportDialog = new ReportDialog();
 			reportDialog.setVisible(true);
@@ -877,10 +941,10 @@ public class reportPanel extends JPanel {
 	}
 
 	private void newMemberAm_mouseClicked(MouseEvent e) {
-		if(newMembers != null) {
+		if (newMembers != null) {
 			ReportDialog.titlePanel = "New Member";
 			ReportDialog.newMembers = newMembers;
-			ReportDialog.columns = new String[] {"No", "ID", "Name", "ID Card", "Created date"};
+			ReportDialog.columns = new String[] { "No", "ID", "Name", "ID Card", "Created date" };
 			ReportDialog.option = "member";
 			ReportDialog reportDialog = new ReportDialog();
 			reportDialog.setVisible(true);
