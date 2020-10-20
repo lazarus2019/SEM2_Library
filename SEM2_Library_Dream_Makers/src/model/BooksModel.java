@@ -18,6 +18,7 @@ import entities.Bor_book;
 import entities.Borrow_bill;
 import entities.FamousBook;
 import entities.ObseleteBook;
+import entities.StatisticalBook;
 
 public class BooksModel {
 
@@ -588,7 +589,7 @@ public class BooksModel {
 			amountBook = resultSet.getInt("amountB");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-		}finally {
+		} finally {
 			if (con != null)
 				try {
 					con.close();
@@ -656,7 +657,7 @@ public class BooksModel {
 			}
 		} catch (Exception e) {
 			return null;
-		}finally {
+		} finally {
 			if (con != null)
 				try {
 					con.close();
@@ -666,6 +667,41 @@ public class BooksModel {
 				}
 		}
 		return books;
+	}
+
+	// GET ALL BOOK FROM BORROW BOOK - NTS
+	public static List<StatisticalBook> getAllBooks(List<Borrow_bill> bills) {
+		List<StatisticalBook> allBooks = new ArrayList<StatisticalBook>();
+		for (Borrow_bill bill : bills) {
+			Connection con = ConnectDB.getConnection();
+			sql = "SELECT title AS tt, b.status AS b_status FROM bor_book b, books bs WHERE borrow_ID = ? AND b.book_ID = bs.book_ID";
+			try {
+				PreparedStatement preparedStatement = con.prepareStatement(sql);
+				preparedStatement.setInt(1, bill.getBorrow_ID());
+				ResultSet resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					StatisticalBook book = new StatisticalBook();
+					book.setEmployee_ID(bill.getEmployee_ID());
+					book.setMember_ID(bill.getMember_ID());
+					book.setTitle(resultSet.getString("tt"));
+					book.setStatus(resultSet.getInt("b_status"));
+					allBooks.add(book);
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+				return null;
+			} finally {
+				if (con != null)
+					try {
+						con.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		}
+
+		return allBooks;
 	}
 
 }

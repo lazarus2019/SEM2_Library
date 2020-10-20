@@ -322,6 +322,7 @@ public class Borrow_billModel {
 				bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
 				bill.setMember_ID(resultSet.getString("member_ID"));
 				bill.setStatus(resultSet.getBoolean("status"));
+				bill.setEmployee_ID(resultSet.getString("employee_ID"));
 				bill.setBorrow_date(resultSet.getDate("borrow_date"));
 				bills.add(bill);
 			}

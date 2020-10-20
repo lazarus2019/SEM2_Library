@@ -55,6 +55,7 @@ import entities.Employee;
 import entities.FamousBook;
 import entities.FriendlyMember;
 import entities.ObseleteBook;
+import entities.StatisticalBook;
 import entities.Member;
 import model.BooksModel;
 import model.Borrow_billModel;
@@ -97,6 +98,7 @@ public class reportPanel extends JPanel {
 	private static List<FriendlyMember> members = null;
 	private static List<Member> newMembers = null;
 	private static List<Borrow_bill> bills = null;
+	private static List<StatisticalBook> allBooks = null;
 
 	// Declare Direct mapping
 	public static Employee employeeMain = null;
@@ -525,6 +527,16 @@ public class reportPanel extends JPanel {
 		panel_8.add(lblNewLabel_1_2);
 
 		BookAm = new JLabel("0");
+		BookAm.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					BookAm_mouseClicked(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		BookAm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BookAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		BookAm.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -573,7 +585,7 @@ public class reportPanel extends JPanel {
 		JTableHeader tableFindBookHeader = tableObsolete.getTableHeader();
 		tableFindBookHeader.setBackground(new Color(223, 233, 242));
 		tableFindBookHeader.setForeground(Color.BLACK);
-		
+
 		firstBtn.setEnabled(false);
 		preBtn.setEnabled(false);
 		nextBtn.setEnabled(false);
@@ -906,7 +918,9 @@ public class reportPanel extends JPanel {
 		// Amount of bill
 		bills = Borrow_billModel.getAllBills(day, month, year, option);
 		int billAmount = bills.size();
-
+		// List of all books
+		allBooks = BooksModel.getAllBooks(bills);
+		int bookAmount = allBooks.size();
 		// SET VALUE
 		// Famous books
 		if (boks != null) {
@@ -932,12 +946,13 @@ public class reportPanel extends JPanel {
 		// Set amount of bill
 		billBookAm.setText(String.valueOf(billAmount));
 		newMemberAm.setText(String.valueOf(newMemberAmount));
+		BookAm.setText(String.valueOf(bookAmount));
 	}
 
 	// Dialog details
 	private void billBookAm_mouseClicked(MouseEvent e) {
 		if (bills != null) {
-			ReportDialog.titlePanel = "Borrow Bill";
+			ReportDialog.titlePanel = "Borrow Bills";
 			ReportDialog.bills = bills;
 			ReportDialog.columns = new String[] { "No", "Bill ID", "Member", "Status", "Borrow date" };
 			ReportDialog.option = "bill";
@@ -948,10 +963,21 @@ public class reportPanel extends JPanel {
 
 	private void newMemberAm_mouseClicked(MouseEvent e) {
 		if (newMembers != null) {
-			ReportDialog.titlePanel = "New Member";
+			ReportDialog.titlePanel = "New Members";
 			ReportDialog.newMembers = newMembers;
 			ReportDialog.columns = new String[] { "No", "ID", "Name", "ID Card", "Created date" };
 			ReportDialog.option = "member";
+			ReportDialog reportDialog = new ReportDialog();
+			reportDialog.setVisible(true);
+		}
+	}
+
+	private void BookAm_mouseClicked(MouseEvent e) {
+		if(allBooks != null) {
+			ReportDialog.titlePanel = "Books";
+			ReportDialog.allBooks = allBooks;
+			ReportDialog.columns = new String[] { "No", "Employee ID", "Member ID", "Title", "Status" };
+			ReportDialog.option = "book";
 			ReportDialog reportDialog = new ReportDialog();
 			reportDialog.setVisible(true);
 		}

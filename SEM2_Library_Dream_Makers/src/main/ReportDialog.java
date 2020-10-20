@@ -25,6 +25,7 @@ import com.sun.javafx.tk.Toolkit.Task;
 import entities.Books;
 import entities.Borrow_bill;
 import entities.Member;
+import entities.StatisticalBook;
 import javafx.scene.control.Tab;
 import model.BooksModel;
 import model.LibCardModel;
@@ -54,6 +55,7 @@ public class ReportDialog extends JDialog {
 
 	public static List<Borrow_bill> bills = null;
 	public static List<Member> newMembers = null;
+	public static List<StatisticalBook> allBooks = null;
 	public static String option = null;
 	public static String titlePanel = null;
 
@@ -253,6 +255,7 @@ public class ReportDialog extends JDialog {
 		table.setRowSorter(sorter);
 		title.setText(titlePanel);
 		Date created;
+		String status;
 		tableModel.setColumnIdentifiers(columns);
 
 		switch (option) {
@@ -267,6 +270,13 @@ public class ReportDialog extends JDialog {
 				created = LibCardModel.getCreatedByIDCard(member.getCard_number());
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, member.getMember_ID(), member.getName(),
 						member.getCard_number(), sdfm.format(created) });
+			}
+			break;
+		case "book":
+			for (StatisticalBook book : allBooks) {
+				status = book.getStatus() == 1 ? "Retured" : (book.getStatus() == 2 ? "Not return" : "Lost") ;
+				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, book.getEmployee_ID(), book.getMember_ID(),
+						book.getTitle(), status });
 			}
 			break;
 		default:
