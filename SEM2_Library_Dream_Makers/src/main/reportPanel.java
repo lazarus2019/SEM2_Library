@@ -572,6 +572,11 @@ public class reportPanel extends JPanel {
 		JTableHeader tableFindBookHeader = tableObsolete.getTableHeader();
 		tableFindBookHeader.setBackground(new Color(223, 233, 242));
 		tableFindBookHeader.setForeground(Color.BLACK);
+		
+		firstBtn.setEnabled(false);
+		preBtn.setEnabled(false);
+		nextBtn.setEnabled(false);
+		lastBtn.setEnabled(false);
 	}
 
 	// Go to first page
