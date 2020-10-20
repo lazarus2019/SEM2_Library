@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
@@ -15,10 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,10 +30,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.RowFilter.Entry;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -54,6 +60,10 @@ import model.BooksModel;
 import model.Borrow_billModel;
 import model.MemberModel;
 import model.SendMail;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.RowFilter;
 
 // Import apache poi excel
 
@@ -74,6 +84,12 @@ public class reportPanel extends JPanel {
 	private static DefaultTableModel tableModel = null;
 	private static DefaultTableModel fBookModel = null;
 	private static DefaultTableModel fMemberModel = null;
+	
+	// Next, previous pageIndex
+	private final TableRowSorter<TableModel> sorter = null;
+	private final int itemsPerPage = 21;
+	private int maxPageIndex;
+	private int currentPageIndex = 1;
 
 	private static String[] columns = null;
 	private static List<ObseleteBook> obbs = null;
@@ -89,6 +105,12 @@ public class reportPanel extends JPanel {
 	private JLabel newMemberAm;
 	private JLabel tableTitle;
 	private JCheckBox chbxMonthM;
+	private JButton preBtn;
+	private JButton firstBtn;
+	private JButton nextBtn;
+	private JButton lastBtn;
+	private JTextField numPage;
+	private JLabel maxIndex;
 
 	/**
 	 * Create the panel.
@@ -214,7 +236,7 @@ public class reportPanel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().setBackground(Color.WHITE);
-		scrollPane.setBounds(10, 45, 758, 383);
+		scrollPane.setBounds(10, 45, 758, 359);
 		panel_3.add(scrollPane);
 
 		tableObsolete = new JTable();
@@ -238,6 +260,48 @@ public class reportPanel extends JPanel {
 		});
 		statusBox.setBounds(679, 11, 89, 25);
 		panel_3.add(statusBox);
+		
+		firstBtn = new JButton("|<");
+		firstBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		firstBtn.setBackground(new Color(30, 106, 210));
+		firstBtn.setForeground(new Color(255, 255, 255));
+		firstBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		firstBtn.setBounds(482, 415, 50, 25);
+		panel_3.add(firstBtn);
+		
+		preBtn = new JButton("<");
+		preBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		preBtn.setBackground(new Color(30, 106, 210));
+		preBtn.setForeground(new Color(255, 255, 255));
+		preBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		preBtn.setBounds(540, 415, 50, 25);
+		panel_3.add(preBtn);
+		
+		lastBtn = new JButton(">|");
+		lastBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lastBtn.setBackground(new Color(30, 106, 210));
+		lastBtn.setForeground(new Color(255, 255, 255));
+		lastBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lastBtn.setBounds(721, 415, 50, 25);
+		panel_3.add(lastBtn);
+		
+		nextBtn = new JButton(">");
+		nextBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		nextBtn.setBackground(new Color(30, 106, 210));
+		nextBtn.setForeground(new Color(255, 255, 255));
+		nextBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		nextBtn.setBounds(663, 415, 50, 25);
+		panel_3.add(nextBtn);
+		
+		maxIndex = new JLabel("");
+		maxIndex.setFont(new Font("Tahoma", Font.BOLD, 11));
+		maxIndex.setBounds(626, 415, 34, 25);
+		panel_3.add(maxIndex);
+		
+		numPage = new JTextField();
+		numPage.setBounds(596, 415, 27, 25);
+		panel_3.add(numPage);
+		numPage.setColumns(10);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(null);
@@ -454,6 +518,7 @@ public class reportPanel extends JPanel {
 		columns = new String[] { "No", "ID Card", "Employee", "Title", "Invoice ID", "Return date", "Day late" };
 		tableModel.setColumnIdentifiers(columns);
 		tableObsolete.setModel(tableModel);
+
 		tableObsolete.getTableHeader().setReorderingAllowed(false);
 		tableObsolete.getTableHeader().setResizingAllowed(false);
 		TableColumnModel columnModelF = tableObsolete.getColumnModel();
@@ -470,6 +535,23 @@ public class reportPanel extends JPanel {
 		JTableHeader tableFindBookHeader = tableObsolete.getTableHeader();
 		tableFindBookHeader.setBackground(new Color(223, 233, 242));
 		tableFindBookHeader.setForeground(Color.BLACK);
+	}
+	
+	// Change value of table
+	private void initFilterAndButton() {
+		sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+			@Override
+			public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+				int ti = currentPageIndex - 1;
+				int ei = entry.getIdentifier();
+				return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
+			}
+		});
+		firstBtn.setEnabled(currentPageIndex > 1);
+		preBtn.setEnabled(currentPageIndex > 1);
+		nextBtn.setEnabled(currentPageIndex < maxPageIndex);
+		lastBtn.setEnabled(currentPageIndex < maxPageIndex);
+		numPage.setText(Integer.toString(currentPageIndex));
 	}
 
 	// Load Status Combobox
@@ -553,18 +635,38 @@ public class reportPanel extends JPanel {
 		}if(status == 3) {
 			tableTitle.setText("Lost Books");
 		}
-		List<Borrow_bill> books = booksModel.getBills(month, year, op);
+		List<Borrow_bill> books = booksModel.getBills(month, year, op, status);
 		if (books != null) {
 			obbs = booksModel.getObseleteBook(books, status);
 			tableModel.getDataVector().removeAllElements();
 			tableModel.fireTableDataChanged();
-			long diff;
 			for (ObseleteBook obb : obbs) {
-				diff = obb.getReturn_date().getTime() - obb.getTerm_date().getTime();
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, obb.getCard_number(),
 						obb.getEmployee_name(), obb.getTitle(), obb.getInvoice_ID(), spdf.format(obb.getReturn_date()),
-						TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + " days" });
+						spdf.format(obb.getTerm_date())});
 			}
+			int rowCount = tableModel.getRowCount();
+			int v = rowCount % itemsPerPage == 0 ? 0 : 1;
+			maxPageIndex = rowCount / itemsPerPage + v;
+			initFilterAndButton();
+			maxIndex.setText(String.format("/ %d", maxPageIndex));
+			// Goto index when input number of page
+			KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+			numPage.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
+			numPage.getActionMap().put("Enter", new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						int v = Integer.parseInt(maxIndex.getText());
+						if (v > 0 && v <= maxPageIndex) {
+							currentPageIndex = v;
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+					initFilterAndButton();
+				}
+			});
 			tableObsolete.setModel(tableModel);
 		} else {
 			showMessenger("Don't have any record");

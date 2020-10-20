@@ -287,16 +287,16 @@ public class MemberModel {
 		// Switch condition
 		switch (option) {
 		case 0:
-			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.member_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
 			break;
 		case 1:
-			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.member_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
 			break;
 		case 2:
-			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND DAY(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.member_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
 			break;
 		case 3:
-			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.borrow_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
+			sql = "SELECT br.member_ID AS memberID,m.name AS mbname, COUNT(bb.book_ID) AS 'amount' FROM bor_book bb, borrow_bill br, member m WHERE bb.borrow_ID = br.borrow_ID AND YEAR(br.borrow_date) = ? AND MONTH(br.borrow_date) = ? AND br.member_ID = m.member_ID GROUP BY br.member_ID ORDER BY COUNT(bb.book_ID) DESC LIMIT 5";
 			break;
 		default:
 			return null;

@@ -181,7 +181,7 @@ public class BooksModel {
 		return name;
 
 	}
-	
+
 	public static boolean create(Books book) {
 
 		try {
@@ -197,7 +197,7 @@ public class BooksModel {
 			preparedStatement.setDouble(7, book.getPrice());
 			preparedStatement.setInt(8, book.getQuantity());
 			preparedStatement.setBoolean(9, false);
-			
+
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -205,16 +205,16 @@ public class BooksModel {
 			return false;
 		}
 	}
-	
-	public static boolean updateIsDelete(int isDelete , String book_ID) {
+
+	public static boolean updateIsDelete(int isDelete, String book_ID) {
 
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
-					" update books set isDelete = ?  where book_ID = ?  ");
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement(" update books set isDelete = ?  where book_ID = ?  ");
 
 			preparedStatement.setInt(1, isDelete);
 			preparedStatement.setString(2, book_ID);
-			
+
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -222,6 +222,7 @@ public class BooksModel {
 			return false;
 		}
 	}
+
 	public static boolean update(Books book, String book_ID) {
 
 		try {
@@ -235,7 +236,7 @@ public class BooksModel {
 			preparedStatement.setDouble(6, book.getPrice());
 			preparedStatement.setInt(7, book.getQuantity());
 			preparedStatement.setString(8, book_ID);
-			
+
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -258,14 +259,14 @@ public class BooksModel {
 		}
 
 	}
-	
-	public static List<Books> findByBill(int borrow_ID ) {
+
+	public static List<Books> findByBill(int borrow_ID) {
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement("SELECT borrow_bill.borrow_ID , books.* FROM bor_book , borrow_bill, books WHERE borrow_bill.borrow_ID = ? and borrow_bill.borrow_ID = bor_book.borrow_ID and bor_book.book_ID = books.book_ID");
-			
-			preparedStatement.setInt(1, borrow_ID );
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+					"SELECT borrow_bill.borrow_ID , books.* FROM bor_book , borrow_bill, books WHERE borrow_bill.borrow_ID = ? and borrow_bill.borrow_ID = bor_book.borrow_ID and bor_book.book_ID = books.book_ID");
+
+			preparedStatement.setInt(1, borrow_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -296,7 +297,7 @@ public class BooksModel {
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
 					" SELECT books.title as bookTitle , author.author_ID as authorID , author.name as authorName FROM author, books ,"
-					+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
+							+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
 			preparedStatement.setString(1, book_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -333,7 +334,7 @@ public class BooksModel {
 				book.setPrice(resultSet.getDouble("price"));
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
-				
+
 				books.add(book);
 			}
 		} catch (Exception e) {
@@ -342,7 +343,7 @@ public class BooksModel {
 		}
 		return books;
 	}
-	
+
 	public String findCategory(int category_ID) {
 		String name = null;
 		try {
@@ -364,7 +365,7 @@ public class BooksModel {
 	// End NVT
 
 	// Get Obselete bills by month and year - NTS
-	public static List<Borrow_bill> getBills(int month, int year, int op) {
+	public static List<Borrow_bill> getBills(int month, int year, int op, int status) {
 		List<Borrow_bill> bills = new ArrayList<Borrow_bill>();
 
 		// Switch condition
@@ -395,7 +396,18 @@ public class BooksModel {
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				if (checkBWDate(resultSet.getDate("term_date"), resultSet.getDate("return_date"))) {
+				if (status == 1) {
+					if (checkBWDate(resultSet.getDate("term_date"), resultSet.getDate("return_date"))) {
+						Borrow_bill bill = new Borrow_bill();
+						bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
+						bill.setMember_ID(resultSet.getString("member_ID"));
+						bill.setEmployee_ID(resultSet.getString("employee_ID"));
+						bill.setTerm_date(resultSet.getDate("term_date"));
+						bill.setReturn_date(resultSet.getDate("return_date"));
+						bills.add(bill);
+					}
+				}
+				if (status == 3) {
 					Borrow_bill bill = new Borrow_bill();
 					bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
 					bill.setMember_ID(resultSet.getString("member_ID"));
@@ -404,6 +416,7 @@ public class BooksModel {
 					bill.setReturn_date(resultSet.getDate("return_date"));
 					bills.add(bill);
 				}
+
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
