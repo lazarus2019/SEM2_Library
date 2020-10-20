@@ -477,7 +477,7 @@ public class reportPanel extends JPanel {
 
 		JLabel lblNewLabel_1 = new JLabel("Bill book:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(10, 46, 132, 20);
+		lblNewLabel_1.setBounds(10, 46, 104, 20);
 		panel_8.add(lblNewLabel_1);
 
 		billBookAm = new JLabel("0");
@@ -499,7 +499,7 @@ public class reportPanel extends JPanel {
 
 		JLabel lblNewLabel_1_1 = new JLabel("New member:");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1_1.setBounds(10, 81, 132, 20);
+		lblNewLabel_1_1.setBounds(10, 81, 104, 20);
 		panel_8.add(lblNewLabel_1_1);
 
 		newMemberAm = new JLabel("0");
@@ -521,10 +521,11 @@ public class reportPanel extends JPanel {
 
 		JLabel lblNewLabel_1_2 = new JLabel("Books:");
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1_2.setBounds(10, 11, 132, 20);
+		lblNewLabel_1_2.setBounds(10, 11, 104, 20);
 		panel_8.add(lblNewLabel_1_2);
 
 		BookAm = new JLabel("0");
+		BookAm.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		BookAm.setHorizontalAlignment(SwingConstants.RIGHT);
 		BookAm.setFont(new Font("Tahoma", Font.BOLD, 14));
 		BookAm.setBounds(98, 11, 54, 20);

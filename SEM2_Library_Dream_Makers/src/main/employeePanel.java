@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import checking.CheckValidate;
 import entities.Author;
@@ -47,6 +48,8 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import javax.swing.JMenuItem;
 import javax.swing.ListSelectionModel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class employeePanel extends JPanel {
 	private JTextField JSearch;
@@ -75,181 +78,23 @@ public class employeePanel extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("New tab", null, panel, null);
+		panel.setBackground(Color.WHITE);
+		tabbedPane.addTab("Manage", null, panel, null);
 		panel.setLayout(null);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.LIGHT_GRAY);
-		panel_2.setBorder(
-				new TitledBorder(null, "More function", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
-		panel_2.setBounds(0, 0, 798, 99);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Add_actionPerformed(e);
-			}
-		});
-		btnAdd.setBounds(12, 35, 118, 32);
-		panel_2.add(btnAdd);
-
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Delete_actionPerformed(arg0);
-			}
-		});
-		btnDelete.setBounds(149, 35, 118, 32);
-		panel_2.add(btnDelete);
-
-		JSearch = new JTextField();
-		JSearch.setBounds(592, 35, 194, 32);
-		panel_2.add(JSearch);
-		JSearch.setColumns(10);
-
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Search_actionPerformed(arg0);
-			}
-		});
-		btnSearch.setBounds(462, 35, 118, 32);
-		panel_2.add(btnSearch);
-
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Update_actionPerformed(arg0);
-			}
-		});
-		btnUpdate.setBounds(281, 35, 118, 32);
-		panel_2.add(btnUpdate);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Edit", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
-		panel_3.setBackground(Color.LIGHT_GRAY);
-		panel_3.setBounds(0, 99, 798, 255);
-		panel.add(panel_3);
-		panel_3.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Employee_ID :");
-		lblNewLabel.setBounds(12, 31, 93, 16);
-		panel_3.add(lblNewLabel);
-
-		JLabel lblUserName = new JLabel("User Name :");
-		lblUserName.setBounds(12, 79, 93, 16);
-		panel_3.add(lblUserName);
-
-		JLabel lblPassword = new JLabel("Password :");
-		lblPassword.setBounds(12, 121, 93, 16);
-		panel_3.add(lblPassword);
-
-		JPassword = new JPasswordField();
-		JPassword.setBounds(128, 115, 163, 29);
-		panel_3.add(JPassword);
-
-		JLabel lblName = new JLabel("Name :");
-		lblName.setBounds(12, 165, 93, 16);
-		panel_3.add(lblName);
-
-		JName = new JTextField();
-		JName.setColumns(10);
-		JName.setBounds(128, 159, 163, 29);
-		panel_3.add(JName);
-
-		JLabel lblDateOfBirth = new JLabel("Date of Birth :");
-		lblDateOfBirth.setBounds(12, 214, 93, 16);
-		panel_3.add(lblDateOfBirth);
-
-		JLabel lblGender = new JLabel("Gender :");
-		lblGender.setBounds(318, 34, 93, 16);
-		panel_3.add(lblGender);
-
-		JEmployee_ID = new JTextField();
-		JEmployee_ID.setColumns(10);
-		JEmployee_ID.setBounds(128, 28, 163, 29);
-		panel_3.add(JEmployee_ID);
-
-		JUsername = new JTextField();
-
-		JUsername.setColumns(10);
-		JUsername.setBounds(128, 73, 163, 29);
-		panel_3.add(JUsername);
-
-		JButton btnReset = new JButton("Reset");
-		btnReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Reset_actionPerformed(arg0);
-			}
-		});
-		btnReset.setBounds(656, 31, 118, 32);
-		panel_3.add(btnReset);
-
-		JDateOfBirth = new JDateChooser();
-		JDateOfBirth.setBounds(128, 205, 163, 29);
-		panel_3.add(JDateOfBirth);
-
-		JAddress = new JTextField();
-		JAddress.setColumns(10);
-		JAddress.setBounds(423, 73, 163, 29);
-		panel_3.add(JAddress);
-
-		JPhone = new JTextField();
-		JPhone.setColumns(10);
-		JPhone.setBounds(423, 118, 163, 29);
-		panel_3.add(JPhone);
-
-		JEmail = new JTextField();
-		JEmail.setColumns(10);
-		JEmail.setBounds(423, 162, 163, 29);
-		panel_3.add(JEmail);
-
-		JLabel lblAddress = new JLabel("Address :");
-		lblAddress.setBounds(318, 79, 93, 16);
-		panel_3.add(lblAddress);
-
-		JLabel lblPhone = new JLabel("Phone :");
-		lblPhone.setBounds(318, 126, 93, 16);
-		panel_3.add(lblPhone);
-
-		JLabel lblEmail = new JLabel("Email :");
-		lblEmail.setBounds(318, 170, 93, 16);
-		panel_3.add(lblEmail);
-
-		male = new JRadioButton("Male");
-		buttonGroupGender.add(male);
-		male.setBounds(524, 30, 59, 25);
-		panel_3.add(male);
-
-		female = new JRadioButton("Female");
-		buttonGroupGender.add(female);
-		female.setBounds(424, 30, 86, 25);
-		panel_3.add(female);
-
-		JcomboBoxSearch = new JComboBox();
-		JcomboBoxSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Search_Com_actionPerformed(arg0);
-			}
-		});
-		JcomboBoxSearch.setBounds(656, 79, 118, 29);
-		panel_3.add(JcomboBoxSearch);
-
-		JLabel lblNewLabel_1 = new JLabel("    Find");
-		lblNewLabel_1.setBounds(600, 85, 56, 16);
-		panel_3.add(lblNewLabel_1);
-		JcomboBoxSearch.addMouseListener(new MouseAdapter() {});
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(245, 244, 252));
+		panel_4.setBounds(11, 405, 776, 169);
+		panel.add(panel_4);
+		panel_4.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 42, 755, 116);
+		panel_4.add(scrollPane);
 		scrollPane.addMouseListener(new MouseAdapter() {
 		});
-		scrollPane
-				.setBorder(new TitledBorder(null, "List Employee", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		scrollPane.setBackground(Color.LIGHT_GRAY);
-		scrollPane.setBounds(0, 353, 798, 234);
-		panel.add(scrollPane);
+		scrollPane.getViewport().setBackground(Color.WHITE);
 
 		JTableEmployee = new JTable();
 		JTableEmployee.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -261,15 +106,212 @@ public class employeePanel extends JPanel {
 		});
 		scrollPane.setViewportView(JTableEmployee);
 
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
+		JLabel lblListEmployee = new JLabel("List Employee");
+		lblListEmployee.setHorizontalAlignment(SwingConstants.CENTER);
+		lblListEmployee.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListEmployee.setBounds(305, 3, 165, 29);
+		panel_4.add(lblListEmployee);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(245, 244, 252));
+		panel_2.setBounds(11, 11, 776, 88);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setBackground(new Color(30, 106, 210));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Add_actionPerformed(e);
+			}
+		});
+		btnAdd.setBounds(11, 45, 118, 32);
+		panel_2.add(btnAdd);
+
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBackground(new Color(30, 106, 210));
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Delete_actionPerformed(arg0);
+			}
+		});
+		btnDelete.setBounds(139, 45, 118, 32);
+		panel_2.add(btnDelete);
+
+		JSearch = new JTextField();
+		JSearch.setBounds(457, 45, 194, 32);
+		panel_2.add(JSearch);
+		JSearch.setColumns(10);
+
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setBackground(new Color(30, 106, 210));
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Search_actionPerformed(arg0);
+			}
+		});
+		btnSearch.setBounds(660, 45, 105, 32);
+		panel_2.add(btnSearch);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setForeground(Color.WHITE);
+		btnUpdate.setBackground(new Color(30, 106, 210));
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Update_actionPerformed(arg0);
+			}
+		});
+		btnUpdate.setBounds(267, 45, 118, 32);
+		panel_2.add(btnUpdate);
+
+		JLabel lblNewLabel_2 = new JLabel("Feature");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblNewLabel_2.setBounds(339, 3, 98, 29);
+		panel_2.add(lblNewLabel_2);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(245, 244, 252));
+		panel_3.setBounds(11, 109, 776, 285);
+		panel.add(panel_3);
+		panel_3.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("Employee_ID :");
+		lblNewLabel.setBounds(12, 79, 93, 16);
+		panel_3.add(lblNewLabel);
+
+		JLabel lblUserName = new JLabel("User Name :");
+		lblUserName.setBounds(12, 125, 93, 16);
+		panel_3.add(lblUserName);
+
+		JLabel lblPassword = new JLabel("Password :");
+		lblPassword.setBounds(12, 165, 93, 16);
+		panel_3.add(lblPassword);
+
+		JPassword = new JPasswordField();
+		JPassword.setBounds(110, 159, 163, 29);
+		panel_3.add(JPassword);
+
+		JLabel lblName = new JLabel("Name :");
+		lblName.setBounds(12, 205, 93, 16);
+		panel_3.add(lblName);
+
+		JName = new JTextField();
+		JName.setColumns(10);
+		JName.setBounds(110, 199, 163, 29);
+		panel_3.add(JName);
+
+		JLabel lblDateOfBirth = new JLabel("Date of Birth :");
+		lblDateOfBirth.setBounds(12, 245, 93, 16);
+		panel_3.add(lblDateOfBirth);
+
+		JLabel lblGender = new JLabel("Gender :");
+		lblGender.setBounds(336, 79, 80, 16);
+		panel_3.add(lblGender);
+
+		JEmployee_ID = new JTextField();
+		JEmployee_ID.setForeground(Color.BLACK);
+		JEmployee_ID.setBackground(Color.WHITE);
+		JEmployee_ID.setColumns(10);
+		JEmployee_ID.setBounds(110, 73, 163, 29);
+		panel_3.add(JEmployee_ID);
+
+		JUsername = new JTextField();
+		JUsername.setBackground(Color.WHITE);
+		JUsername.setForeground(Color.BLACK);
+
+		JUsername.setColumns(10);
+		JUsername.setBounds(110, 119, 163, 29);
+		panel_3.add(JUsername);
+
+		JButton btnReset = new JButton("Refresh");
+		btnReset.setForeground(Color.WHITE);
+		btnReset.setBackground(new Color(30, 106, 210));
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Reset_actionPerformed(arg0);
+			}
+		});
+		btnReset.setBounds(646, 26, 118, 32);
+		panel_3.add(btnReset);
+
+		JDateOfBirth = new JDateChooser();
+		JTextFieldDateEditor editor2 = (JTextFieldDateEditor) JDateOfBirth.getDateEditor();
+		editor2.setEditable(false);
+		JDateOfBirth.setDateFormatString("dd/MM/yyyy");
+		JDateOfBirth.setBounds(110, 242, 163, 29);
+		panel_3.add(JDateOfBirth);
+
+		JAddress = new JTextField();
+		JAddress.setColumns(10);
+		JAddress.setBounds(411, 119, 163, 29);
+		panel_3.add(JAddress);
+
+		JPhone = new JTextField();
+		JPhone.setColumns(10);
+		JPhone.setBounds(411, 159, 163, 29);
+		panel_3.add(JPhone);
+
+		JEmail = new JTextField();
+		JEmail.setColumns(10);
+		JEmail.setBounds(411, 199, 163, 29);
+		panel_3.add(JEmail);
+
+		JLabel lblAddress = new JLabel("Address :");
+		lblAddress.setBounds(336, 125, 80, 16);
+		panel_3.add(lblAddress);
+
+		JLabel lblPhone = new JLabel("Phone :");
+		lblPhone.setBounds(336, 165, 80, 16);
+		panel_3.add(lblPhone);
+
+		JLabel lblEmail = new JLabel("Email :");
+		lblEmail.setBounds(336, 205, 80, 16);
+		panel_3.add(lblEmail);
+
+		male = new JRadioButton("Male");
+		male.setBackground(new Color(245, 244, 252));
+		buttonGroupGender.add(male);
+		male.setBounds(500, 75, 74, 25);
+		panel_3.add(male);
+
+		female = new JRadioButton("Female");
+		female.setBackground(new Color(245, 244, 252));
+		buttonGroupGender.add(female);
+		female.setBounds(411, 75, 80, 25);
+		panel_3.add(female);
+
+		JcomboBoxSearch = new JComboBox();
+		JcomboBoxSearch.setBackground(Color.WHITE);
+		JcomboBoxSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Search_Com_actionPerformed(arg0);
+			}
+		});
+		JcomboBoxSearch.setBounds(663, 73, 101, 29);
+		panel_3.add(JcomboBoxSearch);
+
+		JLabel lblNewLabel_1 = new JLabel("    Find");
+		lblNewLabel_1.setBounds(613, 79, 47, 16);
+		panel_3.add(lblNewLabel_1);
+
+		JLabel lblEdit = new JLabel("Details");
+		lblEdit.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEdit.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblEdit.setBounds(345, 3, 86, 29);
+		panel_3.add(lblEdit);
+		JcomboBoxSearch.addMouseListener(new MouseAdapter() {
+		});
 
 		loadData();
 	}
 
 	// LoadData - NT
 	private void loadData() {
-		
+
 		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
 		defaultComboBoxModel.addElement("admin");
 		defaultComboBoxModel.addElement("librarian");
@@ -331,12 +373,11 @@ public class employeePanel extends JPanel {
 			no++;
 		}
 		JTableEmployee.setModel(defaultTableModel);
-		
-		
+
 	}
 
 	public void Search_Com_actionPerformed(ActionEvent arg0) {
-			
+
 		String[] columns = { "No. ", "Employee_ID", "Name", "Address", "Email", "Level" };
 		String key = JcomboBoxSearch.getSelectedItem().toString().toLowerCase();
 		DefaultTableModel defaultTableModel = new DefaultTableModel();

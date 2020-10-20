@@ -38,10 +38,13 @@ import java.util.Enumeration;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ListSelectionModel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class memberPanel extends JPanel {
 	private JTextField JSearch;
@@ -77,70 +80,84 @@ public class memberPanel extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
 		tabbedPane.addTab("Manage", null, panel, null);
 		panel.setLayout(null);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Search", TitledBorder.LEADING,
-				TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		panel_2.setBounds(0, 0, 798, 113);
+		panel_2.setBackground(new Color(245, 244, 252));
+		panel_2.setBounds(11, 11, 775, 88);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
 		JSearch = new JTextField();
-		JSearch.setBounds(584, 24, 202, 33);
+		JSearch.setBounds(485, 45, 174, 33);
 		panel_2.add(JSearch);
 		JSearch.setColumns(10);
 
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setBackground(new Color(30, 106, 210));
+		btnSearch.setForeground(Color.WHITE);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BtnSearch_actionPerformed(arg0);
 			}
 		});
-		btnSearch.setBounds(475, 24, 97, 33);
+		btnSearch.setBounds(667, 45, 97, 33);
 		panel_2.add(btnSearch);
 
-		JComboboxSearch = new JComboBox();
-		JComboboxSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Search_Gender_actionPerformed(arg0);
-			}
-		});
-		JComboboxSearch.setBounds(620, 70, 145, 33);
-		panel_2.add(JComboboxSearch);
-
 		JButton btnAdd = new JButton("Add");
+		btnAdd.setBackground(new Color(30, 106, 210));
+		btnAdd.setForeground(Color.WHITE);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Create_actionPerformed(arg0);
 			}
 		});
-		btnAdd.setBounds(23, 47, 121, 33);
+		btnAdd.setBounds(11, 45, 121, 33);
 		panel_2.add(btnAdd);
 
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setBackground(new Color(30, 106, 210));
+		btnUpdate.setForeground(Color.WHITE);
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Update_actionPerformed(arg0);
 			}
 		});
-		btnUpdate.setBounds(166, 47, 121, 33);
+		btnUpdate.setBounds(141, 45, 121, 33);
 		panel_2.add(btnUpdate);
 
 		JButton btnDetele = new JButton("Detele");
+		btnDetele.setBackground(new Color(30, 106, 210));
+		btnDetele.setForeground(Color.WHITE);
 		btnDetele.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Delete_actionPerformed(arg0);
 			}
 		});
-		btnDetele.setBounds(309, 47, 121, 33);
+		btnDetele.setBounds(269, 45, 121, 33);
 		panel_2.add(btnDetele);
 
+		JLabel label = new JLabel("Feature");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		label.setBounds(338, 3, 98, 29);
+		panel_2.add(label);
+
+		JComboboxSearch = new JComboBox();
+		JComboboxSearch.setBackground(Color.WHITE);
+		JComboboxSearch.setBounds(413, 45, 72, 33);
+		panel_2.add(JComboboxSearch);
+		JComboboxSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Search_Gender_actionPerformed(arg0);
+			}
+		});
+
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Edit", TitledBorder.LEADING,
-				TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(0, 116, 798, 228);
+		panel_3.setBackground(new Color(245, 244, 252));
+		panel_3.setBounds(11, 116, 775, 228);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -149,6 +166,7 @@ public class memberPanel extends JPanel {
 		panel_3.add(lblNewLabel);
 
 		JtextMember_ID = new JTextField();
+		JtextMember_ID.setBackground(Color.WHITE);
 		JtextMember_ID.setBounds(136, 34, 198, 24);
 		panel_3.add(JtextMember_ID);
 		JtextMember_ID.setColumns(10);
@@ -188,11 +206,13 @@ public class memberPanel extends JPanel {
 		panel_3.add(lblCardNumber);
 
 		male = new JRadioButton("Male");
+		male.setBackground(new Color(245, 244, 252));
 		buttonGender.add(male);
 		male.setBounds(459, 34, 75, 25);
 		panel_3.add(male);
 
 		female = new JRadioButton("Female");
+		female.setBackground(new Color(245, 244, 252));
 		buttonGender.add(female);
 		female.setBounds(538, 34, 86, 25);
 		panel_3.add(female);
@@ -217,22 +237,40 @@ public class memberPanel extends JPanel {
 		panel_3.add(JtextPhoto);
 
 		JTextDate = new JDateChooser();
+		JTextFieldDateEditor editor2 = (JTextFieldDateEditor) JTextDate.getDateEditor();
+		editor2.setEditable(false);
+		JTextDate.setDateFormatString("dd/MM/yyyy");
 		JTextDate.setBounds(136, 132, 198, 22);
 		panel_3.add(JTextDate);
-		
+
 		JButton btnReset = new JButton("Reset");
+		btnReset.setBackground(new Color(30, 106, 210));
+		btnReset.setForeground(Color.WHITE);
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BtnReset_actionPerformed(arg0);
 			}
 		});
-		btnReset.setBounds(698, 30, 75, 33);
+		btnReset.setBounds(678, 30, 86, 33);
 		panel_3.add(btnReset);
 
+		JLabel lblDetails = new JLabel("Details");
+		lblDetails.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblDetails.setBounds(344, 3, 86, 29);
+		panel_3.add(lblDetails);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(245, 244, 252));
+		panel_1.setBounds(11, 354, 775, 220);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 42, 754, 167);
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		panel_1.add(scrollPane);
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(0, 357, 798, 230);
-		panel.add(scrollPane);
 
 		JTablemember = new JTable();
 		JTablemember.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -244,8 +282,11 @@ public class memberPanel extends JPanel {
 		});
 		scrollPane.setViewportView(JTablemember);
 
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
+		JLabel lblListMember = new JLabel("List Member");
+		lblListMember.setHorizontalAlignment(SwingConstants.CENTER);
+		lblListMember.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListMember.setBounds(317, 0, 141, 29);
+		panel_1.add(lblListMember);
 		name();
 		loadData();
 	}
@@ -493,12 +534,10 @@ public class memberPanel extends JPanel {
 
 	// Set edit
 	private void setUneditable(JTextField j) {
-		j.setEnabled(false);
 		j.setEditable(false);
 	}
 
 	private void setEditable(JTextField ji) {
-		ji.setEnabled(true);
 		ji.setEditable(true);
 	}
 }

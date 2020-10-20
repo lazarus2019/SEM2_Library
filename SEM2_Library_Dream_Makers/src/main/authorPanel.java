@@ -58,26 +58,29 @@ public class authorPanel extends JPanel {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
 		tabbedPane.addTab("Manage", null, panel, null);
 		panel.setLayout(null);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBounds(0, 0, 798, 98);
+		panel_2.setBackground(new Color(245, 244, 252));
+		panel_2.setBounds(11, 10, 776, 88);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setBackground(new Color(30, 106, 210));
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Search_button_actionPerformed(e);
 			}
 		});
-		btnSearch.setBounds(50, 36, 97, 33);
+		btnSearch.setBounds(320, 45, 105, 33);
 		panel_2.add(btnSearch);
 
 		jtextSearch = new JTextField();
-		jtextSearch.setBounds(178, 36, 181, 33);
+		jtextSearch.setBounds(11, 45, 299, 33);
 		panel_2.add(jtextSearch);
 		jtextSearch.setColumns(10);
 
@@ -88,87 +91,112 @@ public class authorPanel extends JPanel {
 			}
 		});
 
-		jcomboBoxSearch.setBounds(474, 36, 118, 33);
+		jcomboBoxSearch.setBounds(591, 45, 173, 33);
 		panel_2.add(jcomboBoxSearch);
 
-		JLabel lblNewLabel_1 = new JLabel("Search :");
+		JLabel lblNewLabel_1 = new JLabel("Nation:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(395, 43, 67, 16);
+		lblNewLabel_1.setBounds(524, 57, 67, 16);
 		panel_2.add(lblNewLabel_1);
 
-		JButton btnReset = new JButton("Reset");
-		btnReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Reset_actionPerformed(arg0);
-			}
-		});
-		btnReset.setBounds(655, 40, 97, 33);
-		panel_2.add(btnReset);
+		JLabel lblSearch = new JLabel("Find Author");
+		lblSearch.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSearch.setBounds(316, 3, 143, 29);
+		panel_2.add(lblSearch);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(0, 97, 798, 267);
+		panel_3.setBackground(new Color(245, 244, 252));
+		panel_3.setBounds(10, 109, 777, 255);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 
 		JButton btnAdd = new JButton("Add");
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setBackground(new Color(30, 106, 210));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Add_actionPerformed(arg0);
 			}
 		});
-		btnAdd.setBounds(173, 205, 112, 33);
+		btnAdd.setBounds(172, 210, 112, 33);
 		panel_3.add(btnAdd);
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBackground(new Color(30, 106, 210));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Delete_actionPerformed(e);
 			}
 		});
-		btnDelete.setBounds(528, 205, 112, 33);
+		btnDelete.setBounds(528, 210, 112, 33);
 		panel_3.add(btnDelete);
 
 		JButton btnNewButton = new JButton("Update");
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setBackground(new Color(30, 106, 210));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Update_actionPerformed(e);
 			}
 		});
-		btnNewButton.setBounds(352, 205, 112, 33);
+		btnNewButton.setBounds(352, 210, 112, 33);
 		panel_3.add(btnNewButton);
 
-		JLabel lblNewLabel = new JLabel("Author ID");
-		lblNewLabel.setBounds(173, 37, 56, 16);
+		JLabel lblNewLabel = new JLabel("Author ID:");
+		lblNewLabel.setBounds(211, 81, 73, 16);
 		panel_3.add(lblNewLabel);
 
-		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(177, 93, 56, 16);
+		JLabel lblName = new JLabel("Name:");
+		lblName.setBounds(211, 126, 73, 16);
 		panel_3.add(lblName);
 
-		JLabel lblNation = new JLabel("Nation");
-		lblNation.setBounds(177, 148, 56, 16);
+		JLabel lblNation = new JLabel("Nation:");
+		lblNation.setBounds(211, 170, 73, 16);
 		panel_3.add(lblNation);
 
 		jNation = new JTextField();
-		jNation.setBounds(279, 140, 305, 33);
+		jNation.setBounds(304, 164, 305, 33);
 		panel_3.add(jNation);
 		jNation.setColumns(10);
 
 		jName = new JTextField();
-		jName.setBounds(279, 85, 305, 33);
+		jName.setBounds(304, 118, 305, 33);
 		panel_3.add(jName);
 		jName.setColumns(10);
 
 		jAuthor_ID = new JTextField();
-		jAuthor_ID.setBounds(279, 29, 305, 33);
+		jAuthor_ID.setBounds(304, 73, 305, 33);
 		panel_3.add(jAuthor_ID);
 		jAuthor_ID.setColumns(10);
 
+		JButton btnReset = new JButton("Refresh");
+		btnReset.setForeground(Color.WHITE);
+		btnReset.setBackground(new Color(30, 106, 210));
+		btnReset.setBounds(647, 26, 118, 33);
+		panel_3.add(btnReset);
+		
+		JLabel lblDetails = new JLabel("Details");
+		lblDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblDetails.setBounds(345, 3, 86, 29);
+		panel_3.add(lblDetails);
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Reset_actionPerformed(arg0);
+			}
+		});
+
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(245, 244, 252));
+		panel_4.setBounds(11, 375, 776, 199);
+		panel.add(panel_4);
+		panel_4.setLayout(null);
+
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 42, 766, 146);
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		panel_4.add(scrollPane);
 		scrollPane.setBorder(new LineBorder(new Color(130, 135, 144)));
-		scrollPane.setBounds(0, 364, 798, 223);
-		panel.add(scrollPane);
 
 		jtableAuthor = new JTable();
 		jtableAuthor.addMouseListener(new MouseAdapter() {
@@ -178,9 +206,12 @@ public class authorPanel extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(jtableAuthor);
+		
+		JLabel lblListAuthor = new JLabel("List Author");
+		lblListAuthor.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListAuthor.setBounds(321, 3, 134, 29);
+		panel_4.add(lblListAuthor);
 
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_1, null);
 
 		loadData();
 	}

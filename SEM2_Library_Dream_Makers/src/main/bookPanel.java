@@ -116,16 +116,13 @@ public class bookPanel extends JPanel {
 		panelManage.setLayout(null);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(
-				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Search ",
-				TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(245, 244, 252));
 		panel_2.setBounds(10, 11, 778, 89);
 		panelManage.add(panel_2);
 		panel_2.setLayout(null);
 
 		textFieldSearch = new JTextField();
-		textFieldSearch.setBounds(10, 39, 316, 28);
+		textFieldSearch.setBounds(10, 45, 316, 28);
 		panel_2.add(textFieldSearch);
 		textFieldSearch.setColumns(10);
 
@@ -139,26 +136,14 @@ public class bookPanel extends JPanel {
 			}
 		});
 //		btnSearch.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/search.png")));
-		btnSearch.setBounds(336, 39, 122, 28);
+		btnSearch.setBounds(336, 45, 122, 28);
 		panel_2.add(btnSearch);
-
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnRefresh.setForeground(Color.WHITE);
-		btnRefresh.setBackground(new Color(30, 106, 210));
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnRefresh_actionPerformed(e);
-			}
-		});
-//		btnRefresh.setIcon(new ImageIcon(bookPanel.class.getResource("/data/icon/refresh.png")));
-		btnRefresh.setBounds(626, 21, 122, 28);
-		panel_2.add(btnRefresh);
 
 		CategoryModel categoryModel = new CategoryModel();
 		List<Category> categories = categoryModel.findAll();
 
 		comboBoxCateSearch = new JComboBox();
+		comboBoxCateSearch.setBackground(Color.WHITE);
 		comboBoxCateSearch.addItem("");
 		for (Category category : categories) {
 			comboBoxCateSearch.addItem(category.getName());
@@ -168,10 +153,187 @@ public class bookPanel extends JPanel {
 				comboBoxCateSearch_actionPerformed(e);
 			}
 		});
-		comboBoxCateSearch.setBounds(626, 50, 122, 28);
+		comboBoxCateSearch.setBounds(627, 45, 139, 28);
 		panel_2.add(comboBoxCateSearch);
 
+		JLabel lblSearch = new JLabel("Search");
+		lblSearch.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSearch.setBounds(347, 3, 83, 29);
+		panel_2.add(lblSearch);
+
+		JLabel lblCategory_1 = new JLabel("Category: ");
+		lblCategory_1.setBounds(532, 51, 93, 16);
+		panel_2.add(lblCategory_1);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(245, 244, 252));
+		panel_3.setBounds(10, 108, 778, 283);
+		panelManage.add(panel_3);
+		panel_3.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("Book ID : ");
+		lblNewLabel.setBounds(21, 46, 74, 16);
+		panel_3.add(lblNewLabel);
+
+		textFieldBookID = new JTextField();
+		textFieldBookID.setBackground(Color.WHITE);
+		textFieldBookID.setEditable(false);
+		textFieldBookID.setBounds(117, 40, 228, 28);
+		panel_3.add(textFieldBookID);
+		textFieldBookID.setColumns(10);
+
+		JLabel lblCallNumber = new JLabel("Call Number :");
+		lblCallNumber.setBounds(22, 86, 105, 16);
+		panel_3.add(lblCallNumber);
+
+		textFieldCallnumber = new JTextField();
+		textFieldCallnumber.setColumns(10);
+		textFieldCallnumber.setBounds(117, 81, 228, 28);
+		panel_3.add(textFieldCallnumber);
+
+		JLabel lblTiltle = new JLabel("Tiltle :");
+		lblTiltle.setBounds(21, 126, 105, 16);
+		panel_3.add(lblTiltle);
+
+		textFieldTitle = new JTextField();
+		textFieldTitle.setColumns(10);
+		textFieldTitle.setBounds(117, 121, 228, 28);
+		panel_3.add(textFieldTitle);
+
+		JLabel lblIsbn = new JLabel("ISBN :");
+		lblIsbn.setBounds(21, 166, 116, 16);
+		panel_3.add(lblIsbn);
+
+		textFieldIsbn = new JTextField();
+		textFieldIsbn.setColumns(10);
+		textFieldIsbn.setBounds(117, 160, 228, 28);
+		panel_3.add(textFieldIsbn);
+
+		JLabel lblPublishHouse = new JLabel("Publish House :");
+		lblPublishHouse.setBounds(443, 86, 116, 16);
+		panel_3.add(lblPublishHouse);
+
+		JLabel lblCategory = new JLabel("Category :");
+		lblCategory.setBounds(443, 126, 116, 16);
+		panel_3.add(lblCategory);
+
+		JLabel lblQuantity = new JLabel("Quantity :");
+		lblQuantity.setBounds(443, 166, 116, 16);
+		panel_3.add(lblQuantity);
+
+		textFieldQuantity = new JTextField();
+		textFieldQuantity.setColumns(10);
+		textFieldQuantity.setBounds(558, 160, 208, 28);
+		panel_3.add(textFieldQuantity);
+
+		JButton btnReset = new JButton("Reset");
+		btnReset.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnReset.setForeground(Color.WHITE);
+		btnReset.setBackground(new Color(30, 106, 210));
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnReset_actionPerformed(e);
+			}
+		});
+		btnReset.setBounds(676, 251, 90, 23);
+		panel_3.add(btnReset);
+
+		comboBoxCategory1 = new JComboBox();
+		comboBoxCategory1.setBackground(Color.WHITE);
+		comboBoxCategory1.setBounds(558, 122, 208, 25);
+		comboBoxCategory1.addItem("");
+		for (Category category : categories) {
+			comboBoxCategory1.addItem(category.getName());
+		}
+		panel_3.add(comboBoxCategory1);
+
+		PublishModel publishModel = new PublishModel();
+		List<Publish_house> publishes = publishModel.findAll();
+		comboBoxPublish = new JComboBox();
+		comboBoxPublish.setBackground(Color.WHITE);
+		comboBoxPublish.setBounds(558, 82, 208, 25);
+		comboBoxPublish.addItem("");
+		for (Publish_house publish : publishes) {
+			comboBoxPublish.addItem(publish.getName());
+		}
+
+		panel_3.add(comboBoxPublish);
+
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnUpdate.setBounds(440, 251, 107, 23);
+		btnUpdate.setForeground(Color.WHITE);
+		btnUpdate.setBackground(new Color(30, 106, 210));
+		panel_3.add(btnUpdate);
+
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBounds(558, 251, 107, 23);
+		btnDelete.setBackground(new Color(30, 106, 210));
+		panel_3.add(btnDelete);
+
+		JLabel lblAuthor = new JLabel("Author :");
+		lblAuthor.setBounds(21, 209, 116, 16);
+		panel_3.add(lblAuthor);
+
+		textFieldAuthor = new JTextField();
+		textFieldAuthor.setColumns(10);
+		textFieldAuthor.setBounds(117, 244, 228, 28);
+		panel_3.add(textFieldAuthor);
+
+		textFieldPrice = new JTextField();
+		textFieldPrice.setColumns(10);
+		textFieldPrice.setBounds(558, 199, 208, 28);
+		panel_3.add(textFieldPrice);
+
+		JLabel lblPrice = new JLabel("Price :");
+		lblPrice.setBounds(440, 209, 105, 16);
+		panel_3.add(lblPrice);
+
+		comboBoxAuthor = new JComboBox();
+		comboBoxAuthor.setBackground(Color.WHITE);
+		comboBoxAuthor.setBounds(117, 206, 154, 23);
+		AuthorModel authorModel = new AuthorModel();
+		List<Author> authors = authorModel.findAll();
+		comboBoxAuthor.addItem("");
+		for (Author author : authors) {
+			comboBoxAuthor.addItem(author.getName());
+		}
+		panel_3.add(comboBoxAuthor);
+
+		btnAuthor = new JButton("Add");
+		btnAuthor.setBackground(Color.WHITE);
+		btnAuthor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAuthor_actionPerformed(e);
+			}
+		});
+		btnAuthor.setBounds(271, 205, 74, 24);
+		panel_3.add(btnAuthor);
+
+		JLabel lblDetails = new JLabel("Details");
+		lblDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblDetails.setBounds(347, 3, 83, 29);
+		panel_3.add(lblDetails);
+
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setBounds(644, 26, 122, 32);
+		panel_3.add(btnRefresh);
+		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRefresh.setForeground(Color.WHITE);
+		btnRefresh.setBackground(new Color(30, 106, 210));
+
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(245, 244, 252));
+		panel.setBounds(10, 398, 778, 176);
+		panelManage.add(panel);
+		panel.setLayout(null);
+
 		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 35, 757, 133);
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		panel.add(scrollPane);
 		scrollPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -179,10 +341,6 @@ public class bookPanel extends JPanel {
 			}
 		});
 		scrollPane.setBackground(new Color(245, 244, 252));
-		scrollPane.setBorder(new TitledBorder(null, "List Books", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
-				new Color(59, 59, 59)));
-		scrollPane.setBounds(10, 376, 778, 202);
-		panelManage.add(scrollPane);
 
 		jtableBooks = new JTable();
 		jtableBooks.addMouseListener(new MouseAdapter() {
@@ -196,151 +354,15 @@ public class bookPanel extends JPanel {
 		jtableBooks.setBackground(Color.WHITE);
 		scrollPane.setViewportView(jtableBooks);
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(245, 244, 252));
-		panel_3.setBorder(new TitledBorder(null, "Edit", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null,
-				new Color(59, 59, 59)));
-		panel_3.setBounds(10, 111, 778, 254);
-		panelManage.add(panel_3);
-		panel_3.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Book ID : ");
-		lblNewLabel.setBounds(21, 30, 74, 16);
-		panel_3.add(lblNewLabel);
-
-		textFieldBookID = new JTextField();
-		textFieldBookID.setEditable(false);
-		textFieldBookID.setBounds(149, 24, 228, 28);
-		panel_3.add(textFieldBookID);
-		textFieldBookID.setColumns(10);
-
-		JLabel lblCallNumber = new JLabel("Call Number :");
-		lblCallNumber.setBounds(21, 71, 116, 16);
-		panel_3.add(lblCallNumber);
-
-		textFieldCallnumber = new JTextField();
-		textFieldCallnumber.setEditable(false);
-		textFieldCallnumber.setColumns(10);
-		textFieldCallnumber.setBounds(149, 65, 228, 28);
-		panel_3.add(textFieldCallnumber);
-
-		JLabel lblTiltle = new JLabel("Tiltle :");
-		lblTiltle.setBounds(21, 111, 105, 16);
-		panel_3.add(lblTiltle);
-
-		textFieldTitle = new JTextField();
-		textFieldTitle.setColumns(10);
-		textFieldTitle.setBounds(149, 105, 228, 28);
-		panel_3.add(textFieldTitle);
-
-		JLabel lblIsbn = new JLabel("ISBN :");
-		lblIsbn.setBounds(21, 151, 116, 16);
-		panel_3.add(lblIsbn);
-
-		textFieldIsbn = new JTextField();
-		textFieldIsbn.setEditable(false);
-		textFieldIsbn.setColumns(10);
-		textFieldIsbn.setBounds(149, 145, 228, 28);
-		panel_3.add(textFieldIsbn);
-
-		JLabel lblPublishHouse = new JLabel("Publish House :");
-		lblPublishHouse.setBounds(422, 30, 127, 16);
-		panel_3.add(lblPublishHouse);
-
-		JLabel lblCategory = new JLabel("Category :");
-		lblCategory.setBounds(422, 71, 116, 16);
-		panel_3.add(lblCategory);
-
-		JLabel lblQuantity = new JLabel("Quantity :");
-		lblQuantity.setBounds(422, 111, 116, 16);
-		panel_3.add(lblQuantity);
-
-		textFieldQuantity = new JTextField();
-		textFieldQuantity.setColumns(10);
-		textFieldQuantity.setBounds(561, 105, 185, 28);
-		panel_3.add(textFieldQuantity);
-
-		JButton btnReset = new JButton("Reset");
-		btnReset.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnReset.setForeground(Color.WHITE);
-		btnReset.setBackground(new Color(30, 106, 210));
-		btnReset.addActionListener(new ActionListener() {
+		JLabel lblListBook = new JLabel("List Books");
+		lblListBook.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListBook.setBounds(328, 3, 121, 29);
+		panel.add(lblListBook);
+		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnReset_actionPerformed(e);
+				btnRefresh_actionPerformed(e);
 			}
 		});
-		btnReset.setBounds(656, 185, 90, 23);
-		panel_3.add(btnReset);
-
-		comboBoxCategory1 = new JComboBox();
-		comboBoxCategory1.setBounds(561, 68, 185, 25);
-		comboBoxCategory1.addItem("");
-		for (Category category : categories) {
-			comboBoxCategory1.addItem(category.getName());
-		}
-		panel_3.add(comboBoxCategory1);
-
-		PublishModel publishModel = new PublishModel();
-		List<Publish_house> publishes = publishModel.findAll();
-		comboBoxPublish = new JComboBox();
-		comboBoxPublish.setBounds(561, 27, 185, 25);
-		comboBoxPublish.addItem("");
-		for (Publish_house publish : publishes) {
-			comboBoxPublish.addItem(publish.getName());
-		}
-
-		panel_3.add(comboBoxPublish);
-
-		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnUpdate.setBounds(422, 185, 107, 23);
-		btnUpdate.setForeground(Color.WHITE);
-		btnUpdate.setBackground(new Color(30, 106, 210));
-		panel_3.add(btnUpdate);
-
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnDelete.setForeground(Color.WHITE);
-		btnDelete.setBounds(539, 185, 107, 23);
-		btnDelete.setBackground(new Color(30, 106, 210));
-		panel_3.add(btnDelete);
-
-		JLabel lblAuthor = new JLabel("Author :");
-		lblAuthor.setBounds(21, 190, 116, 16);
-		panel_3.add(lblAuthor);
-
-		textFieldAuthor = new JTextField();
-		textFieldAuthor.setColumns(10);
-		textFieldAuthor.setBounds(149, 215, 228, 28);
-		panel_3.add(textFieldAuthor);
-
-		textFieldPrice = new JTextField();
-		textFieldPrice.setColumns(10);
-		textFieldPrice.setBounds(561, 145, 185, 28);
-		panel_3.add(textFieldPrice);
-
-		JLabel lblPrice = new JLabel("Price :");
-		lblPrice.setBounds(422, 151, 116, 16);
-		panel_3.add(lblPrice);
-
-		comboBoxAuthor = new JComboBox();
-		comboBoxAuthor.setBounds(149, 184, 154, 23);
-		AuthorModel authorModel = new AuthorModel();
-		List<Author> authors = authorModel.findAll();
-		comboBoxAuthor.addItem("");
-		for (Author author : authors) {
-			comboBoxAuthor.addItem(author.getName());
-		}
-		panel_3.add(comboBoxAuthor);
-
-		btnAuthor = new JButton("Add");
-		btnAuthor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnAuthor_actionPerformed(e);
-			}
-		});
-		btnAuthor.setBounds(303, 184, 74, 23);
-		panel_3.add(btnAuthor);
 
 		JPanel panelAdd = new JPanel();
 		panelAdd.setBackground(Color.WHITE);
@@ -349,9 +371,7 @@ public class bookPanel extends JPanel {
 
 		panel_4 = new JPanel();
 		panel_4.setBackground(new Color(245, 244, 252));
-		panel_4.setBorder(
-				new TitledBorder(null, "Create Book", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, null));
-		panel_4.setBounds(10, 11, 393, 547);
+		panel_4.setBounds(10, 11, 393, 563);
 		panelAdd.add(panel_4);
 		panel_4.setLayout(null);
 
@@ -369,6 +389,7 @@ public class bookPanel extends JPanel {
 		panel_4.add(lblNewLabel_2);
 
 		comboBoxAddCate = new JComboBox();
+		comboBoxAddCate.setBackground(Color.WHITE);
 		comboBoxAddCate.setBounds(10, 128, 161, 22);
 		comboBoxAddCate.addItem("");
 		for (Category category : categories) {
@@ -381,6 +402,7 @@ public class bookPanel extends JPanel {
 		panel_4.add(lblPublisher);
 
 		comboBoxAddPublish = new JComboBox();
+		comboBoxAddPublish.setBackground(Color.WHITE);
 		comboBoxAddPublish.setBounds(208, 128, 161, 22);
 		comboBoxAddPublish.addItem("");
 		for (Publish_house publish : publishes) {
@@ -411,23 +433,25 @@ public class bookPanel extends JPanel {
 		panel_4.add(lblAuthor_1);
 
 		comboBoxAddAuthor = new JComboBox();
+		comboBoxAddAuthor.setBackground(Color.WHITE);
 		comboBoxAddAuthor.setBounds(10, 265, 161, 22);
 
 		panel_4.add(comboBoxAddAuthor);
 
 		btnAddAuthor = new JButton("Add Author");
-		btnAddAuthor.setForeground(Color.WHITE);
-		btnAddAuthor.setBackground(new Color(30, 106, 210));
+		btnAddAuthor.setForeground(Color.BLACK);
+		btnAddAuthor.setBackground(Color.WHITE);
 		btnAddAuthor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnAddAuthor_actionPerformed(e);
 			}
 		});
-		btnAddAuthor.setBounds(197, 265, 122, 23);
+		btnAddAuthor.setBounds(171, 265, 69, 23);
 		panel_4.add(btnAddAuthor);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 310, 359, 151);
+		scrollPane_1.setBounds(10, 310, 372, 151);
+		scrollPane_1.getViewport().setBackground(Color.WHITE);
 		panel_4.add(scrollPane_1);
 
 		tableAddAuthor = new JTable();
@@ -453,25 +477,16 @@ public class bookPanel extends JPanel {
 
 		popupMenu.add(mnDeleteAuthor);
 
-		btnAddBook.setBounds(10, 494, 122, 23);
+		btnAddBook.setBounds(135, 510, 122, 29);
 		panel_4.add(btnAddBook);
 
-		btnAddRefresh = new JButton("Refresh");
-		btnAddRefresh.setForeground(Color.WHITE);
-		btnAddRefresh.setBackground(new Color(30, 106, 210));
-		btnAddRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnAddRefresh_actionPerformed(e);
-			}
-		});
-		btnAddRefresh.setBounds(257, 494, 112, 23);
-		panel_4.add(btnAddRefresh);
+		JLabel lblCreateBook = new JLabel("Create Book");
+		lblCreateBook.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblCreateBook.setBounds(126, 3, 140, 29);
+		panel_4.add(lblCreateBook);
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(new Color(245, 244, 252));
-		panel_5.setBorder(new TitledBorder(
-				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
-				"Create Author", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_5.setBounds(413, 11, 362, 237);
 		panelAdd.add(panel_5);
 		panel_5.setLayout(null);
@@ -502,8 +517,13 @@ public class bookPanel extends JPanel {
 				btnCreateAuthor_actionPerformed(e);
 			}
 		});
-		btnCreateAuthor.setBounds(10, 189, 104, 23);
+		btnCreateAuthor.setBounds(115, 184, 131, 29);
 		panel_5.add(btnCreateAuthor);
+
+		JLabel lblCreateAuthor = new JLabel("Create Author");
+		lblCreateAuthor.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblCreateAuthor.setBounds(100, 3, 162, 29);
+		panel_5.add(lblCreateAuthor);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDelete_actionPerformed(e);
