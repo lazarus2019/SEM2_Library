@@ -19,7 +19,7 @@ public class CheckValidate {
 		}
 	}
 	
-	// Check name validate
+	// Check name validate - NTS
 	public static boolean checkName(String name) {
 		if (name.length() < 2) {
 			return false;
@@ -28,7 +28,7 @@ public class CheckValidate {
 		}
 	}
 
-	// Check date validate
+	// Check date validate - NTS
 	public static boolean checkDate(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -45,7 +45,7 @@ public class CheckValidate {
 		}
 	}
 
-	// Check phone validate
+	// Check phone validate - NTS
 	public static boolean checkPhone(String phone) {
 		// Or phone.contains("[a-zA-Z]+") == false
 		if (phone.matches("[0-9]+") && phone.length() > 8) {
@@ -55,7 +55,7 @@ public class CheckValidate {
 		}
 	}
 
-	// Check email validate
+	// Check email validate - NTS
 	public static boolean checkEmail(String email) {
 		if (email.length() > 18) {
 			return Pattern.matches("^[a-zA-Z][\\w-]+@(gmail.com|GMAIL.COM)$", email);
@@ -65,16 +65,24 @@ public class CheckValidate {
 	}
 
 	
-	// Check password validate
+	// Check password validate - NTS
 	public static boolean checkPassword(String password) {
 		return password.length() >= 5;
 	}
 	
-	// Check username validate
+	// Check username validate - NTS
 	public static boolean checkUsername(String username) {
 		if (username.length() > 18) {
 			return Pattern.matches("^emp[\\d]{1,}$", username);
 		} else {
+			return false;
+		}
+	}
+	
+	public static boolean checkAuthorName(String author) {
+		if(author.length() > 4) {
+			return Pattern.matches("[a-zA-Z]{2,}+[\\s]+[a-zA-Z]{2,}", author); 
+		}else {
 			return false;
 		}
 	}

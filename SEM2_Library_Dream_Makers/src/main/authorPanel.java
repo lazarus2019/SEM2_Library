@@ -29,6 +29,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class authorPanel extends JPanel {
 	private JTable jtableAuthor;
@@ -161,11 +163,18 @@ public class authorPanel extends JPanel {
 		jNation.setColumns(10);
 
 		jName = new JTextField();
+		jName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				createAuthorID(e);
+			}
+		});
 		jName.setBounds(304, 118, 305, 33);
 		panel_3.add(jName);
 		jName.setColumns(10);
 
 		jAuthor_ID = new JTextField();
+		jAuthor_ID.setEditable(false);
 		jAuthor_ID.setBounds(304, 73, 305, 33);
 		panel_3.add(jAuthor_ID);
 		jAuthor_ID.setColumns(10);
@@ -175,7 +184,7 @@ public class authorPanel extends JPanel {
 		btnReset.setBackground(new Color(30, 106, 210));
 		btnReset.setBounds(647, 26, 118, 33);
 		panel_3.add(btnReset);
-		
+
 		JLabel lblDetails = new JLabel("Details");
 		lblDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblDetails.setBounds(345, 3, 86, 29);
@@ -206,12 +215,11 @@ public class authorPanel extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(jtableAuthor);
-		
+
 		JLabel lblListAuthor = new JLabel("List Author");
 		lblListAuthor.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblListAuthor.setBounds(321, 3, 134, 29);
 		panel_4.add(lblListAuthor);
-
 
 		loadData();
 	}
@@ -241,42 +249,87 @@ public class authorPanel extends JPanel {
 
 	// Add
 	public void Add_actionPerformed(ActionEvent arg0) {
+		boolean f = false;
 		AuthorModel authorModel = new AuthorModel();
 		Author author = new Author();
-		author.setAuthor_ID(jAuthor_ID.getText().trim());
-		author.setName(jName.getText().trim());
-		author.setNation(jNation.getText().trim());
-		if (authorModel.create(author)) {
-			loadData();
+		if (jAuthor_ID.getText().trim() != null) {
+			author.setAuthor_ID(jAuthor_ID.getText().trim());
+		}
+
+		if (CheckValidate.checkName(jName.getText().trim())) {
+			author.setName(jName.getText().trim());
+			f = true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Faild");
+			JOptionPane.showMessageDialog(null, "Please input Name");
+			f = false;
+		}
+		if (jNation.getText().trim() != null) {
+			author.setNation(jNation.getText().trim());
+			f = true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Please input Nation");
+			f = false;
+		}
+		if (f) {
+			if (authorModel.create(author)) {
+				loadData();
+			} else {
+				JOptionPane.showMessageDialog(null, "Faild");
+			}
+		}
+	}
+
+	private void createAuthorID(KeyEvent e) {
+		String author_ID = "";
+		String[] words = jName.getText().trim().split("\\s");
+		if (CheckValidate.checkAuthorName(jName.getText().trim())) {
+			for (int i = 0; i < 2; i++) {
+				author_ID += words[i].toUpperCase().charAt(0);
+				author_ID += words[i].toUpperCase().charAt(1);
+			}
+			jAuthor_ID.setText(author_ID);
 		}
 	}
 
 	// Update
 	public void Update_actionPerformed(ActionEvent e) {
-		int selectedIndex = jtableAuthor.getSelectedRow();
-		String author_ID = jtableAuthor.getValueAt(selectedIndex, 1).toString();
+		boolean f = false;
+		try {
+			int selectedIndex = jtableAuthor.getSelectedRow();
+			String author_ID = jtableAuthor.getValueAt(selectedIndex, 1).toString();
 
-		AuthorModel authorModel = new AuthorModel();
-		Author author = authorModel.getById(author_ID);
-		if (jAuthor_ID.getText().trim() != null) {
-			author.setAuthor_ID(jAuthor_ID.getText().trim());
-		}
-		if (jName.getText().trim() != null) {
-			author.setName(jName.getText().trim());
-		}
-		if (jNation.getText().trim() != null) {
-			author.setNation(jNation.getText().trim());
-		}
-		if (author_ID == null) {
-			JOptionPane.showMessageDialog(null, "Please select a book !");
-		} else {
-			if (authorModel.update(author, author_ID)) {
-				loadData();
-			} else {
-				JOptionPane.showMessageDialog(null, "Faild");
+			AuthorModel authorModel = new AuthorModel();
+			Author author = authorModel.getById(author_ID);
+			if (jAuthor_ID.getText().trim() != null) {
+				author.setAuthor_ID(jAuthor_ID.getText().trim());
 			}
+			if (jName.getText().trim() != null) {
+				author.setName(jName.getText().trim());
+				f = true;
+			} else {
+				f = false;
+			}
+			if (jNation.getText().trim() != null) {
+				author.setNation(jNation.getText().trim());
+				f = true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Please input Nation");
+				f = false;
+			}
+			if (author_ID == null) {
+				JOptionPane.showMessageDialog(null, "Please select a book !");
+			} else {
+				if (f) {
+					if (authorModel.update(author, author_ID)) {
+						loadData();
+					} else {
+						JOptionPane.showMessageDialog(null, "Faild");
+					}
+				}
+			}
+
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null, "Please select a author !");
 		}
 
 	}
@@ -294,7 +347,7 @@ public class authorPanel extends JPanel {
 				}
 			}
 		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(null, e2.getMessage());
+			JOptionPane.showMessageDialog(null, "Please select a author !");
 		}
 	}
 
@@ -331,7 +384,6 @@ public class authorPanel extends JPanel {
 		jAuthor_ID.setText("");
 		jName.setText("");
 		jNation.setText("");
-		setEditable(jAuthor_ID);
 		setEditable(jNation);
 
 	}
