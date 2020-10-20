@@ -740,10 +740,10 @@ public class bookPanel extends JPanel {
 	public void btnUpdate_eactionPerformed(ActionEvent arg0) {
 		boolean flag = false;
 		int selectedIndex = jtableBooks.getSelectedRow();
-		String book_ID = jtableBooks.getValueAt(selectedIndex, 1).toString();
-		if (book_ID == null) {
+		if (selectedIndex == -1) {
 			JOptionPane.showMessageDialog(null, "Please select a book !");
 		} else {
+			String book_ID = jtableBooks.getValueAt(selectedIndex, 1).toString();
 			BooksModel booksModel = new BooksModel();
 			Books book = booksModel.find(book_ID);
 

@@ -940,17 +940,22 @@ public class invoicePanel extends JPanel {
 	public void jbtnDeleteB_actionPerformed(ActionEvent e) {
 		int number = 1;
 		int selectedIndexRow = jtableSelectedBook.getSelectedRow();
-		String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
-		for (int i = 0; i < bookID.size(); i++) {
-			if (idBook.equals(bookID.get(i))) {
-				bookID.remove(i);
+		if (selectedIndexRow == -1) {
+			JOptionPane.showMessageDialog(null, "No book is select", "Notification",
+					JOptionPane.OK_OPTION);
+		}else {
+			String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
+			for (int i = 0; i < bookID.size(); i++) {
+				if (idBook.equals(bookID.get(i))) {
+					bookID.remove(i);
+				}
 			}
-		}
-		defaultTableModelSelectedBook.removeRow(selectedIndexRow);
-		jtableSelectedBook.setModel(defaultTableModelSelectedBook);
-		for (int i = 0; i < defaultTableModelSelectedBook.getRowCount(); i++) {
-			jtableSelectedBook.setValueAt(number, i, 0);
-			number++;
+			defaultTableModelSelectedBook.removeRow(selectedIndexRow);
+			jtableSelectedBook.setModel(defaultTableModelSelectedBook);
+			for (int i = 0; i < defaultTableModelSelectedBook.getRowCount(); i++) {
+				jtableSelectedBook.setValueAt(number, i, 0);
+				number++;
+			}
 		}
 	}
 

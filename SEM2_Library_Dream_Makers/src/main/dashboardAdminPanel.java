@@ -176,6 +176,7 @@ public class dashboardAdminPanel extends JPanel {
 		member.add(lblNewLabel_2_1_1_1);
 		
 		JLabel btnRefresh = new JLabel("Refresh");
+		btnRefresh.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/reset.png")));
 		btnRefresh.setBounds(689, 16, 99, 28);
 		btnRefresh.addMouseListener(new MouseAdapter() {
 			@Override

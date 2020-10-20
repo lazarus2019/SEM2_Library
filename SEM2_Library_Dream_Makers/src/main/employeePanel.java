@@ -310,139 +310,262 @@ public class employeePanel extends JPanel {
 	}
 
 	// LoadData - NT
-	private void loadData() {
+		private void loadData() {
+			
+			DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
+			defaultComboBoxModel.addElement("admin");
+			defaultComboBoxModel.addElement("librarian");
+			JcomboBoxSearch.setModel(defaultComboBoxModel);
 
-		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
-		defaultComboBoxModel.addElement("admin");
-		defaultComboBoxModel.addElement("librarian");
-		JcomboBoxSearch.setModel(defaultComboBoxModel);
+			EmployeeModel employeeModel = new EmployeeModel();
+			String[] columns = { "No. ", "Emp_ID", "Username", "Name", "Dob", "Gender", "Address", "Phone", "Email",
+					"Level" };
+			DefaultTableModel defaultTableModel = new DefaultTableModel() {
+				// Unedit
+				@Override
+				public boolean isCellEditable(int arg0, int arg1) {
+					return false;
+				}
 
-		EmployeeModel employeeModel = new EmployeeModel();
-		String[] columns = { "No. ", "Emp_ID", "Username", "Name", "Dob", "Gender", "Address", "Phone", "Email",
-				"Level" };
-		DefaultTableModel defaultTableModel = new DefaultTableModel() {
-			// Unedit
-			@Override
-			public boolean isCellEditable(int arg0, int arg1) {
-				return false;
+			};
+			for (String cl : columns) {
+				defaultTableModel.addColumn(cl);
 			}
 
-		};
-		for (String cl : columns) {
-			defaultTableModel.addColumn(cl);
+			int no = 1;
+			for (Employee employee : employeeModel.findAll()) {
+				defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getUsername(),
+						employee.getName(), employee.getDob(), employee.isGender(), employee.getAddress(),
+						employee.getPhone(), employee.getEmail(), employee.getLevel() });
+				no++;
+			}
+			JTableEmployee.setModel(defaultTableModel);
+			// Gennerate ID - NTanh
+			int id = 1;
+			String employee_ID1 = "emp01";
+			List<Employee> employees = employeeModel.findAll();
+			for (int i = 0; i < employees.size(); i++) {
+				if (employee_ID1.equals(employees.get(i).getEmployee_ID())) {
+					id++;
+					if (id < 10) {
+						employee_ID1 = "emp0" + id;
+					} else {
+						employee_ID1 = "emp" + id;
+					}
+				}
+			}
+			JEmployee_ID.setText(employee_ID1);
+			setUneditable(JEmployee_ID);
 		}
 
-		int no = 1;
-		for (Employee employee : employeeModel.findAll()) {
-			defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getUsername(),
-					employee.getName(), employee.getDob(), employee.isGender(), employee.getAddress(),
-					employee.getPhone(), employee.getEmail(), employee.getLevel() });
-			no++;
+		// Search - NT
+		public void Search_actionPerformed(ActionEvent e) {
+			String[] columns = { "No. ", "Employee_ID", "Name", "Address", "Email", "Level" };
+			String key = JSearch.getText();
+			DefaultTableModel defaultTableModel = new DefaultTableModel();
+			for (String cl : columns) {
+				defaultTableModel.addColumn(cl);
+			}
+			int no = 1;
+			for (Employee employee : EmployeeModel.searchEmployee(key)) {
+				defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getName(),
+						employee.getAddress(), employee.getEmail(), employee.getLevel() });
+				no++;
+			}
+			JTableEmployee.setModel(defaultTableModel);
+			
+			
 		}
-		JTableEmployee.setModel(defaultTableModel);
-		// Gennerate ID - NTanh
-		int id = 1;
-		String employee_ID1 = "emp01";
-		List<Employee> employees = employeeModel.findAll();
-		for (int i = 0; i < employees.size(); i++) {
-			if (employee_ID1.equals(employees.get(i).getEmployee_ID())) {
-				id++;
-				if (id < 10) {
-					employee_ID1 = "emp0" + id;
+
+		public void Search_Com_actionPerformed(ActionEvent arg0) {
+				
+			String[] columns = { "No. ", "Employee_ID", "Name", "Address", "Email", "Level" };
+			String key = JcomboBoxSearch.getSelectedItem().toString().toLowerCase();
+			DefaultTableModel defaultTableModel = new DefaultTableModel();
+			for (String cl : columns) {
+				defaultTableModel.addColumn(cl);
+			}
+			int no = 1;
+			for (Employee employee : EmployeeModel.searchEmployeeCom(key)) {
+				defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getName(),
+						employee.getAddress(), employee.getEmail(), employee.getLevel() });
+				no++;
+			}
+			JTableEmployee.setModel(defaultTableModel);
+		}
+
+		// Delete - NT
+		public void Delete_actionPerformed(ActionEvent arg0) {
+			try {
+				int selectedIndex = JTableEmployee.getSelectedRow();
+				String employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					if (EmployeeModel.delete(employee_ID)) {
+						loadData();
+					}
+				}
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "Please select a employee");
+			}
+		}
+
+		// Add - NT
+		public void Add_actionPerformed(ActionEvent e) {
+			boolean f = false;
+			EmployeeModel employeeModel = new EmployeeModel();
+			Employee employee = new Employee();
+
+			employee.setEmployee_ID(JEmployee_ID.getText().trim());
+			employee.setUsername(JUsername.getText().trim());
+			if (CheckValidate.checkPassword(String.valueOf(JPassword.getPassword()))) {
+				employee.setPassword(BCrypt.hashpw(JPassword.getPassword().toString(), BCrypt.gensalt()));
+				f = true;
+			} else {
+				System.out.println("Password invalid");
+				f = false;
+			}
+			employee.setName(JName.getText().trim());
+			employee.setDob(JDateOfBirth.getDate());
+			if (getGenderSelected(buttonGroupGender).equalsIgnoreCase("female")) {
+				employee.setGender(false);
+			} else {
+				employee.setGender(true);
+			}
+			employee.setAddress(JAddress.getText().trim());
+			if (CheckValidate.checkPhone(JPhone.getText().trim())) {
+				employee.setPhone(JPhone.getText().trim());
+			} else {
+				JOptionPane.showMessageDialog(null, "Faild");
+			}
+			if (CheckValidate.checkEmail(JEmail.getText().trim())) {
+				employee.setEmail(JEmail.getText().trim());
+			}
+			String level = "librarian";
+			employee.setLevel(level);
+			
+			if (employeeModel.Add(employee)) {
+				JOptionPane.showMessageDialog(null, "Completed");
+				loadData();
+
+				setEditable(JUsername);
+				JEmployee_ID.setText("");
+				JUsername.setText("");
+				JPassword.setText("");
+				female.setSelected(false);
+				male.setSelected(false);
+				JName.setText("");
+				JAddress.setText("");
+				JPhone.setText("");
+				JEmail.setText("");
+			} else {
+				JOptionPane.showMessageDialog(null, "Faild");
+			}
+		}
+
+		// Update - NT
+		public void Update_actionPerformed(ActionEvent arg0) {
+			try {
+				int selectedIndex = JTableEmployee.getSelectedRow();
+				String employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
+
+				EmployeeModel employeeModel = new EmployeeModel();
+				Employee employee = employeeModel.getById(employee_ID);
+				if (JEmployee_ID.getText().trim() != null) {
+					employee.setName(JEmployee_ID.getText().trim());
+				}
+				if (JUsername.getText().trim() != null) {
+					employee.setUsername(JUsername.getText().trim());
+				}
+				if (JPassword.getPassword() != null) {
+					if (CheckValidate.checkPassword(String.valueOf(JPassword.getPassword()))) {
+						String pass = BCrypt.hashpw(String.valueOf(JPassword.getPassword()), BCrypt.gensalt());
+						employee.setPassword(pass);
+					} else {
+						JOptionPane.showMessageDialog(null, "Password invalid");
+					}
+				}
+				if (JEmail.getText() != null) {
+					if (CheckValidate.checkEmail(JEmail.getText().trim())) {
+						employee.setEmail(JEmail.getText());
+					} else {
+						JOptionPane.showMessageDialog(null, "Email invalid");
+					}
+
+				}
+				if (JDateOfBirth.getDate() != null) {
+
+					employee.setDob(JDateOfBirth.getDate());
+
+				}
+
+				String genders = getGenderSelected(buttonGroupGender);
+				if (genders != null) {
+					if (genders.equalsIgnoreCase("female")) {
+						employee.setGender(false);
+					} else {
+						employee.setGender(true);
+					}
+				}
+				if (JAddress.getText().trim() != null) {
+					employee.setAddress(JAddress.getText().trim());
+				}
+				if (JPhone.getText().trim() != null) {
+					employee.setPhone(JPhone.getText().trim());
+				}
+				if (JName.getText().trim() != null) {
+					employee.setName(JName.getText().trim());
+				}
+				String level = "librarian";
+				employee.setLevel(level);
+
+				if (employee_ID == null) {
+					JOptionPane.showMessageDialog(null, "Please select a book !");
 				} else {
-					employee_ID1 = "emp" + id;
+					if (employeeModel.update(employee, employee_ID)) {
+						JOptionPane.showMessageDialog(null, "Completed");
+						loadData();
+					} else {
+						JOptionPane.showMessageDialog(null, "Faild");
+					}
 				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Please select a employee");
 			}
-		}
-		JEmployee_ID.setText(employee_ID1);
-		setUneditable(JEmployee_ID);
-	}
+			
 
-	// Search - NT
-	public void Search_actionPerformed(ActionEvent e) {
-		String[] columns = { "No. ", "Employee_ID", "Name", "Address", "Email", "Level" };
-		String key = JSearch.getText();
-		DefaultTableModel defaultTableModel = new DefaultTableModel();
-		for (String cl : columns) {
-			defaultTableModel.addColumn(cl);
 		}
-		int no = 1;
-		for (Employee employee : EmployeeModel.searchEmployee(key)) {
-			defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getName(),
-					employee.getAddress(), employee.getEmail(), employee.getLevel() });
-			no++;
-		}
-		JTableEmployee.setModel(defaultTableModel);
 
-	}
+		// Click
 
-	public void Search_Com_actionPerformed(ActionEvent arg0) {
-
-		String[] columns = { "No. ", "Employee_ID", "Name", "Address", "Email", "Level" };
-		String key = JcomboBoxSearch.getSelectedItem().toString().toLowerCase();
-		DefaultTableModel defaultTableModel = new DefaultTableModel();
-		for (String cl : columns) {
-			defaultTableModel.addColumn(cl);
-		}
-		int no = 1;
-		for (Employee employee : EmployeeModel.searchEmployeeCom(key)) {
-			defaultTableModel.addRow(new Object[] { no, employee.getEmployee_ID(), employee.getName(),
-					employee.getAddress(), employee.getEmail(), employee.getLevel() });
-			no++;
-		}
-		JTableEmployee.setModel(defaultTableModel);
-	}
-
-	// Delete - NT
-	public void Delete_actionPerformed(ActionEvent arg0) {
-		try {
+		public void Click_mouseClicked(MouseEvent arg0) {
 			int selectedIndex = JTableEmployee.getSelectedRow();
-			String employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
-			int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.YES_NO_OPTION);
-			if (result == JOptionPane.YES_OPTION) {
-				if (EmployeeModel.delete(employee_ID)) {
-					loadData();
-				}
+			String Employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
+
+			EmployeeModel employeeModel = new EmployeeModel();
+			Employee employee = employeeModel.getById(Employee_ID);
+
+			setUneditable(JEmployee_ID);
+			setUneditable(JUsername);
+			JUsername.setText(employee.getUsername());
+			JName.setText(employee.getName());
+
+			JDateOfBirth.setDate(employee.getDob());
+			if (employee.isGender() == true) {
+				male.setSelected(true);
+			} else {
+				female.setSelected(true);
 			}
-		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(null, e2.getMessage());
+			JAddress.setText(employee.getAddress());
+			JPhone.setText(employee.getPhone());
+			JEmail.setText(employee.getEmail());
 		}
-	}
 
-	// Add - NT
-	public void Add_actionPerformed(ActionEvent e) {
-		EmployeeModel employeeModel = new EmployeeModel();
-		Employee employee = new Employee();
+		// Reset - NT
+		public void Reset_actionPerformed(ActionEvent arg0) {
 
-		employee.setEmployee_ID(JEmployee_ID.getText().trim());
-		employee.setUsername(JUsername.getText().trim());
-		if (CheckValidate.checkPassword(String.valueOf(JPassword.getPassword()))) {
-			employee.setPassword(BCrypt.hashpw(JPassword.getPassword().toString(), BCrypt.gensalt()));
-		} else {
-			System.out.println("Password invalid");
-		}
-		employee.setName(JName.getText().trim());
-		employee.setDob(JDateOfBirth.getDate());
-		if (getGenderSelected(buttonGroupGender).equalsIgnoreCase("female")) {
-			employee.setGender(false);
-		} else {
-			employee.setGender(true);
-		}
-		employee.setAddress(JAddress.getText().trim());
-		if (CheckValidate.checkPhone(JPhone.getText().trim())) {
-			employee.setPhone(JPhone.getText().trim());
-		} else {
-			JOptionPane.showMessageDialog(null, "Faild");
-		}
-		if (CheckValidate.checkEmail(JEmail.getText().trim())) {
-			employee.setEmail(JEmail.getText().trim());
-		}
-		String level = "librarian";
-		employee.setLevel(level);
-		if (employeeModel.Add(employee)) {
-			JOptionPane.showMessageDialog(null, "Completed");
-			loadData();
-
+			// JEmployee_ID.setText(employee_ID1);
+			setUneditable(JEmployee_ID);
 			setEditable(JUsername);
 			JEmployee_ID.setText("");
 			JUsername.setText("");
@@ -453,162 +576,49 @@ public class employeePanel extends JPanel {
 			JAddress.setText("");
 			JPhone.setText("");
 			JEmail.setText("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Faild");
-		}
-	}
-
-	// Update - NT
-	public void Update_actionPerformed(ActionEvent arg0) {
-		int selectedIndex = JTableEmployee.getSelectedRow();
-		String employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
-
-		EmployeeModel employeeModel = new EmployeeModel();
-		Employee employee = employeeModel.getById(employee_ID);
-		if (JEmployee_ID.getText().trim() != null) {
-			employee.setName(JEmployee_ID.getText().trim());
-		}
-		if (JUsername.getText().trim() != null) {
-			employee.setUsername(JUsername.getText().trim());
-		}
-		if (JPassword.getPassword() != null) {
-			if (CheckValidate.checkPassword(String.valueOf(JPassword.getPassword()))) {
-				String pass = BCrypt.hashpw(String.valueOf(JPassword.getPassword()), BCrypt.gensalt());
-				employee.setPassword(pass);
-			} else {
-				JOptionPane.showMessageDialog(null, "Password invalid");
-			}
-		}
-		if (JEmail.getText() != null) {
-			if (CheckValidate.checkEmail(JEmail.getText().trim())) {
-				employee.setEmail(JEmail.getText());
-			} else {
-				JOptionPane.showMessageDialog(null, "Email invalid");
-			}
-
-		}
-		if (JDateOfBirth.getDate() != null) {
-
-			employee.setDob(JDateOfBirth.getDate());
-
+			loadData();
 		}
 
-		String genders = getGenderSelected(buttonGroupGender);
-		if (genders != null) {
-			if (genders.equalsIgnoreCase("female")) {
-				employee.setGender(false);
-			} else {
-				employee.setGender(true);
-			}
-		}
-		if (JAddress.getText().trim() != null) {
-			employee.setAddress(JAddress.getText().trim());
-		}
-		if (JPhone.getText().trim() != null) {
-			employee.setPhone(JPhone.getText().trim());
-		}
-		if (JName.getText().trim() != null) {
-			employee.setName(JName.getText().trim());
-		}
-		String level = "librarian";
-		employee.setLevel(level);
-
-		if (employee_ID == null) {
-			JOptionPane.showMessageDialog(null, "Please select a book !");
-		} else {
-			if (employeeModel.update(employee, employee_ID)) {
-				JOptionPane.showMessageDialog(null, "Completed");
-				loadData();
-			} else {
-				JOptionPane.showMessageDialog(null, "Faild");
-			}
-		}
-
-	}
-
-	// Click
-
-	public void Click_mouseClicked(MouseEvent arg0) {
-		int selectedIndex = JTableEmployee.getSelectedRow();
-		String Employee_ID = JTableEmployee.getValueAt(selectedIndex, 1).toString();
-
-		EmployeeModel employeeModel = new EmployeeModel();
-		Employee employee = employeeModel.getById(Employee_ID);
-
-		setUneditable(JEmployee_ID);
-		setUneditable(JUsername);
-		JUsername.setText(employee.getUsername());
-		JName.setText(employee.getName());
-
-		JDateOfBirth.setDate(employee.getDob());
-		if (employee.isGender() == true) {
-			male.setSelected(true);
-		} else {
-			female.setSelected(true);
-		}
-		JAddress.setText(employee.getAddress());
-		JPhone.setText(employee.getPhone());
-		JEmail.setText(employee.getEmail());
-	}
-
-	// Reset - NT
-	public void Reset_actionPerformed(ActionEvent arg0) {
-
-		// JEmployee_ID.setText(employee_ID1);
-		setUneditable(JEmployee_ID);
-		setEditable(JUsername);
-		JEmployee_ID.setText("");
-		JUsername.setText("");
-		JPassword.setText("");
-		female.setSelected(false);
-		male.setSelected(false);
-		JName.setText("");
-		JAddress.setText("");
-		JPhone.setText("");
-		JEmail.setText("");
-		loadData();
-	}
-
-	// Button-Group - NT
-	private String getGenderSelected(ButtonGroup buttonGroup) {
-		Enumeration<AbstractButton> buttons = buttonGroupGender.getElements();
-		while (buttons.hasMoreElements()) {
-			JRadioButton radio = (JRadioButton) buttons.nextElement();
-			if (radio.isSelected()) {
-				return radio.getText();
-			}
-		}
-		return null;
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
+		// Button-Group - NT
+		private String getGenderSelected(ButtonGroup buttonGroup) {
+			Enumeration<AbstractButton> buttons = buttonGroupGender.getElements();
+			while (buttons.hasMoreElements()) {
+				JRadioButton radio = (JRadioButton) buttons.nextElement();
+				if (radio.isSelected()) {
+					return radio.getText();
 				}
 			}
+			return null;
+		}
 
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
+		private static void addPopup(Component component, final JPopupMenu popup) {
+			component.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					if (e.isPopupTrigger()) {
+						showMenu(e);
+					}
 				}
-			}
 
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
-	}
+				public void mouseReleased(MouseEvent e) {
+					if (e.isPopupTrigger()) {
+						showMenu(e);
+					}
+				}
 
-	// Set edit
-	private void setUneditable(JTextField j) {
-		j.setEnabled(false);
-		j.setEditable(false);
-	}
+				private void showMenu(MouseEvent e) {
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			});
+		}
 
-	private void setEditable(JTextField ji) {
-		ji.setEnabled(true);
-		ji.setEditable(true);
+		// Set edit
+		private void setUneditable(JTextField j) {
+			j.setEnabled(false);
+			j.setEditable(false);
+		}
+
+		private void setEditable(JTextField ji) {
+			ji.setEnabled(true);
+			ji.setEditable(true);
+		}
 	}
-}
