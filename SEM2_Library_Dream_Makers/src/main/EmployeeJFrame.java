@@ -504,7 +504,7 @@ public class EmployeeJFrame extends JFrame {
 	// Load data
 	private void loadData() {
 		// Load logo
-		ImageIcon settingIcon = resizeImg("src/data/icon/employee1.png", setting);
+		ImageIcon settingIcon = resizeImg("src/data/icon/icon_employee1.png", setting);
 		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
 		logo.setIcon(logoImage);
 		setting.setIcon(settingIcon);

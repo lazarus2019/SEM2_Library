@@ -100,6 +100,7 @@ public class ForgotPasswordDialog extends JDialog {
 		emailField.setColumns(10);
 
 		JButton btnSend = new JButton("SEND");
+		btnSend.setIcon(new ImageIcon(ForgotPasswordDialog.class.getResource("/data/loginForm/sendToMailIcon.png")));
 		btnSend.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

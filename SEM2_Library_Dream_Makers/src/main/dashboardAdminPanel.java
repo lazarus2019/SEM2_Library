@@ -78,7 +78,7 @@ public class dashboardAdminPanel extends JPanel {
 		book.setLayout(null);
 		
 		JLabel bookIcon = new JLabel("");
-		bookIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/book.png")));
+		bookIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/icon_book.png")));
 		bookIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		bookIcon.setBounds(10, 11, 100, 104);
 		book.add(bookIcon);
@@ -104,7 +104,7 @@ public class dashboardAdminPanel extends JPanel {
 		add(employee);
 		
 		JLabel employeeIcon = new JLabel("");
-		employeeIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/employee1.png")));
+		employeeIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/icon_employee1.png")));
 		employeeIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		employeeIcon.setBounds(10, 11, 100, 104);
 		employee.add(employeeIcon);
@@ -130,7 +130,7 @@ public class dashboardAdminPanel extends JPanel {
 		add(returnBook);
 		
 		JLabel returnBookIcon = new JLabel("");
-		returnBookIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/returnBook.png")));
+		returnBookIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/icon_returnBook.png")));
 		returnBookIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		returnBookIcon.setBounds(10, 11, 100, 104);
 		returnBook.add(returnBookIcon);
@@ -156,7 +156,7 @@ public class dashboardAdminPanel extends JPanel {
 		add(member);
 		
 		JLabel memberIcon = new JLabel("");
-		memberIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/reader.png")));
+		memberIcon.setIcon(new ImageIcon(dashboardAdminPanel.class.getResource("/data/icon/icon_reader.png")));
 		memberIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		memberIcon.setBounds(10, 11, 100, 104);
 		member.add(memberIcon);

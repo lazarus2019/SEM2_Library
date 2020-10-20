@@ -184,7 +184,7 @@ public class reportPanel extends JPanel {
 				}
 			}
 		});
-		btnSearchObsolete.setIcon(new ImageIcon(reportPanel.class.getResource("/data/Main/search.png")));
+		btnSearchObsolete.setIcon(new ImageIcon(reportPanel.class.getResource("/data/icon/Search.png")));
 		btnSearchObsolete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSearchObsolete.setForeground(Color.WHITE);
 		btnSearchObsolete.setBackground(new Color(30, 106, 210));
@@ -325,6 +325,7 @@ public class reportPanel extends JPanel {
 		panel_5.add(lblNewLabel_2_1_1);
 
 		JLabel btnSearch = new JLabel("Search");
+		btnSearch.setIcon(new ImageIcon(reportPanel.class.getResource("/data/icon/Search.png")));
 		btnSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override

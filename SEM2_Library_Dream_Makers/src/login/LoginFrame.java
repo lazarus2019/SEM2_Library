@@ -148,6 +148,7 @@ public class LoginFrame extends JFrame {
 		panel_1.add(lblNewLabel_1);
 
 		JButton btnLogin = new JButton("LOGIN");
+		btnLogin.setIcon(new ImageIcon(LoginFrame.class.getResource("/data/loginForm/loginIcon.png")));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {

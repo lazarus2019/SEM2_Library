@@ -368,6 +368,7 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(panelPW_1_1);
 
 		JLabel btnSubmit = new JLabel("SUBMIT");
+		btnSubmit.setIcon(new ImageIcon(settingDialog.class.getResource("/data/icon/submitIcon.png")));
 		btnSubmit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -415,6 +416,7 @@ public class settingDialog extends JDialog {
 		scrollPane.setViewportView(txtEaddress);
 
 		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(settingDialog.class.getResource("/data/icon/editIcon.png")));
 		btnEdit.setBackground(new Color(30, 144, 255));
 		btnEdit.setForeground(Color.WHITE);
 		btnEdit.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -427,7 +429,7 @@ public class settingDialog extends JDialog {
 				}
 			}
 		});
-		btnEdit.setBounds(339, 0, 67, 23);
+		btnEdit.setBounds(333, 0, 73, 23);
 		panelEmployee.add(btnEdit);
 
 		radioFemale = new JRadioButton("Female");

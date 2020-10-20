@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -179,6 +178,7 @@ public class invoicePanel extends JPanel {
 		jtextFieldIDCardR.setColumns(10);
 
 		JButton jbtnSearchIDCardR = new JButton("Search");
+		jbtnSearchIDCardR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		jbtnSearchIDCardR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnSearchIDCardR_actionPerformed(arg0);
@@ -260,6 +260,7 @@ public class invoicePanel extends JPanel {
 		panel_2.add(jradiobuttonLost);
 
 		JButton jbtnGiveBack = new JButton("Give back");
+		jbtnGiveBack.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/giveBack.png")));
 		jbtnGiveBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jbtnGiveBack_actionPerformed(e);
@@ -290,6 +291,7 @@ public class invoicePanel extends JPanel {
 		panel_2.add(jtextFieldIDBook);
 
 		JButton jbtnReturnBook = new JButton("Return Book");
+		jbtnReturnBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/return.png")));
 		jbtnReturnBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnReturnBook_actionPerformed(arg0);
@@ -327,6 +329,7 @@ public class invoicePanel extends JPanel {
 		panel1.add(monthChooser);
 
 		btnSearch = new JLabel("Search");
+		btnSearch.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -346,6 +349,7 @@ public class invoicePanel extends JPanel {
 		panel1.add(lblNewLabel);
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDelete_actionPerformed(e);
@@ -357,6 +361,7 @@ public class invoicePanel extends JPanel {
 		panel1.add(btnDelete);
 
 		JButton btnDetails = new JButton("Details");
+		btnDetails.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/.png")));
 		btnDetails.setForeground(Color.WHITE);
 		btnDetails.setBackground(new Color(30, 106, 210));
 		btnDetails.addActionListener(new ActionListener() {
@@ -397,6 +402,7 @@ public class invoicePanel extends JPanel {
 		jpanelMember.add(lblName);
 
 		JButton jbtnSearchIDCardB = new JButton("Search");
+		jbtnSearchIDCardB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		jbtnSearchIDCardB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnSearchIDCardB_actionPerformed(arg0);
@@ -502,6 +508,7 @@ public class invoicePanel extends JPanel {
 		scrollPane_3.setViewportView(jtableReturningBook);
 
 		JButton jbtnDeleteR = new JButton("Delete");
+		jbtnDeleteR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnDeleteR_actionPerformed(arg0);
@@ -576,6 +583,7 @@ public class invoicePanel extends JPanel {
 		panel_3.add(lblNewLabel_3);
 
 		JButton jbtnSearchTitle = new JButton("Search");
+		jbtnSearchTitle.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		jbtnSearchTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnSearchTitle_actionPerformed(arg0);
@@ -613,6 +621,7 @@ public class invoicePanel extends JPanel {
 		scrollPane_1.setViewportView(jtableSelectedBook);
 
 		JButton jbtnDeleteB = new JButton("Delete");
+		jbtnDeleteB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnDelete_actionPerformed(arg0);

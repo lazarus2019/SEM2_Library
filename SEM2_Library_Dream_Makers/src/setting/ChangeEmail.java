@@ -150,6 +150,7 @@ public class ChangeEmail extends JDialog {
 		panelSubmit.setLayout(null);
 
 		btnSubmit = new JLabel("SUBMIT");
+		btnSubmit.setIcon(new ImageIcon(ChangeEmail.class.getResource("/data/icon/submitIcon.png")));
 		btnSubmit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
