@@ -9,15 +9,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 
-import com.sun.java_cup.internal.runtime.virtual_parse_stack;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 import com.toedter.calendar.JYearChooser;
 
 import entities.Author;
@@ -55,8 +54,6 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class invoicePanel extends JPanel {
 	public JTable jtableFindBook;
@@ -65,7 +62,6 @@ public class invoicePanel extends JPanel {
 	private JTable jtableBorrowedBook;
 	private JTextField jtextFieldNumberofLateDate;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextArea jtextAreaStatus;
 	private JRadioButton jradiobuttonReturn;
 	private JRadioButton jradiobuttonLost;
 	private JTable jtableReturningBook;
@@ -77,7 +73,6 @@ public class invoicePanel extends JPanel {
 	private JTextField jtextFieldIDBook;
 	private JDateChooser jdateChooserCreateDate;
 	private JTextField jtextFieldLateFee;
-	private JTextField jtextFieldReturnDate;
 	public static Employee employee = null;
 	private double lateFee = 0;
 	private double compendationFee = 0;
@@ -99,16 +94,32 @@ public class invoicePanel extends JPanel {
 	public static Member member = null;
 
 	DefaultTableModel defaultTableModelFindBook = new DefaultTableModel() {
-		public boolean isCellEditable(int arg0,int arg1){return false;};};
+		public boolean isCellEditable(int arg0, int arg1) {
+			return false;
+		};
+	};
 	DefaultTableModel defaultTableModelSelectedBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row,int column){return false;};};
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		};
+	};
 	DefaultTableModel defaultTableModelBorrowedBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row,int column){return false;};};
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		};
+	};
 	DefaultTableModel defaultTableModelReturningBook = new DefaultTableModel() {
-		public boolean isCellEditable(int row,int column){return false;};};
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		};
+	};
 	DefaultTableModel defaultTableModelBorrowBill = new DefaultTableModel() {
-		public boolean isCellEditable(int arg0,int arg1){return false;};};
+		public boolean isCellEditable(int arg0, int arg1) {
+			return false;
+		};
+	};
 	private JLabel lblNewLabelx;
+	private JDateChooser jdateChooserReturnDate;
 
 	/**
 	 * Create the panel.
@@ -134,7 +145,7 @@ public class invoicePanel extends JPanel {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(245, 244, 252));
-		panel_1.setBounds(22, 24, 471, 274);
+		panel_1.setBounds(11, 12, 471, 286);
 		jpanelReturnBook.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -148,12 +159,12 @@ public class invoicePanel extends JPanel {
 		panel_5.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Borrowed Books", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5.setBackground(new Color(245, 244, 252));
-		panel_5.setBounds(11, 66, 449, 197);
+		panel_5.setBounds(11, 66, 449, 209);
 		panel_1.add(panel_5);
 		panel_5.setLayout(null);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 24, 428, 161);
+		scrollPane_2.setBounds(10, 24, 428, 173);
 		panel_5.add(scrollPane_2);
 
 		jtableBorrowedBook = new JTable();
@@ -172,26 +183,26 @@ public class invoicePanel extends JPanel {
 		panel_1.add(lblNewLabel_4);
 
 		jtextFieldIDCardR = new JTextField();
-		jtextFieldIDCardR.setBounds(68, 34, 266, 30);
+		jtextFieldIDCardR.setBounds(68, 34, 260, 30);
 		panel_1.add(jtextFieldIDCardR);
 		jtextFieldIDCardR.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		jtextFieldIDCardR.setColumns(10);
 
 		JButton jbtnSearchIDCardR = new JButton("Search");
-		jbtnSearchIDCardR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		jbtnSearchIDCardR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnSearchIDCardR_actionPerformed(arg0);
 			}
 		});
-		jbtnSearchIDCardR.setBounds(343, 34, 117, 30);
-		panel_1.add(jbtnSearchIDCardR);
+		jbtnSearchIDCardR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		jbtnSearchIDCardR.setForeground(Color.WHITE);
+		jbtnSearchIDCardR.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		jbtnSearchIDCardR.setBackground(new Color(30, 106, 210));
-		jbtnSearchIDCardR.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		jbtnSearchIDCardR.setBounds(335, 34, 125, 30);
+		panel_1.add(jbtnSearchIDCardR);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(504, 73, 272, 501);
+		panel.setBounds(495, 68, 292, 507);
 		jpanelReturnBook.add(panel);
 		panel.setBackground(new Color(245, 244, 252));
 		panel.setLayout(null);
@@ -204,7 +215,7 @@ public class invoicePanel extends JPanel {
 
 		panel_2.setBackground(new Color(245, 244, 252));
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		panel_2.setBounds(11, 34, 248, 455);
+		panel_2.setBounds(11, 40, 270, 455);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -221,12 +232,8 @@ public class invoicePanel extends JPanel {
 		jtextFieldNumberofLateDate.setEditable(false);
 		jtextFieldNumberofLateDate.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		jtextFieldNumberofLateDate.setColumns(10);
-		jtextFieldNumberofLateDate.setBounds(10, 129, 228, 30);
+		jtextFieldNumberofLateDate.setBounds(10, 129, 249, 30);
 		panel_2.add(jtextFieldNumberofLateDate);
-
-		JLabel lblStatus = new JLabel("Status when return");
-		lblStatus.setBounds(10, 208, 228, 29);
-		panel_2.add(lblStatus);
 
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(234, 184, -137, 94);
@@ -244,7 +251,7 @@ public class invoicePanel extends JPanel {
 		jradiobuttonReturn.setSelected(true);
 		buttonGroup.add(jradiobuttonReturn);
 		jradiobuttonReturn.setBackground(new Color(245, 244, 252));
-		jradiobuttonReturn.setBounds(10, 321, 113, 30);
+		jradiobuttonReturn.setBounds(10, 218, 113, 30);
 		panel_2.add(jradiobuttonReturn);
 
 		jradiobuttonLost = new JRadioButton("Lost");
@@ -256,7 +263,7 @@ public class invoicePanel extends JPanel {
 		});
 		buttonGroup.add(jradiobuttonLost);
 		jradiobuttonLost.setBackground(new Color(245, 244, 252));
-		jradiobuttonLost.setBounds(131, 321, 107, 30);
+		jradiobuttonLost.setBounds(131, 218, 107, 30);
 		panel_2.add(jradiobuttonLost);
 
 		JButton jbtnGiveBack = new JButton("Give back");
@@ -268,16 +275,12 @@ public class invoicePanel extends JPanel {
 		});
 		jbtnGiveBack.setForeground(Color.WHITE);
 		jbtnGiveBack.setBackground(new Color(30, 106, 210));
-		jbtnGiveBack.setBounds(62, 414, 123, 30);
+		jbtnGiveBack.setBounds(73, 401, 123, 30);
 		panel_2.add(jbtnGiveBack);
 
 		JLabel lblNewLabel_6 = new JLabel("Late fee");
 		lblNewLabel_6.setBounds(10, 159, 228, 25);
 		panel_2.add(lblNewLabel_6);
-
-		jtextAreaStatus = new JTextArea();
-		jtextAreaStatus.setBounds(10, 233, 228, 80);
-		panel_2.add(jtextAreaStatus);
 
 		JLabel lblIdBook = new JLabel("ID Book");
 		lblIdBook.setBounds(10, 8, 228, 25);
@@ -287,45 +290,72 @@ public class invoicePanel extends JPanel {
 		jtextFieldIDBook.setBackground(Color.WHITE);
 		jtextFieldIDBook.setEditable(false);
 		jtextFieldIDBook.setColumns(10);
-		jtextFieldIDBook.setBounds(10, 27, 228, 30);
+		jtextFieldIDBook.setBounds(10, 27, 249, 30);
 		panel_2.add(jtextFieldIDBook);
-
-		JButton jbtnReturnBook = new JButton("Return Book");
-		jbtnReturnBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/return.png")));
-		jbtnReturnBook.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				jbtnReturnBook_actionPerformed(arg0);
-			}
-		});
-		jbtnReturnBook.setForeground(Color.WHITE);
-		jbtnReturnBook.setFont(new Font("Tahoma", Font.BOLD, 24));
-		jbtnReturnBook.setBackground(new Color(30, 106, 210));
-		jbtnReturnBook.setBounds(541, 24, 196, 37);
-		jpanelReturnBook.add(jbtnReturnBook);
 
 		// Start NVT
 		JPanel jpanelstatistics = new JPanel();
+		jpanelstatistics.setBackground(Color.WHITE);
 		tabbedPane.addTab("Manage bill", null, jpanelstatistics, null);
 		jpanelstatistics.setLayout(null);
 
 		panel_9 = new JPanel();
-		panel_9.setBounds(10, 11, 778, 567);
+		panel_9.setBackground(new Color(245, 244, 252));
+		panel_9.setBounds(10, 119, 778, 459);
 		jpanelstatistics.add(panel_9);
 		panel_9.setLayout(null);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 76, 758, 369);
+
+		panel_9.add(scrollPane);
+		scrollPane.getViewport().setBackground(Color.WHITE);
+
+		tableBorrowBill = new JTable();
+		scrollPane.setViewportView(tableBorrowBill);
+
+		JLabel lblListBill = new JLabel("List Bill");
+		lblListBill.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListBill.setBounds(344, 3, 89, 29);
+		panel_9.add(lblListBill);
+
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBounds(553, 42, 103, 23);
+		panel_9.add(btnDelete);
+		btnDelete.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDelete_actionPerformed(e);
+			}
+		});
+		btnDelete.setForeground(Color.WHITE);
+		btnDelete.setBackground(new Color(30, 106, 210));
+
+		JButton btnDetails = new JButton("Details");
+		btnDetails.setBounds(665, 42, 103, 23);
+		panel_9.add(btnDetails);
+		btnDetails.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/.png")));
+		btnDetails.setForeground(Color.WHITE);
+		btnDetails.setBackground(new Color(30, 106, 210));
+		btnDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDetails_actionPerformed(e);
+			}
+		});
+
 		JPanel panel1 = new JPanel();
+		panel1.setBounds(10, 10, 778, 99);
+		jpanelstatistics.add(panel1);
 		panel1.setLayout(null);
 		panel1.setBackground(new Color(245, 244, 252));
-		panel1.setBounds(10, 11, 758, 127);
-		panel_9.add(panel1);
 
 		yearChooser = new JYearChooser();
-		yearChooser.setBounds(135, 41, 96, 29);
+		yearChooser.setBounds(133, 59, 96, 29);
 		panel1.add(yearChooser);
 
 		monthChooser = new JMonthChooser();
 		monthChooser.getComboBox().setBackground(SystemColor.menu);
-		monthChooser.setBounds(10, 41, 113, 29);
+		monthChooser.setBounds(10, 59, 113, 29);
 		panel1.add(monthChooser);
 
 		btnSearch = new JLabel("Search");
@@ -341,47 +371,21 @@ public class invoicePanel extends JPanel {
 		btnSearch.setForeground(Color.WHITE);
 		btnSearch.setFont(new Font("Arial", Font.BOLD, 15));
 		btnSearch.setBackground(new Color(30, 106, 210));
-		btnSearch.setBounds(10, 81, 113, 35);
+		btnSearch.setBounds(242, 59, 113, 30);
 		panel1.add(btnSearch);
 
 		JLabel lblNewLabel = new JLabel("Search by time  :");
-		lblNewLabel.setBounds(10, 16, 147, 14);
+		lblNewLabel.setBounds(10, 32, 147, 23);
 		panel1.add(lblNewLabel);
 
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnDelete_actionPerformed(e);
-			}
-		});
-		btnDelete.setBounds(443, 41, 89, 23);
-		btnDelete.setForeground(Color.WHITE);
-		btnDelete.setBackground(new Color(30, 106, 210));
-		panel1.add(btnDelete);
-
-		JButton btnDetails = new JButton("Details");
-		btnDetails.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/.png")));
-		btnDetails.setForeground(Color.WHITE);
-		btnDetails.setBackground(new Color(30, 106, 210));
-		btnDetails.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnDetails_actionPerformed(e);
-			}
-		});
-		btnDetails.setBounds(559, 41, 89, 23);
-		panel1.add(btnDetails);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 152, 758, 282);
-		panel_9.add(scrollPane);
-
-		tableBorrowBill = new JTable();
-		scrollPane.setViewportView(tableBorrowBill);
+		JLabel lblSearch = new JLabel("Search");
+		lblSearch.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSearch.setBounds(344, 3, 89, 29);
+		panel1.add(lblSearch);
 		// End NVT
 
 		JPanel jpanelMember = new JPanel();
-		jpanelMember.setBounds(22, 24, 536, 174);
+		jpanelMember.setBounds(11, 12, 547, 186);
 		jpanelissueBook.add(jpanelMember);
 		jpanelMember.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		jpanelMember.setBackground(new Color(245, 244, 252));
@@ -394,35 +398,22 @@ public class invoicePanel extends JPanel {
 		jpanelMember.add(label);
 
 		JLabel lblNewLabel_1 = new JLabel("\u206FID Card");
-		lblNewLabel_1.setBounds(22, 55, 343, 25);
+		lblNewLabel_1.setBounds(32, 58, 343, 25);
 		jpanelMember.add(lblNewLabel_1);
 
 		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(22, 109, 343, 25);
+		lblName.setBounds(32, 112, 343, 25);
 		jpanelMember.add(lblName);
-
-		JButton jbtnSearchIDCardB = new JButton("Search");
-		jbtnSearchIDCardB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
-		jbtnSearchIDCardB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				jbtnSearchIDCardB_actionPerformed(arg0);
-			}
-		});
-		jbtnSearchIDCardB.setForeground(Color.WHITE);
-		jbtnSearchIDCardB.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		jbtnSearchIDCardB.setBackground(new Color(30, 106, 210));
-		jbtnSearchIDCardB.setBounds(248, 75, 117, 30);
-		jpanelMember.add(jbtnSearchIDCardB);
 
 		jlabelImage = new JLabel("");
 		jlabelImage.setBorder(new LineBorder(Color.WHITE));
 		jlabelImage.setBackground(Color.WHITE);
-		jlabelImage.setBounds(376, 24, 138, 135);
+		jlabelImage.setBounds(387, 27, 138, 135);
 		jpanelMember.add(jlabelImage);
 
 		jtextFieldIDCardB = new JTextField();
 		jtextFieldIDCardB.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		jtextFieldIDCardB.setBounds(22, 75, 215, 30);
+		jtextFieldIDCardB.setBounds(32, 78, 210, 30);
 		jpanelMember.add(jtextFieldIDCardB);
 		jtextFieldIDCardB.setColumns(10);
 
@@ -431,24 +422,24 @@ public class invoicePanel extends JPanel {
 		jtextFieldName.setBackground(Color.WHITE);
 		jtextFieldName.setEditable(false);
 		jtextFieldName.setColumns(10);
-		jtextFieldName.setBounds(22, 129, 343, 30);
+		jtextFieldName.setBounds(32, 132, 343, 30);
 		jpanelMember.add(jtextFieldName);
 
-		JButton jbtnBorrowBook = new JButton("Borrow Book");
-		jbtnBorrowBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/borrowBook.png")));
-		jbtnBorrowBook.setBounds(580, 24, 196, 37);
-		jpanelissueBook.add(jbtnBorrowBook);
-		jbtnBorrowBook.addActionListener(new ActionListener() {
+		JButton jbtnSearchIDCardB = new JButton("Search");
+		jbtnSearchIDCardB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				jbtnBorrowBook_actionPerformed(arg0);
+				jbtnSearchIDCardB_actionPerformed(arg0);
 			}
 		});
-		jbtnBorrowBook.setFont(new Font("Tahoma", Font.BOLD, 24));
-		jbtnBorrowBook.setBackground(new Color(30, 106, 210));
-		jbtnBorrowBook.setForeground(Color.WHITE);
+		jbtnSearchIDCardB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
+		jbtnSearchIDCardB.setForeground(Color.WHITE);
+		jbtnSearchIDCardB.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		jbtnSearchIDCardB.setBackground(new Color(30, 106, 210));
+		jbtnSearchIDCardB.setBounds(250, 78, 125, 30);
+		jpanelMember.add(jbtnSearchIDCardB);
 
 		JLabel lblCompensationFee = new JLabel("Compensation fee");
-		lblCompensationFee.setBounds(10, 350, 228, 25);
+		lblCompensationFee.setBounds(10, 254, 228, 25);
 		panel_2.add(lblCompensationFee);
 
 		jtextFieldCompensationFee = new JTextField();
@@ -456,7 +447,7 @@ public class invoicePanel extends JPanel {
 		jtextFieldCompensationFee.setEditable(false);
 		jtextFieldCompensationFee.setColumns(10);
 		jtextFieldCompensationFee.setBackground(Color.WHITE);
-		jtextFieldCompensationFee.setBounds(10, 370, 228, 30);
+		jtextFieldCompensationFee.setBounds(10, 274, 249, 30);
 		panel_2.add(jtextFieldCompensationFee);
 
 		jtextFieldLateFee = new JTextField();
@@ -464,25 +455,26 @@ public class invoicePanel extends JPanel {
 		jtextFieldLateFee.setEditable(false);
 		jtextFieldLateFee.setColumns(10);
 		jtextFieldLateFee.setBackground(Color.WHITE);
-		jtextFieldLateFee.setBounds(10, 179, 228, 30);
+		jtextFieldLateFee.setBounds(10, 179, 249, 30);
 		panel_2.add(jtextFieldLateFee);
 
-		jtextFieldReturnDate = new JTextField();
-		jtextFieldReturnDate.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				jtextFieldReturnDate_keyReleased(arg0);
-			}
-		});
-		jtextFieldReturnDate.setColumns(10);
-		jtextFieldReturnDate.setBackground(Color.WHITE);
-		jtextFieldReturnDate.setBounds(10, 76, 228, 30);
-		panel_2.add(jtextFieldReturnDate);
+		jdateChooserReturnDate = new JDateChooser();
+		JTextFieldDateEditor editor2 = (JTextFieldDateEditor) jdateChooserReturnDate.getDateEditor();
+		editor2.setEditable(false);
+		jdateChooserReturnDate.getCalendarButton().setForeground(Color.WHITE);
+		jdateChooserReturnDate.getCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 24));
+		jdateChooserReturnDate.getCalendarButton().setBackground(Color.WHITE);
+		jdateChooserReturnDate.setForeground(Color.BLACK);
+		jdateChooserReturnDate.setDateFormatString("dd/MM/yyyy");
+		jdateChooserReturnDate.setBackground(Color.DARK_GRAY);
+		jdateChooserReturnDate.setBounds(10, 75, 249, 30);
+		jdateChooserReturnDate.setDate(date);
+		panel_2.add(jdateChooserReturnDate);
 
 		JPanel panel_8 = new JPanel();
 		panel_8.setLayout(null);
 		panel_8.setBackground(new Color(245, 244, 252));
-		panel_8.setBounds(22, 309, 471, 265);
+		panel_8.setBounds(11, 309, 471, 265);
 		jpanelReturnBook.add(panel_8);
 
 		JLabel lblBooksAreReturning = new JLabel("List is Returned");
@@ -508,34 +500,49 @@ public class invoicePanel extends JPanel {
 		scrollPane_3.setViewportView(jtableReturningBook);
 
 		JButton jbtnDeleteR = new JButton("Delete");
-		jbtnDeleteR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnDeleteR_actionPerformed(arg0);
 			}
 		});
+		jbtnDeleteR.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteR.setForeground(Color.WHITE);
 		jbtnDeleteR.setBackground(new Color(30, 106, 210));
-		jbtnDeleteR.setBounds(351, 15, 87, 26);
+		jbtnDeleteR.setBounds(348, 14, 90, 26);
 		panel_6.add(jbtnDeleteR);
+
+		JButton jbtnReturnBook = new JButton("Return Book");
+		jbtnReturnBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbtnReturnBook_actionPerformed(arg0);
+			}
+		});
+		jbtnReturnBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/returnBook.png")));
+		jbtnReturnBook.setForeground(Color.WHITE);
+		jbtnReturnBook.setFont(new Font("Tahoma", Font.BOLD, 22));
+		jbtnReturnBook.setBackground(new Color(30, 106, 210));
+		jbtnReturnBook.setBounds(535, 12, 209, 37);
+		jpanelReturnBook.add(jbtnReturnBook);
 		scrollPane_3.getViewport().setBackground(Color.WHITE);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBounds(567, 85, 209, 114);
+		panel_7.setBounds(567, 85, 219, 114);
 		jpanelissueBook.add(panel_7);
 		panel_7.setBackground(new Color(245, 244, 252));
 		panel_7.setLayout(null);
 
 		JLabel lblNewLabelc1 = new JLabel("Create date:");
-		lblNewLabelc1.setBounds(9, 35, 184, 25);
+		lblNewLabelc1.setBounds(19, 34, 184, 25);
 		panel_7.add(lblNewLabelc1);
 		lblNewLabelc1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblNewLabelc1.setForeground(Color.BLACK);
 
 		jdateChooserCreateDate = new JDateChooser();
+		JTextFieldDateEditor editor = (JTextFieldDateEditor) jdateChooserCreateDate.getDateEditor();
+		editor.setEditable(false);
 		jdateChooserCreateDate.getCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 24));
 		jdateChooserCreateDate.setDateFormatString("dd/MM/yyyy");
-		jdateChooserCreateDate.setBounds(9, 70, 184, 30);
+		jdateChooserCreateDate.setBounds(19, 59, 184, 30);
 		panel_7.add(jdateChooserCreateDate);
 		jdateChooserCreateDate.getCalendarButton().setBackground(Color.WHITE);
 		jdateChooserCreateDate.getCalendarButton().setForeground(Color.WHITE);
@@ -544,7 +551,7 @@ public class invoicePanel extends JPanel {
 		jdateChooserCreateDate.setDate(date);
 
 		JPanel jpanelBook = new JPanel();
-		jpanelBook.setBounds(22, 205, 754, 369);
+		jpanelBook.setBounds(11, 205, 775, 369);
 		jpanelissueBook.add(jpanelBook);
 		jpanelBook.setForeground(new Color(51, 153, 204));
 		jpanelBook.setFont(new Font("Times New Roman", Font.PLAIN, 40));
@@ -556,14 +563,14 @@ public class invoicePanel extends JPanel {
 		panel_3.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Find Books", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setBackground(new Color(245, 244, 252));
-		panel_3.setBounds(5, 30, 745, 175);
+		panel_3.setBounds(12, 30, 750, 175);
 		jpanelBook.add(panel_3);
 		panel_3.setLayout(null);
 
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.getViewport().setBackground(Color.white);
 		scrollPane1.setBackground(Color.WHITE);
-		scrollPane1.setBounds(11, 63, 722, 103);
+		scrollPane1.setBounds(14, 63, 722, 103);
 		panel_3.add(scrollPane1);
 
 		jtableFindBook = new JTable();
@@ -582,37 +589,37 @@ public class invoicePanel extends JPanel {
 		lblNewLabel_3.setBounds(11, 23, 45, 25);
 		panel_3.add(lblNewLabel_3);
 
-		JButton jbtnSearchTitle = new JButton("Search");
-		jbtnSearchTitle.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
-		jbtnSearchTitle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				jbtnSearchTitle_actionPerformed(arg0);
-			}
-		});
-		jbtnSearchTitle.setForeground(Color.WHITE);
-		jbtnSearchTitle.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		jbtnSearchTitle.setBackground(new Color(30, 106, 210));
-		jbtnSearchTitle.setBounds(340, 20, 117, 30);
-		panel_3.add(jbtnSearchTitle);
-
 		jtextFieldTitle = new JTextField();
 		jtextFieldTitle.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		jtextFieldTitle.setColumns(10);
 		jtextFieldTitle.setBounds(54, 20, 275, 30);
 		panel_3.add(jtextFieldTitle);
 
+		JButton jbtnSearchTitle = new JButton("Search");
+		jbtnSearchTitle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jbtnSearchTitle_actionPerformed(e);
+			}
+		});
+		jbtnSearchTitle.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/searchBook.png")));
+		jbtnSearchTitle.setForeground(Color.WHITE);
+		jbtnSearchTitle.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		jbtnSearchTitle.setBackground(new Color(30, 106, 210));
+		jbtnSearchTitle.setBounds(337, 20, 125, 30);
+		panel_3.add(jbtnSearchTitle);
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Selected Book", TitledBorder.LEFT,
 				TitledBorder.TOP, null, Color.BLACK));
 		panel_4.setBackground(new Color(245, 244, 252));
-		panel_4.setBounds(5, 203, 745, 159);
+		panel_4.setBounds(12, 203, 750, 159);
 		jpanelBook.add(panel_4);
 		panel_4.setLayout(null);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.getViewport().setBackground(Color.white);
 		scrollPane_1.setBackground(Color.WHITE);
-		scrollPane_1.setBounds(11, 45, 722, 103);
+		scrollPane_1.setBounds(14, 45, 722, 103);
 		panel_4.add(scrollPane_1);
 
 		jtableSelectedBook = new JTable();
@@ -621,21 +628,34 @@ public class invoicePanel extends JPanel {
 		scrollPane_1.setViewportView(jtableSelectedBook);
 
 		JButton jbtnDeleteB = new JButton("Delete");
-		jbtnDeleteB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				jbtnDelete_actionPerformed(arg0);
+			public void actionPerformed(ActionEvent e) {
+				jbtnDeleteB_actionPerformed(e);
 			}
 		});
+		jbtnDeleteB.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/delete.png")));
 		jbtnDeleteB.setForeground(Color.WHITE);
 		jbtnDeleteB.setBackground(new Color(30, 106, 210));
-		jbtnDeleteB.setBounds(646, 14, 87, 26);
+		jbtnDeleteB.setBounds(645, 13, 90, 26);
 		panel_4.add(jbtnDeleteB);
 
 		JLabel label_1 = new JLabel("Book Details");
 		label_1.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		label_1.setBounds(305, 3, 143, 29);
 		jpanelBook.add(label_1);
+
+		JButton jbtnBorrowBook = new JButton("Borrow Book");
+		jbtnBorrowBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jbtnBorrowBook_actionPerformed(e);
+			}
+		});
+		jbtnBorrowBook.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/borrowBook.png")));
+		jbtnBorrowBook.setForeground(Color.WHITE);
+		jbtnBorrowBook.setFont(new Font("Tahoma", Font.BOLD, 22));
+		jbtnBorrowBook.setBackground(new Color(30, 106, 210));
+		jbtnBorrowBook.setBounds(567, 12, 219, 37);
+		jpanelissueBook.add(jbtnBorrowBook);
 
 		loadDataFindBook();
 		loadDataSelectedBook();
@@ -667,40 +687,36 @@ public class invoicePanel extends JPanel {
 
 	// click Give Back and show into Returning Books
 	public void jbtnGiveBack_actionPerformed(ActionEvent e) {
-		if (jtextFieldReturnDate.getText() == null) {
-			JOptionPane.showMessageDialog(null, "Return date required, please!", "Notification", JOptionPane.OK_OPTION);
+		int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
+		int rows = jtableReturningBook.getRowCount();
+		String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
+		String title = jtableBorrowedBook.getValueAt(selectedIndexRow, 2).toString();
+		String returnDate = jdateChooserReturnDate.getDateFormatString();
+		int number = 1;
+		for (int i = 0; i < rows; i++) {
+			number++;
+		}
+		boolean flag = true;
+		for (String id : bookID) {
+			if (id == idBook) {
+				JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!", "Notification",
+						JOptionPane.OK_OPTION);
+				flag = false;
+			}
+		}
+		if (flag) {
+			defaultTableModelReturningBook.addRow(new Object[] { number, idBook, title, returnDate });
+			jtableReturningBook.setModel(defaultTableModelReturningBook);
+			bookID.add(idBook);
+		}
+		if (getLateDate() > 0) {
+			lateFee = getLateDate();
 		} else {
-			int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
-			int rows = jtableReturningBook.getRowCount();
-			String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
-			String title = jtableBorrowedBook.getValueAt(selectedIndexRow, 2).toString();
-			String returnDate = jtextFieldReturnDate.getText();
-			int number = 1;
-			for (int i = 0; i < rows; i++) {
-				number++;
-			}
-			boolean flag = true;
-			for (String id : bookID) {
-				if (id == idBook) {
-					JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!", "Notification",
-							JOptionPane.OK_OPTION);
-					flag = false;
-				}
-			}
-			if (flag) {
-				defaultTableModelReturningBook.addRow(new Object[] { number, idBook, title, returnDate });
-				jtableReturningBook.setModel(defaultTableModelReturningBook);
-				bookID.add(idBook);
-			}
-			if (getLateDate() > 0) {
-				lateFee = getLateDate();
-			} else {
-				lateFee = 0;
-			}
-			if (jradiobuttonLost.isSelected()) {
-				compendationFee += percent(selectedIndexRow);
-				bookLost.add(idBook);
-			}
+			lateFee = 0;
+		}
+		if (jradiobuttonLost.isSelected()) {
+			compendationFee += percent(selectedIndexRow);
+			bookLost.add(idBook);
 		}
 	}
 
@@ -725,7 +741,7 @@ public class invoicePanel extends JPanel {
 		try {
 			long getdate;
 			int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
-			String returnDate = jtextFieldReturnDate.getText();
+			String returnDate = jdateChooserReturnDate.getDateFormatString();
 			String termDate = jtableBorrowedBook.getValueAt(selectedIndexRow, 3).toString();
 			Date endDate = simpleDateFormat.parse(returnDate);
 			Date startDate = simpleDateFormat.parse(termDate);
@@ -735,21 +751,6 @@ public class invoicePanel extends JPanel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return 0;
-		}
-	}
-
-	public void jtextFieldReturnDate_keyReleased(KeyEvent arg0) {
-		if (getLateDate() > 0) {
-			long getDate = getLateDate();
-			String day = Long.toString(getDate);
-			jtextFieldNumberofLateDate.setText(day);
-			long lateFee = getLateDate();
-			String result = Long.toString(lateFee);
-			jtextFieldLateFee.setText("$" + result);
-		} else {
-			jtextFieldNumberofLateDate.setText("0");
-			jtextFieldLateFee.setText("$0.0");
-			jtextFieldCompensationFee.setText("$0.0");
 		}
 	}
 
@@ -779,6 +780,51 @@ public class invoicePanel extends JPanel {
 		}
 	}
 
+	// click mouse select from Find Books into Selected Books
+	public void jtableFindBookmouseClicked(MouseEvent arg0) {
+		try {
+			int selectedIndexRowF = jtableFindBook.getSelectedRow();
+			int rows = jtableSelectedBook.getRowCount();
+			int number = 1;
+			for (int i = 0; i < rows; i++) {
+				number++;
+			}
+			String idBook = jtableFindBook.getValueAt(selectedIndexRowF, 1).toString();
+			String title = jtableFindBook.getValueAt(selectedIndexRowF, 2).toString();
+			String author = jtableFindBook.getValueAt(selectedIndexRowF, 3).toString();
+			String status = jtableFindBook.getValueAt(selectedIndexRowF, 4).toString();
+			Date createDate = jdateChooserCreateDate.getDate();
+			String date = simpleDateFormat.format(createDate);
+			boolean flag = true;
+			if (defaultTableModelSelectedBook.getRowCount() < 5) {
+				if (status == "Available") {
+					for (String id : bookID) {
+						if (id == idBook) {
+							JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!",
+									"Notification", JOptionPane.OK_OPTION);
+							flag = false;
+						}
+					}
+					if (flag) {
+						defaultTableModelSelectedBook.addRow(new Object[] { number, idBook, title, author, date });
+						jtableSelectedBook.setModel(defaultTableModelSelectedBook);
+						bookID.add(idBook);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "The book '" + title + "' is not available!", "Notification",
+							JOptionPane.OK_OPTION);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Has enough amount of book!", "Notification",
+						JOptionPane.OK_OPTION);
+			}
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
+	}
+
 	// Show ReturnBookDialog
 	public void jbtnReturnBook_actionPerformed(ActionEvent arg0) {
 		if (!jtextFieldIDCardR.getText().isEmpty() && defaultTableModelReturningBook.getRowCount() > 0) {
@@ -790,7 +836,7 @@ public class invoicePanel extends JPanel {
 					member = memberModel.find(jtextFieldIDCardR.getText());
 					ReturnBookDialog.idCard = jtextFieldIDCardR.getText();
 					ReturnBookDialog.name = member.getName();
-					ReturnBookDialog.date = simpleDateFormat.parse(jtextFieldReturnDate.getText());
+					ReturnBookDialog.date = jdateChooserReturnDate.getDate();
 					ReturnBookDialog.lateFee = lateFee * defaultTableModelReturningBook.getRowCount();
 					ReturnBookDialog.librarian = employee.getName();
 					ReturnBookDialog.idBook = new ArrayList<String>();
@@ -798,9 +844,6 @@ public class invoicePanel extends JPanel {
 					ReturnBookDialog.bookLost = new ArrayList<String>();
 					for (int i = 0; i < bookLost.size(); i++) {
 						ReturnBookDialog.bookLost.add(bookLost.get(i));
-					}
-					if (bookLost.isEmpty()) {
-						compendationFee = 0;
 					}
 					ReturnBookDialog.compensationFee = compendationFee;
 					for (int i = 0; i < defaultTableModelReturningBook.getRowCount(); i++) {
@@ -828,7 +871,7 @@ public class invoicePanel extends JPanel {
 	}
 
 	// Show BorrowBookDialog
-	public void jbtnBorrowBook_actionPerformed(ActionEvent arg0) {
+	public void jbtnBorrowBook_actionPerformed(ActionEvent e) {
 		Borrow_billModel borrow_billModel = new Borrow_billModel();
 		MemberModel memberModel = new MemberModel();
 		String idCard = jtextFieldIDCardB.getText();
@@ -894,7 +937,7 @@ public class invoicePanel extends JPanel {
 	}
 
 	// Remove 1 row of Selected Books: Delete button
-	public void jbtnDelete_actionPerformed(ActionEvent arg0) {
+	public void jbtnDeleteB_actionPerformed(ActionEvent e) {
 		int number = 1;
 		int selectedIndexRow = jtableSelectedBook.getSelectedRow();
 		String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
@@ -911,53 +954,8 @@ public class invoicePanel extends JPanel {
 		}
 	}
 
-	// click mouse select from Find Books into Selected Books
-	public void jtableFindBookmouseClicked(MouseEvent arg0) {
-		try {
-			int selectedIndexRowF = jtableFindBook.getSelectedRow();
-			int rows = jtableSelectedBook.getRowCount();
-			int number = 1;
-			for (int i = 0; i < rows; i++) {
-				number++;
-			}
-			String idBook = jtableFindBook.getValueAt(selectedIndexRowF, 1).toString();
-			String title = jtableFindBook.getValueAt(selectedIndexRowF, 2).toString();
-			String author = jtableFindBook.getValueAt(selectedIndexRowF, 3).toString();
-			String status = jtableFindBook.getValueAt(selectedIndexRowF, 4).toString();
-			Date createDate = jdateChooserCreateDate.getDate();
-			String date = simpleDateFormat.format(createDate);
-			boolean flag = true;
-			if (defaultTableModelSelectedBook.getRowCount() < 5) {
-				if (status == "Available") {
-					for (String id : bookID) {
-						if (id == idBook) {
-							JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!",
-									"Notification", JOptionPane.OK_OPTION);
-							flag = false;
-						}
-					}
-					if (flag) {
-						defaultTableModelSelectedBook.addRow(new Object[] { number, idBook, title, author, date });
-						jtableSelectedBook.setModel(defaultTableModelSelectedBook);
-						bookID.add(idBook);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "The book '" + title + "' is not available!", "Notification",
-							JOptionPane.OK_OPTION);
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Has enough amount of book!", "Notification",
-						JOptionPane.OK_OPTION);
-			}
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-	}
-
 	// Search "Title" for Book Details of BORROW BOOK
-	public void jbtnSearchTitle_actionPerformed(ActionEvent arg0) {
+	public void jbtnSearchTitle_actionPerformed(ActionEvent e) {
 		String title = jtextFieldTitle.getText().toLowerCase().trim();
 		defaultTableModelFindBook.getDataVector().removeAllElements();
 		defaultTableModelFindBook.fireTableDataChanged();
@@ -991,8 +989,6 @@ public class invoicePanel extends JPanel {
 
 	// Search "ID Card" of Return Book
 	public void jbtnSearchIDCardR_actionPerformed(ActionEvent arg0) {
-		String date = simpleDateFormat.format(new Date());
-		jtextFieldReturnDate.setText(date);
 		ReturnBookDialog.compensationFee = 0;
 		/* refresh */
 		defaultTableModelBorrowedBook.getDataVector().removeAllElements();
@@ -1015,7 +1011,6 @@ public class invoicePanel extends JPanel {
 			} else {
 				BooksModel booksModel = new BooksModel();
 				Borrow_billModel borrow_billModel = new Borrow_billModel();
-				// String status = statusModel.getStatus(2);
 				int number = 1;
 				String title = null;
 				String idBook = null;
@@ -1153,7 +1148,6 @@ public class invoicePanel extends JPanel {
 	}
 
 	// Start NVT
-	// Find Books header
 	public void btnDelete_actionPerformed(ActionEvent e) {
 		int selectedIndex = tableBorrowBill.getSelectedRow();
 		Borrow_billModel borrow_billModel = new Borrow_billModel();
@@ -1177,7 +1171,6 @@ public class invoicePanel extends JPanel {
 		}
 	}
 
-	// Find Books header
 	public void btnDetails_actionPerformed(ActionEvent e) {
 		int selectedIndex = tableBorrowBill.getSelectedRow();
 		if (selectedIndex != -1) {
@@ -1252,8 +1245,8 @@ public class invoicePanel extends JPanel {
 	}
 
 	public void loadWidthTable() {
-		String[] borrowColumn = { "No.", "Borrow ID", "Member Name", "Amount", "Borrow Date", "Term Date", "Return Date",
-				"Forfeit fee ", "Status" };
+		String[] borrowColumn = { "No.", "Borrow ID", "Member Name", "Amount", "Borrow Date", "Term Date",
+				"Return Date", "Forfeit fee ", "Status" };
 		defaultTableModelBorrowBill = new DefaultTableModel();
 		for (String cl : borrowColumn) {
 			defaultTableModelBorrowBill.addColumn(cl);
@@ -1265,7 +1258,7 @@ public class invoicePanel extends JPanel {
 		TableColumnModel columnModel = tableBorrowBill.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(75);
-		columnModel.getColumn(2).setPreferredWidth(150);
+		columnModel.getColumn(2).setPreferredWidth(170);
 		columnModel.getColumn(3).setPreferredWidth(75);
 		columnModel.getColumn(4).setPreferredWidth(90);
 		columnModel.getColumn(5).setPreferredWidth(90);
@@ -1276,20 +1269,20 @@ public class invoicePanel extends JPanel {
 		tableBorrowBillHeader.setBackground(new Color(223, 233, 242));
 		tableBorrowBillHeader.setForeground(Color.BLACK);
 	}
-	
+
 	public void loadDataBorrowBill() {
 		// set Data
-		loadWidthTable() ;
+		loadWidthTable();
 		BooksModel bookModel = new BooksModel();
 		AuthorModel authorModel = new AuthorModel();
 		MemberModel memberModel = new MemberModel();
 		Borrow_billModel borrow_billModel = new Borrow_billModel();
 		List<Borrow_bill> borrowbills = borrow_billModel.findAll();
-		
+
 		int number = 1;
 		String status = "";
 		for (Borrow_bill bill : borrowbills) {
-			double forfeit_fee = bill.getLate_fee()+ bill.getCompensation_fee() ;
+			double forfeit_fee = bill.getLate_fee() + bill.getCompensation_fee();
 			String memberName = memberModel.findByID(bill.getMember_ID()).getName();
 			int totalBook = borrow_billModel.countBook(bill.getBorrow_ID());
 			if (bill.isStatus()) {
@@ -1299,10 +1292,8 @@ public class invoicePanel extends JPanel {
 			}
 
 			defaultTableModelBorrowBill.addRow(new Object[] { number++, bill.getBorrow_ID(), memberName, totalBook,
-					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), forfeit_fee , status });
+					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), forfeit_fee, status });
 			tableBorrowBill.setModel(defaultTableModelBorrowBill);
 		}
 	}
-
-	// End NVT
 }
