@@ -1,7 +1,9 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,11 +18,12 @@ import entities.Member;
 public class MemberModel {
 	static String sql;
 
-	//	Start NTA
+	// Start NTA
 	public List<Member> findAll() {
+		Connection con = ConnectDB.getConnection();
 		try {
 			List<Member> members = new ArrayList<Member>();
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select * from member");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from member");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Member member = new Member();
@@ -36,6 +39,14 @@ public class MemberModel {
 			return members;
 		} catch (Exception e) {
 			return null;
+		}finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
@@ -102,10 +113,10 @@ public class MemberModel {
 	// Search Member
 
 	public List<Member> searchMember(String keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Member> members = new ArrayList<Member>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from member where name like ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from member where name like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -123,15 +134,23 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return members;
 	}
 
 	public List<Member> searchMemberGender(int keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Member> members = new ArrayList<Member>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from member where gender like ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from member where gender like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -149,14 +168,23 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return members;
 	}
 
 	public List<Author> findAuthor(String book_ID) {
+		Connection con = ConnectDB.getConnection();
 		List<Author> authors = new ArrayList<Author>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+			PreparedStatement preparedStatement = con.prepareStatement(
 					" SELECT books.title as bookTitle , author.name as authorName FROM author, books ,"
 							+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
 			preparedStatement.setString(1, book_ID);
@@ -171,6 +199,14 @@ public class MemberModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			authors = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return authors;
 
@@ -179,10 +215,10 @@ public class MemberModel {
 
 	// Start NNHV
 	public Member find(String idCard) {
+		Connection con = ConnectDB.getConnection();
 		Member member = null;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from member where card_number = ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from member where card_number = ?");
 			preparedStatement.setString(1, idCard);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -195,14 +231,23 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			member = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return member;
 	}
 
 	public String getMemberID(String idCard) {
+		Connection con = ConnectDB.getConnection();
 		String member_ID = null;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select member_ID from member where card_number = ?");
 			preparedStatement.setString(1, idCard);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -211,6 +256,14 @@ public class MemberModel {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return member_ID;
 	}
@@ -218,10 +271,10 @@ public class MemberModel {
 
 	// Start NVT - NTA
 	public Member findByID(String member_ID) {
+		Connection con = ConnectDB.getConnection();
 		Member member = null;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from member where member_ID = ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from member where member_ID = ?");
 			preparedStatement.setString(1, member_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -238,6 +291,14 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			member = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return member;
 	}
@@ -245,9 +306,10 @@ public class MemberModel {
 
 	// Get card number by id - NTS
 	public static String getCardNoById(String member_ID) {
+		Connection con = ConnectDB.getConnection();
 		sql = "SELECT * FROM member WHERE member_ID = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, member_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -258,16 +320,25 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// GET NEW MEMBER BY MONTH - NTS
 	public static int getNewMember(int month) {
+		Connection con = ConnectDB.getConnection();
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int memberAM = 0;
 		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ? AND YEAR(l.start_date) = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setInt(1, month);
 			preparedStatement.setInt(2, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -276,12 +347,21 @@ public class MemberModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return 0;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return memberAM;
 	}
 
 	// GET FRIENDLY MEMBER - NTS
 	public static List<FriendlyMember> getFriendlyMember(int day, int month, int year, int option) {
+		Connection con = ConnectDB.getConnection();
 		List<FriendlyMember> members = new ArrayList<FriendlyMember>();
 
 		// Switch condition
@@ -303,7 +383,7 @@ public class MemberModel {
 		}
 
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			switch (option) {
 			case 0:
 				preparedStatement.setInt(1, year);
@@ -335,6 +415,14 @@ public class MemberModel {
 			}
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return members;
@@ -342,6 +430,7 @@ public class MemberModel {
 
 	// GET NEW MEMBER - NTS
 	public static List<Member> getAllNewMember(int day, int month, int year, int option) {
+		Connection con = ConnectDB.getConnection();
 		List<Member> newMembers = new ArrayList<Member>();
 
 		// Switch condition
@@ -363,7 +452,7 @@ public class MemberModel {
 		}
 
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			switch (option) {
 			case 0:
 				preparedStatement.setInt(1, year);
@@ -375,7 +464,7 @@ public class MemberModel {
 				break;
 			case 2:
 				preparedStatement.setInt(1, year);
-				preparedStatement.setInt(2, new Date().getMonth() + 1);
+				preparedStatement.setInt(2, Calendar.getInstance().get(Calendar.MONTH) + 1);
 				preparedStatement.setInt(3, day);
 				break;
 			case 3:
@@ -395,6 +484,14 @@ public class MemberModel {
 			}
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return newMembers;

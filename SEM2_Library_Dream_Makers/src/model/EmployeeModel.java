@@ -1,7 +1,9 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -21,11 +23,12 @@ public class EmployeeModel {
 	// Start NTA
 	// Find all - NTannh
 	public List<Employee> findAll() {
+		Connection con = ConnectDB.getConnection();
 		sql = "SELECT * FROM employee";
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Employee employee = new Employee();
@@ -43,6 +46,14 @@ public class EmployeeModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			employees = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return employees;
 	}
@@ -50,9 +61,10 @@ public class EmployeeModel {
 	// Search Size
 
 	public static List<Employee> searchEmployee(String keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select * from employee where employee_ID like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -68,16 +80,24 @@ public class EmployeeModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return employees;
 	}
 
 	// Search Combobox
 	public static List<Employee> searchEmployeeCom(String keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from employee where level like ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from employee where level like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -92,6 +112,14 @@ public class EmployeeModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return employees;
 	}
@@ -160,69 +188,106 @@ public class EmployeeModel {
 
 	// Get amount employee - NTS
 	public static int getAmountEmployee() {
+		Connection con = ConnectDB.getConnection();
 		int am_employee = 0;
 		sql = "SELECT COUNT(level) as amount FROM employee WHERE level = 'librarian'";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			am_employee = resultSet.getInt("amount");
 		} catch (Exception e) {
 			return am_employee;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return am_employee;
 	}
 
 	// Get issused book - NTS
 	public static int getAmountReturnBook() {
+		Connection con = ConnectDB.getConnection();
 		int am_returnBook = 0;
 		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 1";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			am_returnBook = resultSet.getInt("amount");
 		} catch (Exception e) {
 			return am_returnBook;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return am_returnBook;
 	}
 
 	// Get issused book - NTS
 	public static int getAmountIssuedBook() {
+		Connection con = ConnectDB.getConnection();
 		int am_issuedBook = 0;
 		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 2";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			am_issuedBook = resultSet.getInt("amount");
 		} catch (Exception e) {
 			return am_issuedBook;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return am_issuedBook;
 	}
 
 	// Get member - NTS
 	public static int getAmountMember() {
+		Connection con = ConnectDB.getConnection();
 		int am_member = 0;
 		sql = "SELECT COUNT(member_ID) as amount FROM member";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			am_member = resultSet.getInt("amount");
 		} catch (Exception e) {
 			return am_member;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return am_member;
 	}
 
 	// Get employee name by id - NTS
 	public static String getNameById(String employee_ID) {
+		Connection con = ConnectDB.getConnection();
 		sql = "SELECT * FROM employee WHERE employee_ID = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, employee_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -232,15 +297,24 @@ public class EmployeeModel {
 			}
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Get employee by id - NTS
 	public static Employee getById(String employee_ID) {
+		Connection con = ConnectDB.getConnection();
 		Employee employee = null;
 		sql = "SELECT * FROM employee WHERE employee_ID = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, employee_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -262,6 +336,14 @@ public class EmployeeModel {
 			}
 		} catch (Exception e) {
 			return employee;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
@@ -329,10 +411,11 @@ public class EmployeeModel {
 
 	// Check Login - NTS
 	public static Employee checkLogin(String username) {
+		Connection con = ConnectDB.getConnection();
 		Employee employee = null;
 		sql = "SELECT * FROM employee WHERE username = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, username);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -354,15 +437,24 @@ public class EmployeeModel {
 			}
 		} catch (Exception e) {
 			return employee;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Forgot Password - NTS
 	public static Employee forGotPass(String email) {
+		Connection con = ConnectDB.getConnection();
 		Employee employee = null;
 		sql = "SELECT * FROM employee WHERE email = ?  ";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, email);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -374,6 +466,14 @@ public class EmployeeModel {
 			}
 		} catch (Exception e) {
 			return employee;
+		}finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 

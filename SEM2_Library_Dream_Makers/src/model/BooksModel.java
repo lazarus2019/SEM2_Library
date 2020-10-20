@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,10 +24,10 @@ public class BooksModel {
 	static String sql;
 
 	public static List<Books> findAll() {
+		Connection con = ConnectDB.getConnection();
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement("SELECT * FROM books WHERE isDelete = false");
+			PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM books WHERE isDelete = false");
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -48,6 +49,14 @@ public class BooksModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			books = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return books;
@@ -55,11 +64,10 @@ public class BooksModel {
 
 	// Start NNHV
 	public Books find(String id) {
-
+		Connection con = ConnectDB.getConnection();
 		Books book = new Books();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement("select * from books where book_ID = ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from books where book_ID = ?");
 			preparedStatement.setString(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -77,6 +85,14 @@ public class BooksModel {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 			book = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return book;
@@ -84,9 +100,10 @@ public class BooksModel {
 	}
 
 	public List<Books> searchBooks(String keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select * from books where title like ? and isDelete = false");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -106,14 +123,23 @@ public class BooksModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return books;
 	}
 
 	public List<Books> getTitleBook(int borrow_ID, int status) {
+		Connection con = ConnectDB.getConnection();
 		try {
 			List<Books> books = new ArrayList<Books>();
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(
+			PreparedStatement preparedStatement = con.prepareStatement(
 					"select * from bor_book bo, books b where bo.borrow_ID = ? and bo.status = ? and bo.book_ID = b.book_ID");
 			preparedStatement.setInt(1, borrow_ID);
 			preparedStatement.setInt(2, status);
@@ -128,14 +154,22 @@ public class BooksModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	public double getPrice(String idBook) {
+		Connection con = ConnectDB.getConnection();
 		try {
 			double price = 0;
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select price from books where book_ID = ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select price from books where book_ID = ?");
 			preparedStatement.setString(1, idBook);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -145,27 +179,45 @@ public class BooksModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return 0;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	public boolean updateBookLost(String book_ID) {
+		Connection con = ConnectDB.getConnection();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("update books set quantity = quantity - 1 where book_ID = ?");
 			preparedStatement.setString(1, book_ID);
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return false;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	// End NNHV
 
 	// Start NVT
 	public String findPublish(int publish_ID) {
+		Connection con = ConnectDB.getConnection();
 		String name = null;
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement(" select * from publish_house where publish_ID = ?  ");
 			preparedStatement.setInt(1, publish_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -177,6 +229,14 @@ public class BooksModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			name = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return name;
 
@@ -261,9 +321,10 @@ public class BooksModel {
 	}
 
 	public static List<Books> findByBill(int borrow_ID) {
+		Connection con = ConnectDB.getConnection();
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+			PreparedStatement preparedStatement = con.prepareStatement(
 					"SELECT borrow_bill.borrow_ID , books.* FROM bor_book , borrow_bill, books WHERE borrow_bill.borrow_ID = ? and borrow_bill.borrow_ID = bor_book.borrow_ID and bor_book.book_ID = books.book_ID");
 
 			preparedStatement.setInt(1, borrow_ID);
@@ -287,15 +348,24 @@ public class BooksModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			books = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return books;
 	}
 
 	public List<Author> findAuthor(String book_ID) {
+		Connection con = ConnectDB.getConnection();
 		List<Author> authors = new ArrayList<Author>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(
+			PreparedStatement preparedStatement = con.prepareStatement(
 					" SELECT books.title as bookTitle , author.author_ID as authorID , author.name as authorName FROM author, books ,"
 							+ "au_book WHERE author.author_ID = au_book.author_ID and au_book.book_ID = books.book_ID and books.book_ID = ?  ");
 			preparedStatement.setString(1, book_ID);
@@ -311,16 +381,24 @@ public class BooksModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			authors = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return authors;
 
 	}
 
 	public List<Books> searchBooksbyCate(int category_ID) {
+		Connection con = ConnectDB.getConnection();
 		List<Books> books = new ArrayList<Books>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from books where category_ID = ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from books where category_ID = ?");
 			preparedStatement.setInt(1, category_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -340,14 +418,23 @@ public class BooksModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return books;
 	}
 
 	public String findCategory(int category_ID) {
+		Connection con = ConnectDB.getConnection();
 		String name = null;
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement(" select * from category where category_ID = ?  ");
 			preparedStatement.setInt(1, category_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -359,6 +446,14 @@ public class BooksModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			name = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return name;
 	}
@@ -366,6 +461,7 @@ public class BooksModel {
 
 	// Get Obselete bills by month and year - NTS
 	public static List<Borrow_bill> getBills(int month, int year, int op, int status) {
+		Connection con = ConnectDB.getConnection();
 		List<Borrow_bill> bills = new ArrayList<Borrow_bill>();
 
 		// Switch condition
@@ -381,7 +477,7 @@ public class BooksModel {
 		}
 
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			switch (op) {
 			case 1:
 				preparedStatement.setInt(1, year);
@@ -421,6 +517,14 @@ public class BooksModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return bills;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return bills;
 	}
@@ -431,9 +535,10 @@ public class BooksModel {
 		MemberModel memberModel = new MemberModel();
 		EmployeeModel employeeModel = new EmployeeModel();
 		for (Borrow_bill bill : bills) {
+			Connection con = ConnectDB.getConnection();
 			sql = "SELECT title AS tt FROM bor_book b, books bs WHERE status = ? AND borrow_ID = ? AND b.book_ID = bs.book_ID";
 			try {
-				PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+				PreparedStatement preparedStatement = con.prepareStatement(sql);
 				preparedStatement.setInt(1, status);
 				preparedStatement.setInt(2, bill.getBorrow_ID());
 				ResultSet resultSet = preparedStatement.executeQuery();
@@ -450,6 +555,14 @@ public class BooksModel {
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 				return null;
+			} finally {
+				if (con != null)
+					try {
+						con.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 		}
 		return books;
@@ -462,11 +575,12 @@ public class BooksModel {
 
 	// AMOUNT OF BOOK BY MONTH - NTS
 	public static int getAmountBookByMonth(int month) {
+		Connection con = ConnectDB.getConnection();
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int amountBook = 0;
 		sql = "SELECT COUNT(b.book_ID) AS amountB FROM bor_book b, borrow_bill bb WHERE MONTH(bb.borrow_date) = ? AND YEAR(bb.borrow_date) = ? AND b.borrow_ID = bb.borrow_ID";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setInt(1, month);
 			preparedStatement.setInt(2, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -474,12 +588,21 @@ public class BooksModel {
 			amountBook = resultSet.getInt("amountB");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+		}finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return amountBook;
 	}
 
 	// GET FAMOUS BOOKS - NTS
 	public static List<FamousBook> getFamousBook(int day, int month, int year, int option) {
+		Connection con = ConnectDB.getConnection();
 		List<FamousBook> books = new ArrayList<FamousBook>();
 
 		// Switch condition
@@ -501,7 +624,7 @@ public class BooksModel {
 		}
 
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			switch (option) {
 			case 0:
 				preparedStatement.setInt(1, year);
@@ -533,6 +656,14 @@ public class BooksModel {
 			}
 		} catch (Exception e) {
 			return null;
+		}finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return books;
 	}

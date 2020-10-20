@@ -1,7 +1,9 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,10 @@ import entities.Category;
 
 public class CategoryModel {
 	public List<Category> findAll() {
+		Connection con = ConnectDB.getConnection();
 		List<Category> categories = new ArrayList<Category>();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("SELECT * FROM category  ");
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -27,6 +30,14 @@ public class CategoryModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			categories = null;
+		}finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return categories;

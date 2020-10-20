@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,14 +15,14 @@ import entities.Member;
 import main.employeePanel;
 
 public class Borrow_billModel {
-	
+
 	static String sql;
 
 	public List<Borrow_bill> findAll() {
+		Connection con = ConnectDB.getConnection();
 		try {
 			List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from borrow_bill");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from borrow_bill");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Borrow_bill borrow_bill = new Borrow_bill();
@@ -36,20 +37,29 @@ public class Borrow_billModel {
 				borrow_bill.setDeposit_fee(resultSet.getDouble("deposit_fee"));
 				borrow_bill.setLate_fee(resultSet.getDouble("late_fee"));
 				borrow_bill.setCompensation_fee(resultSet.getDouble("compen_fee"));
-				
+
 				borrow_bills.add(borrow_bill);
 			}
 			return borrow_bills;
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	// Start NNHV
 	public Borrow_bill showBorrowBook(String card_number, int status) {
+		Connection con = ConnectDB.getConnection();
 		Borrow_bill borrow_bill = null;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select * from borrow_bill bi, member m, bor_book bo "
 							+ " where m.card_number = ? and bo.status = ? and bi.member_ID = m.member_ID and bo.borrow_ID = bi.borrow_ID ");
 			preparedStatement.setString(1, card_number);
@@ -63,6 +73,14 @@ public class Borrow_billModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return borrow_bill;
 	}
@@ -102,9 +120,10 @@ public class Borrow_billModel {
 	}
 
 	public Integer getBorrowId() {
+		Connection con = ConnectDB.getConnection();
 		int id = 0;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select borrow_ID from borrow_bill order by borrow_ID desc limit 1");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -114,14 +133,23 @@ public class Borrow_billModel {
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			return 0;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return id;
 	}
-	
+
 	public Integer getReturnId(String member_ID, boolean status) {
+		Connection con = ConnectDB.getConnection();
 		int id = 0;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select borrow_ID from borrow_bill where member_ID = ? and status = ?");
 			preparedStatement.setString(1, member_ID);
 			preparedStatement.setBoolean(2, status);
@@ -129,17 +157,27 @@ public class Borrow_billModel {
 			if (resultSet.next()) {
 				id = resultSet.getInt("borrow_ID");
 			}
-			
+
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			return 0;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return id;
 	}
 
 	public Integer countBook(int borrow_ID) {
+		Connection con = ConnectDB.getConnection();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select count(book_ID) as totalBook from bor_book where borrow_ID = ?");
+			PreparedStatement preparedStatement = con
+					.prepareStatement("select count(book_ID) as totalBook from bor_book where borrow_ID = ?");
 			preparedStatement.setInt(1, borrow_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
@@ -147,13 +185,22 @@ public class Borrow_billModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
-		
+
 	}
 
 	public Integer count(boolean status) {
+		Connection con = ConnectDB.getConnection();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select count(status) as number from borrow_bill where status = ?");
 			preparedStatement.setBoolean(1, status);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -162,30 +209,48 @@ public class Borrow_billModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
-	
+
 	public Integer getReturnId(String memberId) {
+		Connection con = ConnectDB.getConnection();
 		int id = 0;
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
+			PreparedStatement preparedStatement = con
 					.prepareStatement("select borrow_ID from borrow_bill where status = false and member_ID = ?");
 			preparedStatement.setString(1, memberId);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				id = resultSet.getInt("borrow_ID");
-			}		
+			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 			return 0;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return id;
 	}
-	
+
 	public Integer countNotReturn(String member_ID) {
+		Connection con = ConnectDB.getConnection();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select count(status) as number from borrow_bill where member_ID = ? and status = false");
+			PreparedStatement preparedStatement = con.prepareStatement(
+					"select count(status) as number from borrow_bill where member_ID = ? and status = false");
 			preparedStatement.setString(1, member_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
@@ -193,12 +258,21 @@ public class Borrow_billModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	// End NNHV
-	
+
 	// GET BILLS BY MONTH AND YEAR - NST
 	public static List<Borrow_bill> getAllBills(int day, int month, int year, int option) {
+		Connection con = ConnectDB.getConnection();
 		List<Borrow_bill> bills = new ArrayList<Borrow_bill>();
 
 		// Switch condition
@@ -220,7 +294,7 @@ public class Borrow_billModel {
 		}
 
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			switch (option) {
 			case 0:
 				preparedStatement.setInt(1, year);
@@ -253,21 +327,30 @@ public class Borrow_billModel {
 			}
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 
 		return bills;
 	}
 
 	// Start NVT
-	public List<Borrow_bill> findByDate(int month , int year ){
+	public List<Borrow_bill> findByDate(int month, int year) {
+		Connection con = ConnectDB.getConnection();
 		try {
 			List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from borrow_bill where MONTH(borrow_date) = ? and YEAR(borrow_date) = ? "); 
+			PreparedStatement preparedStatement = con.prepareStatement(
+					"select * from borrow_bill where MONTH(borrow_date) = ? and YEAR(borrow_date) = ? ");
 			preparedStatement.setInt(1, month);
 			preparedStatement.setInt(2, year);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
+			while (resultSet.next()) {
 				Borrow_bill borrow_bill = new Borrow_bill();
 				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
 				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
@@ -285,17 +368,26 @@ public class Borrow_billModel {
 			return borrow_bills;
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
-	
-	public Borrow_bill findByID(int id){
+
+	public Borrow_bill findByID(int id) {
+		Connection con = ConnectDB.getConnection();
 		try {
 			Borrow_bill borrow_bill = new Borrow_bill();
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from borrow_bill where borrow_ID = ?  "); 
+			PreparedStatement preparedStatement = con
+					.prepareStatement("select * from borrow_bill where borrow_ID = ?  ");
 			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()) {
+			if (resultSet.next()) {
 				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
 				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
 				borrow_bill.setEmployee_ID(resultSet.getString("employee_ID"));
@@ -311,13 +403,21 @@ public class Borrow_billModel {
 			return borrow_bill;
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
-	
-	public boolean delete( int borrow_ID) {
+
+	public boolean delete(int borrow_ID) {
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("delete from borrow_bill where borrow_ID = ?  "); 
+					.prepareStatement("delete from borrow_bill where borrow_ID = ?  ");
 			preparedStatement.setInt(1, borrow_ID);
 			return preparedStatement.executeUpdate() > 0;
 

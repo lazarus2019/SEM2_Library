@@ -14,9 +14,10 @@ public class AuthorModel {
 	static String sql;
 
 	public List<Author> findAll() {
+		Connection con = ConnectDB.getConnection();
+		List<Author> authors = new ArrayList<Author>();
 		try {
-			List<Author> authors = new ArrayList<Author>();
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("select * from author");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from author");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Author author = new Author();
@@ -25,10 +26,18 @@ public class AuthorModel {
 				author.setNation(resultSet.getString("nation"));
 				authors.add(author);
 			}
-			return authors;
 		} catch (Exception e) {
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
+		return authors;
 	}
 
 	// Start NTA
@@ -49,6 +58,7 @@ public class AuthorModel {
 			return false;
 		}
 	}
+
 	// Delete - NTanh
 	public static boolean delete(String author_ID) {
 		sql = "delete from author where author_ID = ?";
@@ -83,10 +93,11 @@ public class AuthorModel {
 
 	// Get author by id - NTanh
 	public static Author getById(String author_ID) {
+		Connection con = ConnectDB.getConnection();
 		Author author = null;
 		sql = "SELECT * FROM author WHERE author_ID = ?";
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setString(1, author_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -100,14 +111,22 @@ public class AuthorModel {
 			}
 		} catch (Exception e) {
 			return author;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 	public static List<Author> searchAuthors(String keys) {
+		Connection con = ConnectDB.getConnection();
 		List<Author> authorr = new ArrayList<Author>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from author where author_ID like ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from author where author_ID like ?");
 			preparedStatement.setString(1, "%" + keys + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -121,15 +140,24 @@ public class AuthorModel {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return authorr;
 	}
 
-	//Search book
+	// Search book
 	public List<Author> searchBooks(String book_ID) {
+		Connection con = ConnectDB.getConnection();
 		List<Author> authors = new ArrayList<Author>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(
+			PreparedStatement preparedStatement = con.prepareStatement(
 					"select * from books b, author a, au_book ab where b.book_ID = ? and b.book_ID = ab.book_ID and ab.author_ID = a.author_ID");
 			preparedStatement.setString(1, book_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -143,16 +171,24 @@ public class AuthorModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return authors;
 	}
 
-	//Search combobox
+	// Search combobox
 	public static List<Author> searchAuthor(String keyword) {
+		Connection con = ConnectDB.getConnection();
 		List<Author> authors = new ArrayList<Author>();
 		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from author where nation like ?");
+			PreparedStatement preparedStatement = con.prepareStatement("select * from author where nation like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -165,16 +201,25 @@ public class AuthorModel {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return authors;
 	}
+
 	// End NTA
 	// Start NVT
 	public Author findAuthorbyName(String name) {
+		Connection con = ConnectDB.getConnection();
 		Author author = new Author();
 		try {
-			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement(" SELECT * FROM author where name = ? ");
+			PreparedStatement preparedStatement = con.prepareStatement(" SELECT * FROM author where name = ? ");
 			preparedStatement.setString(1, name.trim());
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -187,6 +232,14 @@ public class AuthorModel {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
 			author = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return author;
 
