@@ -26,7 +26,7 @@ public class BooksModel {
 		List<Books> books = new ArrayList<Books>();
 		try {
 			PreparedStatement preparedStatement = new ConnectDB().getConnection()
-					.prepareStatement("SELECT * FROM books ");
+					.prepareStatement("SELECT * FROM books WHERE isDelete = false");
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -87,7 +87,7 @@ public class BooksModel {
 		List<Books> books = new ArrayList<Books>();
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from books where title like ?");
+					.prepareStatement("select * from books where title like ? and isDelete = false");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
