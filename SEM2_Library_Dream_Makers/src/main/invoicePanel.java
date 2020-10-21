@@ -1005,7 +1005,7 @@ public class invoicePanel extends JPanel {
 			String status = null;
 			String au = null;
 			for (Books book : books) {
-				if (bor_bookModel.count(2, book.getBook_ID()) < book.getQuantity()) {
+				if (book.getQuantity() > 0) {
 					status = "Available";
 				} else {
 					status = "Unavailable";

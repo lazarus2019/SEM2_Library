@@ -250,6 +250,27 @@ public class BooksModel {
 				}
 		}
 	}
+	
+	public boolean updateGiveBack(String book_ID) {
+		Connection con = ConnectDB.getConnection();
+		try {
+			PreparedStatement preparedStatement = con
+					.prepareStatement("update books set quantity = quantity + 1 where book_ID = ?");
+			preparedStatement.setString(1, book_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
 	// End NNHV
 
 	// Start NVT

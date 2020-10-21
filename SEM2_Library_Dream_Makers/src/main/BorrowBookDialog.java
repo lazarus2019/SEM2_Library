@@ -24,6 +24,7 @@ import entities.Bor_book;
 import entities.Borrow_bill;
 import entities.Employee;
 import entities.Member;
+import model.BooksModel;
 import model.Bor_bookModel;
 import model.Borrow_billModel;
 import model.MemberModel;
@@ -232,6 +233,7 @@ public class BorrowBookDialog extends JDialog {
 		MemberModel memberModel = new MemberModel();
 		Borrow_bill borrow_bill = new Borrow_bill();
 		Borrow_billModel borrow_billModel = new Borrow_billModel();
+		BooksModel booksModel = new BooksModel();
 		Member member = memberModel.find(idCard);
 		Date termDate = plusDate(date);
 		int fee = idBook.size();
@@ -260,6 +262,7 @@ public class BorrowBookDialog extends JDialog {
 			bor_book.setBorrow_ID(borrow_ID);
 			bor_book.setStatus(status);
 			bor_bookModel.create(bor_book);
+			booksModel.updateBookLost(idBookString); 
 		}
 		
 		this.dispose();

@@ -64,7 +64,6 @@ public class ReturnBookDialog extends JDialog {
 		};
 	};
 
-	
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	/**
@@ -234,21 +233,21 @@ public class ReturnBookDialog extends JDialog {
 		borrow_bill.setReturn_date(new java.sql.Date(date.getTime()));
 		borrow_bill.setLate_fee(lateFee);
 		borrow_bill.setCompensation_fee(compensationFee);
-		
+
 		// update bor_book
 		BooksModel booksModel = new BooksModel();
 		Bor_bookModel bor_bookModel = new Bor_bookModel();
 		int borrow_ID = borrow_billModel.getReturnId(member_ID);
-		for(String id : idBook) {
+		for (String id : idBook) {
 			bor_bookModel.update(1, borrow_ID, id);
+			booksModel.updateGiveBack(id);
 		}
-		if(!bookLost.isEmpty()) {
-			for(String idbooklost : bookLost) {
-				booksModel.updateBookLost(idbooklost);	 //update quantity of Books when Lost
+		if (!bookLost.isEmpty()) {
+			for (String idbooklost : bookLost) {
 				bor_bookModel.update(3, borrow_ID, idbooklost);
 			}
 		}
-		
+
 		if (borrow_billModel.update(borrow_bill, member_ID)) {
 			JOptionPane.showMessageDialog(null, "Successful!", "Notification", JOptionPane.OK_OPTION);
 		} else {
@@ -284,7 +283,7 @@ public class ReturnBookDialog extends JDialog {
 		String idBookc = null;
 		String titlec = null;
 		String lateFeeString = Double.toString(lateFee);
-		double c = Math.ceil(compensationFee*100)/100;
+		double c = Math.ceil(compensationFee * 100) / 100;
 		String compensationFeeString = Double.toString(c);
 		jtextFieldLibrarian.setText(librarian);
 		jtextFieldIDCard.setText(idCard);
