@@ -124,6 +124,7 @@ public class invoicePanel extends JPanel {
 	private JDateChooser jdateChooserReturnDate;
 	private JTable table;
 	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -673,13 +674,13 @@ public class invoicePanel extends JPanel {
 		jpanelBookBorrow.add(panel_10);
 		panel_10.setLayout(null);
 
-		JMonthChooser monthChooser_1 = new JMonthChooser();
-		monthChooser_1.setBounds(10, 11, 113, 29);
-		panel_10.add(monthChooser_1);
+		JMonthChooser monthCho = new JMonthChooser();
+		monthCho.setBounds(10, 11, 113, 29);
+		panel_10.add(monthCho);
 
-		JYearChooser yearChooser_1 = new JYearChooser();
-		yearChooser_1.setBounds(133, 11, 96, 29);
-		panel_10.add(yearChooser_1);
+		JYearChooser yearCho = new JYearChooser();
+		yearCho.setBounds(133, 11, 96, 29);
+		panel_10.add(yearCho);
 
 		JCheckBox monthCheck = new JCheckBox("Month");
 		monthCheck.setBackground(new Color(245, 244, 252));
@@ -715,33 +716,33 @@ public class invoicePanel extends JPanel {
 		searchBtn.setBounds(113, 51, 113, 30);
 		panel_10.add(searchBtn);
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Returned");
-		buttonGroup_1.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBackground(new Color(245, 244, 252));
-		rdbtnNewRadioButton.setBounds(245, 11, 109, 23);
-		panel_10.add(rdbtnNewRadioButton);
+		JRadioButton returnedRadio = new JRadioButton("Returned");
+		buttonGroup_1.add(returnedRadio);
+		returnedRadio.setBackground(new Color(245, 244, 252));
+		returnedRadio.setBounds(245, 11, 109, 23);
+		panel_10.add(returnedRadio);
 
-		JRadioButton rdbtnNotReturn = new JRadioButton("Not return");
-		buttonGroup_1.add(rdbtnNotReturn);
-		rdbtnNotReturn.setBackground(new Color(245, 244, 252));
-		rdbtnNotReturn.setBounds(245, 34, 109, 23);
-		panel_10.add(rdbtnNotReturn);
+		JRadioButton notReturnRadio = new JRadioButton("Not return");
+		buttonGroup_1.add(notReturnRadio);
+		notReturnRadio.setBackground(new Color(245, 244, 252));
+		notReturnRadio.setBounds(245, 34, 109, 23);
+		panel_10.add(notReturnRadio);
 
-		JRadioButton rdbtnNewRadioButton_1_1 = new JRadioButton("Lost");
-		buttonGroup_1.add(rdbtnNewRadioButton_1_1);
-		rdbtnNewRadioButton_1_1.setBackground(new Color(245, 244, 252));
-		rdbtnNewRadioButton_1_1.setBounds(245, 57, 109, 23);
-		panel_10.add(rdbtnNewRadioButton_1_1);
+		JRadioButton lostRadio = new JRadioButton("Lost");
+		buttonGroup_1.add(lostRadio);
+		lostRadio.setBackground(new Color(245, 244, 252));
+		lostRadio.setBounds(245, 57, 109, 23);
+		panel_10.add(lostRadio);
 
 		JPanel panel_11 = new JPanel();
 		panel_11.setBackground(new Color(245, 244, 252));
-		panel_11.setBounds(10, 155, 778, 423);
+		panel_11.setBounds(10, 115, 778, 463);
 		jpanelBookBorrow.add(panel_11);
 		panel_11.setLayout(null);
 
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.getViewport().setBackground(Color.WHITE);
-		scrollPane_4.setBounds(10, 69, 758, 343);
+		scrollPane_4.setBounds(10, 46, 758, 374);
 		panel_11.add(scrollPane_4);
 
 		table = new JTable();
@@ -752,6 +753,43 @@ public class invoicePanel extends JPanel {
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblNewLabel_7.setBounds(285, 0, 208, 47);
 		panel_11.add(lblNewLabel_7);
+		
+		JButton firstBtn = new JButton("|<");
+		firstBtn.setBackground(new Color(30, 106, 210));
+		firstBtn.setForeground(Color.WHITE);
+		firstBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		firstBtn.setBounds(477, 428, 50, 25);
+		panel_11.add(firstBtn);
+		
+		JButton lastBtn = new JButton(">|");
+		lastBtn.setForeground(Color.WHITE);
+		lastBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lastBtn.setBackground(new Color(30, 106, 210));
+		lastBtn.setBounds(716, 428, 50, 25);
+		panel_11.add(lastBtn);
+		
+		JButton nextBtn = new JButton(">");
+		nextBtn.setForeground(Color.WHITE);
+		nextBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		nextBtn.setBackground(new Color(30, 106, 210));
+		nextBtn.setBounds(658, 428, 50, 25);
+		panel_11.add(nextBtn);
+		
+		JButton preBtn = new JButton("<");
+		preBtn.setForeground(Color.WHITE);
+		preBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		preBtn.setBackground(new Color(30, 106, 210));
+		preBtn.setBounds(535, 428, 50, 25);
+		panel_11.add(preBtn);
+		
+		JLabel lblNewLabel_8 = new JLabel("");
+		lblNewLabel_8.setBounds(620, 428, 34, 25);
+		panel_11.add(lblNewLabel_8);
+		
+		textField = new JTextField();
+		textField.setBounds(590, 428, 27, 25);
+		panel_11.add(textField);
+		textField.setColumns(10);
 
 		loadDataFindBook();
 		loadDataSelectedBook();
