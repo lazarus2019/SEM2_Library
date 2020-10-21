@@ -12,6 +12,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
 
 import com.toedter.calendar.JDateChooser;
@@ -1056,7 +1057,7 @@ public class invoicePanel extends JPanel {
 				String name = member.getName();
 				String photo = member.getPhoto().toString();
 				jtextFieldName.setText(name);
-				ImageIcon icon = new ImageIcon(photo);
+				ImageIcon icon = resizeImg(photo, jlabelImage);
 				jlabelImage.setIcon(icon);
 				JOptionPane.showMessageDialog(null, "The card has expired!", "Notification", JOptionPane.OK_OPTION);
 			} else if (borrow_billModel.countNotReturn(member_ID) == 1) {
@@ -1299,6 +1300,20 @@ public class invoicePanel extends JPanel {
 			defaultTableModelBorrowBill.addRow(new Object[] { number++, bill.getBorrow_ID(), memberName, totalBook,
 					bill.getBorrow_date(), bill.getTerm_date(), bill.getReturn_date(), forfeit_fee, status });
 			tableBorrowBill.setModel(defaultTableModelBorrowBill);
+		}
+	}
+	
+	// Resize Image
+	private ImageIcon resizeImg(String imgPath, JLabel jName) {
+		if (imgPath != null) {
+			ImageIcon myImg = null;
+			myImg = new ImageIcon(imgPath);
+			Image img = myImg.getImage();
+			Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon icon = new ImageIcon(img2);
+			return icon;
+		} else {
+			return null;
 		}
 	}
 }
