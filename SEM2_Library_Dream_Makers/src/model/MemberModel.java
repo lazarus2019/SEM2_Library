@@ -39,7 +39,7 @@ public class MemberModel {
 			return members;
 		} catch (Exception e) {
 			return null;
-		}finally {
+		} finally {
 			if (con != null)
 				try {
 					con.close();
@@ -267,6 +267,57 @@ public class MemberModel {
 		}
 		return member_ID;
 	}
+	
+	public static Date getCreatedByIDCard(String ID_Card) {
+		Connection con = ConnectDB.getConnection();
+		Date created = new Date();
+		sql = "SELECT start_date FROM member WHERE card_number = ?";
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			preparedStatement.setString(1, ID_Card);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				created = resultSet.getDate("start_date");
+			}
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return created;
+	}
+
+	public Date getExpirationDate(String idCard) {
+		Connection con = ConnectDB.getConnection();
+		try {
+			Date expiration_date = null;
+			PreparedStatement preparedStatement = con
+					.prepareStatement("select expiration_date from member where card_number = ?");
+			preparedStatement.setString(1, idCard);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				expiration_date = resultSet.getDate("expiration_date");
+			}
+			return expiration_date;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
 	// End NNHV
 
 	// Start NVT - NTA
@@ -336,7 +387,7 @@ public class MemberModel {
 		Connection con = ConnectDB.getConnection();
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int memberAM = 0;
-		sql = "SELECT COUNT(m.member_ID) AS 'amount' FROM member m, lib_card l WHERE m.card_number = l.card_number AND MONTH(l.start_date) = ? AND YEAR(l.start_date) = ?";
+		sql = "SELECT COUNT(member_ID) AS 'amount' FROM member WHERE MONTH(start_date) = ? AND YEAR(start_date) = ?";
 		try {
 			PreparedStatement preparedStatement = con.prepareStatement(sql);
 			preparedStatement.setInt(1, month);
@@ -436,16 +487,16 @@ public class MemberModel {
 		// Switch condition
 		switch (option) {
 		case 0:
-			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ?";
+			sql = "SELECT * FROM member WHERE YEAR(start_date) = ?";
 			break;
 		case 1:
-			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ? AND DAY(l.start_date) = ?";
+			sql = "SELECT * FROM member WHERE  YEAR(start_date) = ? AND MONTH(start_date) = ? AND DAY(start_date) = ?";
 			break;
 		case 2:
-			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ? AND DAY(l.start_date) = ?";
+			sql = "SELECT * FROM member WHERE  YEAR(start_date) = ? AND MONTH(start_date) = ? AND DAY(start_date) = ?";
 			break;
 		case 3:
-			sql = "SELECT * FROM member m, lib_card l WHERE m.card_number = l.card_number AND YEAR(l.start_date) = ? AND MONTH(l.start_date) = ?";
+			sql = "SELECT * FROM member WHERE  YEAR(start_date) = ? AND MONTH(start_date) = ?";
 			break;
 		default:
 			return null;
@@ -495,5 +546,33 @@ public class MemberModel {
 		}
 
 		return newMembers;
+	}
+
+	// GET START DATE CARD - NTS
+	public static Date getStartDateCard(String member_ID) {
+		Date start_date = null;
+		Connection con = ConnectDB.getConnection();
+
+		sql = "SELECT * FROM member WHERE member_ID = ?";
+
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				start_date = resultSet.getDate("start_date");
+			}
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return start_date;
 	}
 }

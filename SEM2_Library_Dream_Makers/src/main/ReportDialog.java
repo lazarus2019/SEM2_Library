@@ -28,7 +28,7 @@ import entities.Member;
 import entities.StatisticalBook;
 import javafx.scene.control.Tab;
 import model.BooksModel;
-import model.LibCardModel;
+import model.MemberModel;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -267,7 +267,7 @@ public class ReportDialog extends JDialog {
 			break;
 		case "member":
 			for (Member member : newMembers) {
-				created = LibCardModel.getCreatedByIDCard(member.getCard_number());
+				created = MemberModel.getStartDateCard(member.getMember_ID());
 				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, member.getMember_ID(), member.getName(),
 						member.getCard_number(), sdfm.format(created) });
 			}

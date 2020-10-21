@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Blob;
 import java.util.Date;
 
 public class Member {
@@ -12,13 +13,17 @@ public class Member {
 	private String phone;
 	private String card_number;
 	private String photo;
+	private Date start_date;
+	private Date exp_date;
+	private Blob src;
 
 	public Member() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public Member(String member_ID, String name, Date dob, boolean gender, String address, String phone,
-			String card_number, String photo) {
+			String card_number, String photo, Date start_date, Date exp_date, Blob src) {
 		super();
 		this.member_ID = member_ID;
 		this.name = name;
@@ -28,6 +33,9 @@ public class Member {
 		this.phone = phone;
 		this.card_number = card_number;
 		this.photo = photo;
+		this.start_date = start_date;
+		this.exp_date = exp_date;
+		this.src = src;
 	}
 
 	public String getMember_ID() {
@@ -93,5 +101,31 @@ public class Member {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getExp_date() {
+		return exp_date;
+	}
+
+	public void setExp_date(Date exp_date) {
+		this.exp_date = exp_date;
+	}
+
+	public Blob getSrc() {
+		return src;
+	}
+
+	public void setSrc(Blob src) {
+		this.src = src;
+	}
+	
+	
 
 }

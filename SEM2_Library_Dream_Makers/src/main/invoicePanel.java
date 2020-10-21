@@ -29,7 +29,6 @@ import model.AuthorModel;
 import model.BooksModel;
 import model.Bor_bookModel;
 import model.Borrow_billModel;
-import model.LibCardModel;
 import model.MemberModel;
 
 import javax.swing.JLabel;
@@ -56,6 +55,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.awt.Cursor;
+import javax.swing.JCheckBox;
 
 public class invoicePanel extends JPanel {
 	public JTable jtableFindBook;
@@ -122,6 +122,8 @@ public class invoicePanel extends JPanel {
 	};
 	private JLabel lblNewLabelx;
 	private JDateChooser jdateChooserReturnDate;
+	private JTable table;
+	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
 
 	/**
 	 * Create the panel.
@@ -660,6 +662,97 @@ public class invoicePanel extends JPanel {
 		jbtnBorrowBook.setBounds(567, 12, 219, 37);
 		jpanelissueBook.add(jbtnBorrowBook);
 
+		JPanel jpanelBookBorrow = new JPanel();
+		jpanelBookBorrow.setBackground(Color.WHITE);
+		tabbedPane.addTab("Book", null, jpanelBookBorrow, null);
+		jpanelBookBorrow.setLayout(null);
+
+		JPanel panel_10 = new JPanel();
+		panel_10.setBackground(new Color(245, 244, 252));
+		panel_10.setBounds(10, 11, 778, 93);
+		jpanelBookBorrow.add(panel_10);
+		panel_10.setLayout(null);
+
+		JMonthChooser monthChooser_1 = new JMonthChooser();
+		monthChooser_1.setBounds(10, 11, 113, 29);
+		panel_10.add(monthChooser_1);
+
+		JYearChooser yearChooser_1 = new JYearChooser();
+		yearChooser_1.setBounds(133, 11, 96, 29);
+		panel_10.add(yearChooser_1);
+
+		JCheckBox monthCheck = new JCheckBox("Month");
+		monthCheck.setBackground(new Color(245, 244, 252));
+		monthCheck.setBounds(10, 45, 80, 20);
+		panel_10.add(monthCheck);
+
+		JCheckBox chckbxYear = new JCheckBox("Year");
+		chckbxYear.setBackground(new Color(245, 244, 252));
+		chckbxYear.setEnabled(false);
+		chckbxYear.setSelected(true);
+		chckbxYear.setBounds(10, 65, 80, 20);
+		panel_10.add(chckbxYear);
+
+		JLabel getAllBtn = new JLabel("Get All");
+		getAllBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		getAllBtn.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
+		getAllBtn.setForeground(Color.WHITE);
+		getAllBtn.setBackground(new Color(30, 106, 210));
+		getAllBtn.setOpaque(true);
+		getAllBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		getAllBtn.setFont(new Font("Arial", Font.BOLD, 15));
+		getAllBtn.setBounds(650, 51, 113, 30);
+		panel_10.add(getAllBtn);
+
+		JLabel searchBtn = new JLabel("Search");
+		searchBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		searchBtn.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
+		searchBtn.setOpaque(true);
+		searchBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		searchBtn.setForeground(Color.WHITE);
+		searchBtn.setFont(new Font("Arial", Font.BOLD, 15));
+		searchBtn.setBackground(new Color(30, 106, 210));
+		searchBtn.setBounds(113, 51, 113, 30);
+		panel_10.add(searchBtn);
+
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Returned");
+		buttonGroup_1.add(rdbtnNewRadioButton);
+		rdbtnNewRadioButton.setBackground(new Color(245, 244, 252));
+		rdbtnNewRadioButton.setBounds(245, 11, 109, 23);
+		panel_10.add(rdbtnNewRadioButton);
+
+		JRadioButton rdbtnNotReturn = new JRadioButton("Not return");
+		buttonGroup_1.add(rdbtnNotReturn);
+		rdbtnNotReturn.setBackground(new Color(245, 244, 252));
+		rdbtnNotReturn.setBounds(245, 34, 109, 23);
+		panel_10.add(rdbtnNotReturn);
+
+		JRadioButton rdbtnNewRadioButton_1_1 = new JRadioButton("Lost");
+		buttonGroup_1.add(rdbtnNewRadioButton_1_1);
+		rdbtnNewRadioButton_1_1.setBackground(new Color(245, 244, 252));
+		rdbtnNewRadioButton_1_1.setBounds(245, 57, 109, 23);
+		panel_10.add(rdbtnNewRadioButton_1_1);
+
+		JPanel panel_11 = new JPanel();
+		panel_11.setBackground(new Color(245, 244, 252));
+		panel_11.setBounds(10, 155, 778, 423);
+		jpanelBookBorrow.add(panel_11);
+		panel_11.setLayout(null);
+
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.getViewport().setBackground(Color.WHITE);
+		scrollPane_4.setBounds(10, 69, 758, 343);
+		panel_11.add(scrollPane_4);
+
+		table = new JTable();
+		scrollPane_4.setViewportView(table);
+
+		JLabel lblNewLabel_7 = new JLabel("Books Borrow");
+		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblNewLabel_7.setBounds(285, 0, 208, 47);
+		panel_11.add(lblNewLabel_7);
+
 		loadDataFindBook();
 		loadDataSelectedBook();
 		loadDataBorrowedBook();
@@ -691,10 +784,10 @@ public class invoicePanel extends JPanel {
 	// click Give Back and show into Returning Books
 	public void jbtnGiveBack_actionPerformed(ActionEvent e) {
 		int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
-		if(selectedIndexRow == -1) {
+		if (selectedIndexRow == -1) {
 			JOptionPane.showMessageDialog(null, "Don't have any book to give back!", "Notification",
 					JOptionPane.OK_OPTION);
-		}else {
+		} else {
 			int rows = jtableReturningBook.getRowCount();
 			String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
 			String title = jtableBorrowedBook.getValueAt(selectedIndexRow, 2).toString();
@@ -715,6 +808,10 @@ public class invoicePanel extends JPanel {
 				defaultTableModelReturningBook.addRow(new Object[] { number, idBook, title, returnDate });
 				jtableReturningBook.setModel(defaultTableModelReturningBook);
 				bookID.add(idBook);
+				if (jradiobuttonLost.isSelected()) {
+					compendationFee += percent(selectedIndexRow);
+					bookLost.add(idBook);
+				}
 				jtextFieldNumberofLateDate.setText("0");
 				jtextFieldLateFee.setText("$0.0");
 				jtextFieldCompensationFee.setText("$0.0");
@@ -727,19 +824,16 @@ public class invoicePanel extends JPanel {
 			} else {
 				lateFee = 0;
 			}
-			if (jradiobuttonLost.isSelected()) {
-				compendationFee += percent(selectedIndexRow);
-				bookLost.add(idBook);
-			}
-		}		
+
+		}
 	}
 
 	// Check the card's expiry date
 	public long getExpirationDate(String idCard) {
 		try {
 			long getDate;
-			LibCardModel library_cardModel = new LibCardModel();
-			Date endDate = library_cardModel.getExpirationDate(idCard);
+			MemberModel memberModel = new MemberModel();
+			Date endDate = memberModel.getExpirationDate(idCard);
 			Date startDate = new Date();
 			long date = endDate.getTime() - startDate.getTime();
 			getDate = TimeUnit.MILLISECONDS.toDays(date);
@@ -1054,7 +1148,7 @@ public class invoicePanel extends JPanel {
 				String idBook = null;
 				int borrow_ID = 0;
 				Borrow_bill borrow_bill = borrow_billModel.showBorrowBook(idCard, 2);
-				if(borrow_bill != null) {
+				if (borrow_bill != null) {
 					borrow_ID = borrow_bill.getBorrow_ID();
 					for (Books book : booksModel.getTitleBook(borrow_ID, 2)) {
 						title = book.getTitle();
@@ -1063,7 +1157,7 @@ public class invoicePanel extends JPanel {
 								simpleDateFormat.format(borrow_bill.getTerm_date()) });
 					}
 					jtableBorrowedBook.setModel(defaultTableModelBorrowedBook);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Does have any bill!", "Notification", JOptionPane.OK_OPTION);
 				}
 			}

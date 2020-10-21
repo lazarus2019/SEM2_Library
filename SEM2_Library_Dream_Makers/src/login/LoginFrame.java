@@ -132,8 +132,10 @@ public class LoginFrame extends JFrame {
 		usernameField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if(arg0.getKeyChar() == ' ') {
-					arg0.consume();
+				try {
+					checkKeyTyped(arg0);					
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 		});
@@ -199,6 +201,14 @@ public class LoginFrame extends JFrame {
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					loginApp();
+				}
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 		});
@@ -430,5 +440,11 @@ public class LoginFrame extends JFrame {
 	// Show error message
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
+	}
+	
+	private void checkKeyTyped(KeyEvent e) {
+		if(e.getKeyChar() == ' ') {
+			e.consume();
+		}
 	}
 }
