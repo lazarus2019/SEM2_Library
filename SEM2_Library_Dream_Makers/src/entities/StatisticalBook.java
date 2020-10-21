@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class StatisticalBook {
 	private String title;
-	private String employee_ID;
+	private int bill_ID;
 	private String member_ID;
 	private int status;
 
@@ -13,10 +13,10 @@ public class StatisticalBook {
 		// TODO Auto-generated constructor stub
 	}
 
-	public StatisticalBook(String title, String employee_ID, String member_ID, int status) {
+	public StatisticalBook(String title, int bill_ID, String member_ID, int status) {
 		super();
 		this.title = title;
-		this.employee_ID = employee_ID;
+		this.bill_ID = bill_ID;
 		this.member_ID = member_ID;
 		this.status = status;
 	}
@@ -30,12 +30,12 @@ public class StatisticalBook {
 		this.title = title;
 	}
 
-	public String getEmployee_ID() {
-		return employee_ID;
+	public int getBill_ID() {
+		return bill_ID;
 	}
 
-	public void setEmployee_ID(String employee_ID) {
-		this.employee_ID = employee_ID;
+	public void setBill_ID(int bill_ID) {
+		this.bill_ID = bill_ID;
 	}
 
 	public String getMember_ID() {

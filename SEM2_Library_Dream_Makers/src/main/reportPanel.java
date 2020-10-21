@@ -976,7 +976,7 @@ public class reportPanel extends JPanel {
 		if(allBooks != null) {
 			ReportDialog.titlePanel = "Books";
 			ReportDialog.allBooks = allBooks;
-			ReportDialog.columns = new String[] { "No", "Employee ID", "Member ID", "Title", "Status" };
+			ReportDialog.columns = new String[] { "No", "Bill ID", "Member ID", "Title", "Status" };
 			ReportDialog.option = "book";
 			ReportDialog reportDialog = new ReportDialog();
 			reportDialog.setVisible(true);

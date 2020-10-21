@@ -741,7 +741,7 @@ public class BooksModel {
 				ResultSet resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					StatisticalBook book = new StatisticalBook();
-					book.setEmployee_ID(bill.getEmployee_ID());
+					book.setBill_ID(bill.getBorrow_ID());
 					book.setMember_ID(bill.getMember_ID());
 					book.setTitle(resultSet.getString("tt"));
 					book.setStatus(resultSet.getInt("b_status"));

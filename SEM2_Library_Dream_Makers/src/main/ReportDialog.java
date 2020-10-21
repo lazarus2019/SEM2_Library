@@ -275,7 +275,7 @@ public class ReportDialog extends JDialog {
 		case "book":
 			for (StatisticalBook book : allBooks) {
 				status = book.getStatus() == 1 ? "Retured" : (book.getStatus() == 2 ? "Not return" : "Lost") ;
-				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, book.getEmployee_ID(), book.getMember_ID(),
+				tableModel.addRow(new Object[] { tableModel.getRowCount() + 1, book.getBill_ID(), book.getMember_ID(),
 						book.getTitle(), status });
 			}
 			break;
