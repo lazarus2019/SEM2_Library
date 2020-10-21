@@ -129,6 +129,14 @@ public class LoginFrame extends JFrame {
 		panel_1.setLayout(null);
 
 		usernameField = new JTextField();
+		usernameField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if(arg0.getKeyChar() == ' ') {
+					arg0.consume();
+				}
+			}
+		});
 		usernameField.setBorder(null);
 		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		usernameField.setBounds(31, 97, 276, 37);

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class dashboardEmployeePanel extends JPanel {
 
@@ -12,7 +14,16 @@ public class dashboardEmployeePanel extends JPanel {
 	 */
 	public dashboardEmployeePanel() {
 		setBounds(0, 0, 803, 617);
-		setLayout(new BorderLayout(0, 0));
+		setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 803, 606);
+		add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(dashboardEmployeePanel.class.getResource("/data/Main/background.png")));
+		lblNewLabel.setBounds(0, 0, 803, 606);
+		panel.add(lblNewLabel);
 	}
-
 }

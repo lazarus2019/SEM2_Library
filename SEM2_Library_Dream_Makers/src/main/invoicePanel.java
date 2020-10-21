@@ -55,6 +55,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.awt.Cursor;
 
 public class invoicePanel extends JPanel {
 	public JTable jtableFindBook;
@@ -360,6 +361,7 @@ public class invoicePanel extends JPanel {
 		panel1.add(monthChooser);
 
 		btnSearch = new JLabel("Search");
+		btnSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSearch.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
@@ -689,36 +691,47 @@ public class invoicePanel extends JPanel {
 	// click Give Back and show into Returning Books
 	public void jbtnGiveBack_actionPerformed(ActionEvent e) {
 		int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
-		int rows = jtableReturningBook.getRowCount();
-		String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
-		String title = jtableBorrowedBook.getValueAt(selectedIndexRow, 2).toString();
-		String returnDate = jdateChooserReturnDate.getDateFormatString();
-		int number = 1;
-		for (int i = 0; i < rows; i++) {
-			number++;
-		}
-		boolean flag = true;
-		for (String id : bookID) {
-			if (id == idBook) {
-				JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!", "Notification",
-						JOptionPane.OK_OPTION);
-				flag = false;
+		if(selectedIndexRow == -1) {
+			JOptionPane.showMessageDialog(null, "Don't have any book to give back!", "Notification",
+					JOptionPane.OK_OPTION);
+		}else {
+			int rows = jtableReturningBook.getRowCount();
+			String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
+			String title = jtableBorrowedBook.getValueAt(selectedIndexRow, 2).toString();
+			String returnDate = simpleDateFormat.format(jdateChooserReturnDate.getDate());
+			int number = 1;
+			for (int i = 0; i < rows; i++) {
+				number++;
 			}
-		}
-		if (flag) {
-			defaultTableModelReturningBook.addRow(new Object[] { number, idBook, title, returnDate });
-			jtableReturningBook.setModel(defaultTableModelReturningBook);
-			bookID.add(idBook);
-		}
-		if (getLateDate() > 0) {
-			lateFee = getLateDate();
-		} else {
-			lateFee = 0;
-		}
-		if (jradiobuttonLost.isSelected()) {
-			compendationFee += percent(selectedIndexRow);
-			bookLost.add(idBook);
-		}
+			boolean flag = true;
+			for (String id : bookID) {
+				if (id == idBook) {
+					JOptionPane.showMessageDialog(null, "You have chosen the book '" + title + "'!", "Notification",
+							JOptionPane.OK_OPTION);
+					flag = false;
+				}
+			}
+			if (flag) {
+				defaultTableModelReturningBook.addRow(new Object[] { number, idBook, title, returnDate });
+				jtableReturningBook.setModel(defaultTableModelReturningBook);
+				bookID.add(idBook);
+				jtextFieldNumberofLateDate.setText("0");
+				jtextFieldLateFee.setText("$0.0");
+				jtextFieldCompensationFee.setText("$0.0");
+				jtextFieldIDBook.setText("");
+				jtextFieldCompensationFee.setText("$0.0");
+				jradiobuttonReturn.setSelected(true);
+			}
+			if (getLateDate() > 0) {
+				lateFee = getLateDate();
+			} else {
+				lateFee = 0;
+			}
+			if (jradiobuttonLost.isSelected()) {
+				compendationFee += percent(selectedIndexRow);
+				bookLost.add(idBook);
+			}
+		}		
 	}
 
 	// Check the card's expiry date
@@ -742,7 +755,7 @@ public class invoicePanel extends JPanel {
 		try {
 			long getdate;
 			int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
-			String returnDate = jdateChooserReturnDate.getDateFormatString();
+			String returnDate = simpleDateFormat.format(jdateChooserReturnDate.getDate());
 			String termDate = jtableBorrowedBook.getValueAt(selectedIndexRow, 3).toString();
 			Date endDate = simpleDateFormat.parse(returnDate);
 			Date startDate = simpleDateFormat.parse(termDate);
@@ -757,6 +770,7 @@ public class invoicePanel extends JPanel {
 
 	// click mouse select from Borrowed Books and show Info Check
 	public void jtableBorrowedBook_mouseClicked(MouseEvent arg0) {
+		jdateChooserReturnDate.setEnabled(false);
 		int selectedIndexRow = jtableBorrowedBook.getSelectedRow();
 		String idBook = jtableBorrowedBook.getValueAt(selectedIndexRow, 1).toString();
 		jtextFieldIDBook.setText(idBook);
@@ -783,6 +797,7 @@ public class invoicePanel extends JPanel {
 
 	// click mouse select from Find Books into Selected Books
 	public void jtableFindBookmouseClicked(MouseEvent arg0) {
+
 		try {
 			int selectedIndexRowF = jtableFindBook.getSelectedRow();
 			int rows = jtableSelectedBook.getRowCount();
@@ -809,6 +824,11 @@ public class invoicePanel extends JPanel {
 					if (flag) {
 						defaultTableModelSelectedBook.addRow(new Object[] { number, idBook, title, author, date });
 						jtableSelectedBook.setModel(defaultTableModelSelectedBook);
+						if (jtableSelectedBook.getRowCount() > 0) {
+							jdateChooserCreateDate.setEnabled(false);
+						} else {
+							jdateChooserCreateDate.setEnabled(true);
+						}
 						bookID.add(idBook);
 					}
 				} else {
@@ -910,30 +930,38 @@ public class invoicePanel extends JPanel {
 
 	// Remove 1 row of Returning Books: Delete button
 	public void jbtnDeleteR_actionPerformed(ActionEvent arg0) {
+
 		int number = 1;
 		int selectedIndexRow = jtableReturningBook.getSelectedRow();
-		String idBook = jtableReturningBook.getValueAt(selectedIndexRow, 1).toString();
-		if (jtableReturningBook.isRowSelected(selectedIndexRow)) {
-			for (int i = 0; i < bookLost.size(); i++) {
-				if (idBook.equals(bookLost.get(i))) {
-					bookLost.remove(idBook);
-					compendationFee -= percent(selectedIndexRow);
+		if (selectedIndexRow == -1) {
+			JOptionPane.showMessageDialog(null, "No book is select!", "Notification", JOptionPane.OK_OPTION);
+		} else {
+			String idBook = jtableReturningBook.getValueAt(selectedIndexRow, 1).toString();
+			if (jtableReturningBook.isRowSelected(selectedIndexRow)) {
+				for (int i = 0; i < bookLost.size(); i++) {
+					if (idBook.equals(bookLost.get(i))) {
+						bookLost.remove(idBook);
+						compendationFee -= percent(selectedIndexRow);
 
-				} else {
-					compendationFee -= 0;
+					} else {
+						compendationFee -= 0;
+					}
 				}
 			}
-		}
-		for (int i = 0; i < bookID.size(); i++) {
-			if (idBook.equals(bookID.get(i))) {
-				bookID.remove(i);
+			for (int i = 0; i < bookID.size(); i++) {
+				if (idBook.equals(bookID.get(i))) {
+					bookID.remove(i);
+				}
 			}
-		}
-		defaultTableModelReturningBook.removeRow(selectedIndexRow);
-		jtableReturningBook.setModel(defaultTableModelReturningBook);
-		for (int i = 0; i < defaultTableModelReturningBook.getRowCount(); i++) {
-			jtableReturningBook.setValueAt(number, i, 0);
-			number++;
+			defaultTableModelReturningBook.removeRow(selectedIndexRow);
+			jtableReturningBook.setModel(defaultTableModelReturningBook);
+			for (int i = 0; i < defaultTableModelReturningBook.getRowCount(); i++) {
+				jtableReturningBook.setValueAt(number, i, 0);
+				number++;
+			}
+			if (jtableReturningBook.getRowCount() == 0) {
+				jdateChooserReturnDate.setEnabled(true);
+			}
 		}
 	}
 
@@ -942,17 +970,20 @@ public class invoicePanel extends JPanel {
 		int number = 1;
 		int selectedIndexRow = jtableSelectedBook.getSelectedRow();
 		if (selectedIndexRow == -1) {
-			JOptionPane.showMessageDialog(null, "No book is select", "Notification",
-					JOptionPane.OK_OPTION);
-		}else {
+			JOptionPane.showMessageDialog(null, "No book is select", "Notification", JOptionPane.OK_OPTION);
+		} else {
 			String idBook = jtableSelectedBook.getValueAt(selectedIndexRow, 1).toString();
 			for (int i = 0; i < bookID.size(); i++) {
 				if (idBook.equals(bookID.get(i))) {
 					bookID.remove(i);
+
 				}
 			}
 			defaultTableModelSelectedBook.removeRow(selectedIndexRow);
 			jtableSelectedBook.setModel(defaultTableModelSelectedBook);
+			if (jtableSelectedBook.getRowCount() == 0) {
+				jdateChooserCreateDate.setEnabled(true);
+			}
 			for (int i = 0; i < defaultTableModelSelectedBook.getRowCount(); i++) {
 				jtableSelectedBook.setValueAt(number, i, 0);
 				number++;
@@ -995,6 +1026,7 @@ public class invoicePanel extends JPanel {
 
 	// Search "ID Card" of Return Book
 	public void jbtnSearchIDCardR_actionPerformed(ActionEvent arg0) {
+		jdateChooserReturnDate.setEnabled(true);
 		ReturnBookDialog.compensationFee = 0;
 		/* refresh */
 		defaultTableModelBorrowedBook.getDataVector().removeAllElements();
@@ -1022,15 +1054,18 @@ public class invoicePanel extends JPanel {
 				String idBook = null;
 				int borrow_ID = 0;
 				Borrow_bill borrow_bill = borrow_billModel.showBorrowBook(idCard, 2);
-				borrow_ID = borrow_bill.getBorrow_ID();
-				for (Books book : booksModel.getTitleBook(borrow_ID, 2)) {
-					title = book.getTitle();
-					idBook = book.getBook_ID();
-					defaultTableModelBorrowedBook.addRow(new Object[] { number++, idBook, title,
-							simpleDateFormat.format(borrow_bill.getTerm_date()) });
+				if(borrow_bill != null) {
+					borrow_ID = borrow_bill.getBorrow_ID();
+					for (Books book : booksModel.getTitleBook(borrow_ID, 2)) {
+						title = book.getTitle();
+						idBook = book.getBook_ID();
+						defaultTableModelBorrowedBook.addRow(new Object[] { number++, idBook, title,
+								simpleDateFormat.format(borrow_bill.getTerm_date()) });
+					}
+					jtableBorrowedBook.setModel(defaultTableModelBorrowedBook);
+				}else {
+					JOptionPane.showMessageDialog(null, "Does have any bill!", "Notification", JOptionPane.OK_OPTION);
 				}
-				jtableBorrowedBook.setModel(defaultTableModelBorrowedBook);
-
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "ID Card required, please!", "Notification", JOptionPane.OK_OPTION);
@@ -1039,6 +1074,7 @@ public class invoicePanel extends JPanel {
 
 	// Search "ID Card" of Borrow Book
 	public void jbtnSearchIDCardB_actionPerformed(ActionEvent arg0) {
+		jdateChooserCreateDate.setEnabled(true);
 		defaultTableModelFindBook.getDataVector().removeAllElements();
 		defaultTableModelFindBook.fireTableDataChanged();
 		defaultTableModelSelectedBook.getDataVector().removeAllElements();
@@ -1302,7 +1338,7 @@ public class invoicePanel extends JPanel {
 			tableBorrowBill.setModel(defaultTableModelBorrowBill);
 		}
 	}
-	
+
 	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
 		if (imgPath != null) {
