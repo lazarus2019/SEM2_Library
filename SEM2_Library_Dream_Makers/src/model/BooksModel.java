@@ -63,6 +63,45 @@ public class BooksModel {
 		return books;
 	}
 
+	public static List<Books> findAlls() {
+		Connection con = ConnectDB.getConnection();
+		List<Books> books = new ArrayList<Books>();
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM books");
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Books book = new Books();
+				book.setBook_ID(resultSet.getString("book_ID"));
+				book.setCall_number(resultSet.getString("call_number"));
+				book.setIsbn(resultSet.getString("isbn"));
+				book.setTitle(resultSet.getString("title"));
+				book.setPublish_ID(resultSet.getInt("publish_ID"));
+				book.setCategory_ID(resultSet.getInt("category_ID"));
+				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getDouble("price"));
+				book.setIsDeleteBoolean(resultSet.getBoolean("isDelete"));
+				books.add(book);
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			books = null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+		return books;
+	}
+	
 	// Start NNHV
 	public Books find(String id) {
 		Connection con = ConnectDB.getConnection();

@@ -98,6 +98,7 @@ public class bookPanel extends JPanel {
 	private JMenuItem mntmDelete;
 	private JScrollPane scrollPane;
 	private JButton btnAddRefresh;
+	private JButton btnReset_1;
 
 	/**
 	 * Create the panel.
@@ -278,6 +279,7 @@ public class bookPanel extends JPanel {
 		panel_3.add(lblAuthor);
 
 		textFieldAuthor = new JTextField();
+		textFieldAuthor.setEditable(false);
 		textFieldAuthor.setColumns(10);
 		textFieldAuthor.setBounds(117, 244, 228, 28);
 		panel_3.add(textFieldAuthor);
@@ -323,6 +325,18 @@ public class bookPanel extends JPanel {
 		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRefresh.setForeground(Color.WHITE);
 		btnRefresh.setBackground(new Color(30, 106, 210));
+		
+		btnReset_1 = new JButton("Reset");
+		btnReset_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textFieldAuthor.setText("");
+			}
+		});
+		btnReset_1.setForeground(Color.WHITE);
+		btnReset_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnReset_1.setBackground(new Color(30, 106, 210));
+		btnReset_1.setBounds(17, 244, 83, 23);
+		panel_3.add(btnReset_1);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(245, 244, 252));
@@ -438,7 +452,7 @@ public class bookPanel extends JPanel {
 
 		panel_4.add(comboBoxAddAuthor);
 
-		btnAddAuthor = new JButton("Add Author");
+		btnAddAuthor = new JButton("Add");
 		btnAddAuthor.setForeground(Color.BLACK);
 		btnAddAuthor.setBackground(Color.WHITE);
 		btnAddAuthor.addActionListener(new ActionListener() {
@@ -446,7 +460,7 @@ public class bookPanel extends JPanel {
 				btnAddAuthor_actionPerformed(e);
 			}
 		});
-		btnAddAuthor.setBounds(171, 265, 69, 23);
+		btnAddAuthor.setBounds(171, 265, 77, 23);
 		panel_4.add(btnAddAuthor);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -465,6 +479,16 @@ public class bookPanel extends JPanel {
 				btnAddBook_actionPerformed(arg0);
 			}
 		});
+		btnAddRefresh = new JButton("Refresh");
+		btnAddRefresh.setForeground(Color.WHITE);
+		btnAddRefresh.setBackground(new Color(30, 106, 210));
+		btnAddRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddRefresh_actionPerformed(e);
+			}
+		});
+		btnAddRefresh.setBounds(245, 509, 124, 29);
+		panel_4.add(btnAddRefresh);
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(scrollPane_1, popupMenu);
 
@@ -477,7 +501,7 @@ public class bookPanel extends JPanel {
 
 		popupMenu.add(mnDeleteAuthor);
 
-		btnAddBook.setBounds(135, 510, 122, 29);
+		btnAddBook.setBounds(30, 509, 122, 29);
 		panel_4.add(btnAddBook);
 
 		JLabel lblCreateBook = new JLabel("Create Book");
@@ -554,33 +578,65 @@ public class bookPanel extends JPanel {
 	}
 
 	public void btnAddAuthor_actionPerformed(ActionEvent e) {
-
-		String name = (String) comboBoxAddAuthor.getSelectedItem();
-		defaultTableModelAuthor.addRow(new Object[] { defaultTableModelAuthor.getRowCount() + 1, name });
-		tableAddAuthor.setModel(defaultTableModelAuthor);
+		if (comboBoxAddAuthor.getSelectedIndex() != 0) {
+			String name = (String) comboBoxAddAuthor.getSelectedItem();
+			defaultTableModelAuthor.addRow(new Object[] { defaultTableModelAuthor.getRowCount() + 1, name });
+			tableAddAuthor.setModel(defaultTableModelAuthor);
+		}
 
 	}
 
-	public void btnCreateAuthor_actionPerformed(ActionEvent e) {
-		Author author = new Author();
-		AuthorModel authorModel = new AuthorModel();
-		String author_ID = "";
-		String[] words = textFieldAddAuthor.getText().trim().split("\\s");
-		for (int i = 0; i < 2; i++) {
-			author_ID += words[i].toUpperCase().charAt(0);
-			author_ID += words[i].toUpperCase().charAt(1);
-		}
-		author.setAuthor_ID(author_ID);
-		author.setName(textFieldAddAuthor.getText().trim());
-		author.setNation(textFieldAddNation.getText().trim());
-		if (authorModel.create(author)) {
-			comboBoxAddAuthor.removeAllItems();
-			textFieldAddAuthor.setText("");
-			textFieldAddNation.setText("");
-			JOptionPane.showMessageDialog(null, "Add Successfully ! ");
-			loadDataAdd();
+	public static boolean checkAuthorName(String author) {
+		if (author.length() > 4) {
+			return Pattern.matches("[a-zA-Z]{3,}+[\\s]+[a-zA-Z]{3,}", author);
 		} else {
-			JOptionPane.showMessageDialog(null, "Failed");
+			return false;
+		}
+	}
+
+	public void btnCreateAuthor_actionPerformed(ActionEvent e) {
+		String nation = null;
+		String name = null;
+		AuthorModel authorModel = new AuthorModel();
+		String author_ID = null;
+		boolean flag = true;
+		if (!textFieldAddAuthor.getText().trim().isEmpty()) {
+			name = textFieldAddAuthor.getText().trim();
+			if (checkAuthorName(name)) {
+				String[] words = textFieldAddAuthor.getText().trim().split("\\s");
+				for (int i = 0; i < 2; i++) {
+					author_ID += words[i].toUpperCase().charAt(0);
+					author_ID += words[i].toUpperCase().charAt(1);
+				}
+				if (!textFieldAddNation.getText().trim().isEmpty()) {
+					nation = textFieldAddNation.getText().trim();
+				} else {
+					JOptionPane.showMessageDialog(null, "You must enter author's nation ! ");
+					flag = false;
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Author' name : Firt name + Last name !  ");
+				flag = false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "You must enter author's name ! ");
+			flag = false;
+		}
+
+		if (author_ID == null || name == null || nation == null) {
+			flag = false;
+		}
+		if (flag) {
+			Author author = new Author(author_ID, name, nation);
+			if (authorModel.create(author)) {
+				comboBoxAddAuthor.removeAllItems();
+				textFieldAddAuthor.setText("");
+				textFieldAddNation.setText("");
+				JOptionPane.showMessageDialog(null, "Add Successfully ! ");
+				loadDataAdd();
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
+			}
 		}
 	}
 
@@ -591,7 +647,7 @@ public class bookPanel extends JPanel {
 		boolean flag = true;
 		int id = 1;
 		String book_ID = "BK01";
-		List<Books> books = BooksModel.findAll();
+		List<Books> books = BooksModel.findAlls();
 		for (int i = 0; i < books.size(); i++) {
 			if (book_ID.equals(books.get(i).getBook_ID())) {
 				id++;
@@ -602,54 +658,68 @@ public class bookPanel extends JPanel {
 				}
 			}
 		}
-
 		String title = textFieldAddTitle.getText().trim();
 		Random rand = new Random();
 		String isbn = (rand.nextInt(900) + 100) + "-" + (rand.nextInt(9000) + 1000);
 
 		String call_number = "";
-		call_number += title.charAt(0);
-		call_number += title.charAt(1) + "-";
-		call_number += comboBoxAddAuthor.getSelectedItem().toString().charAt(0);
-		call_number += comboBoxAddAuthor.getSelectedItem().toString().charAt(1) + "-" + (rand.nextInt(1000));
-		call_number = call_number.toUpperCase();
-		int category_ID = comboBoxAddCate.getSelectedIndex();
-		int publish_ID = comboBoxAddPublish.getSelectedIndex();
+
+		int category_ID = 0;
+		int publish_ID = 0;
 		double price = 0;
 		int quantity = 0;
-		if (title != null) {
-			textFieldAddTitle.setText(title);
-			flag = true;
-		} else {
-			flag = false;
-			JOptionPane.showMessageDialog(null, "Call number must be enter !");
-		}
-		try {
-			price = Double.parseDouble(textFieldAddPrice.getText().trim());
-			flag = true;
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "You must enter a number in price ! ");
-			textFieldAddPrice.setText("");
-			flag = false;
-		}
-		try {
-			quantity = Integer.parseInt(textFieldAddQuan.getText().trim());
-			flag = true;
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "You must enter a number in quantity ! ");
-			textFieldAddQuan.setText("");
-			flag = false;
-		}
 		List<String> authors_ID = new ArrayList<String>();
-
-		for (int i = 0; i < defaultTableModelAuthor.getRowCount(); i++) {
-			String authorName = defaultTableModelAuthor.getValueAt(i, 1).toString().trim();
-			String author_ID = authorModel.findAuthorbyName(authorName).getAuthor_ID();
-			authors_ID.add(author_ID);
+		if (title != null && title.length() >= 2) {
+			textFieldAddTitle.setText(title);
+			call_number += title.charAt(0);
+			call_number += title.charAt(1) + "-";
+			if (comboBoxAddCate.getSelectedIndex() != 0) {
+				category_ID = comboBoxAddCate.getSelectedIndex();
+				if (comboBoxAddPublish.getSelectedIndex() != 0) {
+					publish_ID = comboBoxAddPublish.getSelectedIndex();
+					try {
+						price = Double.parseDouble(textFieldAddPrice.getText().trim());
+						try {
+							quantity = Integer.parseInt(textFieldAddQuan.getText().trim());
+							for (int i = 0; i < defaultTableModelAuthor.getRowCount(); i++) {
+								String authorName = defaultTableModelAuthor.getValueAt(i, 1).toString().trim();
+								String author_ID = authorModel.findAuthorbyName(authorName).getAuthor_ID();
+								authors_ID.add(author_ID);
+							}
+							if (defaultTableModelAuthor.getRowCount() != 0) {
+								String authorName = defaultTableModelAuthor.getValueAt(0, 1).toString().trim();
+								call_number += authorName.charAt(0);
+								call_number += authorName.charAt(1) + "-" + (rand.nextInt(1000));
+								call_number = call_number.toUpperCase();
+							} else {
+								JOptionPane.showMessageDialog(null, "You must add the least one author !");
+								flag = false;
+							}
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, "You must enter a number in quantity ! ");
+							textFieldAddQuan.setText("");
+							flag = false;
+						}
+					} catch (NumberFormatException e) {
+						JOptionPane.showMessageDialog(null, "You must enter a number in price ! ");
+						textFieldAddPrice.setText("");
+						flag = false;
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "You must choose a number in publisher ! ");
+					flag = false;
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "You must choose a number in category ! ");
+				flag = false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Title must be enter !");
+			flag = false;
 		}
 
-		Books addbook = new Books(book_ID, call_number, isbn, title, category_ID, publish_ID, price, quantity);
 		if (flag) {
+			Books addbook = new Books(book_ID, call_number, isbn, title, category_ID, publish_ID, price, quantity);
 			if (booksModel.create(addbook)) {
 				// sai o day
 				for (String auid : authors_ID) {
@@ -673,6 +743,7 @@ public class bookPanel extends JPanel {
 		textFieldAddTitle.setText("");
 		comboBoxAddCate.setSelectedIndex(0);
 		comboBoxAddPublish.setSelectedIndex(0);
+		comboBoxAddAuthor.setSelectedIndex(0);
 		textFieldAddPrice.setText("");
 		textFieldAddQuan.setText("");
 		if (defaultTableModelAuthor.getRowCount() > 0) {

@@ -257,8 +257,12 @@ public class authorPanel extends JPanel {
 		}
 
 		if (CheckValidate.checkName(jName.getText().trim())) {
-			author.setName(jName.getText().trim());
-			f = true;
+			if (CheckValidate.checkAuthorName(jName.getText().trim())) {
+				author.setName(jName.getText().trim());
+				f = true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Author' name : Firt name + Last name !  ");
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Please input Name");
 			f = false;
@@ -304,8 +308,12 @@ public class authorPanel extends JPanel {
 				author.setAuthor_ID(jAuthor_ID.getText().trim());
 			}
 			if (jName.getText().trim() != null) {
-				author.setName(jName.getText().trim());
-				f = true;
+				if (CheckValidate.checkAuthorName(jName.getText().trim())) {
+					author.setName(jName.getText().trim());
+					f = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Author' name : Firt name + Last name !  ");
+				}
 			} else {
 				f = false;
 			}
@@ -317,7 +325,7 @@ public class authorPanel extends JPanel {
 				f = false;
 			}
 			if (author_ID == null) {
-				JOptionPane.showMessageDialog(null, "Please select a book !");
+				JOptionPane.showMessageDialog(null, "Please select an author !");
 			} else {
 				if (f) {
 					if (authorModel.update(author, author_ID)) {
