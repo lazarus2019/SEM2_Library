@@ -28,7 +28,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
 
 public class ChangePW extends JDialog {
 
@@ -187,10 +189,30 @@ public class ChangePW extends JDialog {
 		panel.add(lblNewLabel_1);
 
 		oldPW = new JPasswordField();
+		oldPW.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		oldPW.setBounds(24, 47, 258, 25);
 		panel.add(oldPW);
 
 		newPW = new JPasswordField();
+		newPW.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		newPW.setBounds(24, 124, 258, 25);
 		panel.add(newPW);
 
@@ -204,6 +226,22 @@ public class ChangePW extends JDialog {
 		panel.add(lblNewLabel_1_1);
 
 		repeatPW = new JPasswordField();
+		repeatPW.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitBtn();
+				}
+			}
+		});
 		repeatPW.setBounds(24, 202, 258, 25);
 		panel.add(repeatPW);
 
@@ -242,6 +280,10 @@ public class ChangePW extends JDialog {
 
 	// Submit change password
 	private void btnSubmit_mouseClicked(MouseEvent e) {
+		submitBtn();
+	}
+	
+	private void submitBtn() {
 		oldPass = String.valueOf(oldPW.getPassword());
 		newPass = String.valueOf(newPW.getPassword());
 		repeatPass = String.valueOf(repeatPW.getPassword());
@@ -323,6 +365,12 @@ public class ChangePW extends JDialog {
 		} else {
 			showMessenger("Image direction not path!");
 			return null;
+		}
+	}
+	
+	private void checkKeyTyped(KeyEvent e) {
+		if(e.getKeyChar() == ' ') {
+			e.consume();
 		}
 	}
 }

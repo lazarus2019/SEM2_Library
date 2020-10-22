@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -29,6 +30,7 @@ import checking.CheckValidate;
 import entities.Employee;
 import model.EmployeeModel;
 import javax.swing.JTextField;
+import java.awt.event.KeyAdapter;
 
 public class ChangeEmail extends JDialog {
 
@@ -187,6 +189,22 @@ public class ChangeEmail extends JDialog {
 		panel.add(lblNewLabel_1);
 
 		txtPW = new JPasswordField();
+		txtPW.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitBtn();
+				}
+			}
+		});
 		txtPW.setBounds(24, 124, 258, 25);
 		panel.add(txtPW);
 
@@ -200,6 +218,16 @@ public class ChangeEmail extends JDialog {
 		panel.add(lblNewLabel_1_1);
 
 		newEmail = new JTextField();
+		newEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				try {
+					checkKeyTyped(arg0);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		newEmail.setBounds(24, 47, 258, 25);
 		panel.add(newEmail);
 		newEmail.setColumns(10);
@@ -218,6 +246,10 @@ public class ChangeEmail extends JDialog {
 
 	// Submit change password
 	private void btnSubmit_mouseClicked(MouseEvent e) {
+		submitBtn();
+	}
+	
+	private void submitBtn() {
 		String newE = newEmail.getText().trim();
 		String password = String.valueOf(txtPW.getPassword());
 		if (newE.isEmpty() || password.isEmpty()) {
@@ -284,6 +316,12 @@ public class ChangeEmail extends JDialog {
 		} else {
 			showMessenger("Image direction not path!");
 			return null;
+		}
+	}
+	
+	private void checkKeyTyped(KeyEvent e) {
+		if(e.getKeyChar() == ' ') {
+			e.consume();
 		}
 	}
 }

@@ -39,11 +39,13 @@ import java.awt.Rectangle;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import java.awt.event.KeyAdapter;
 
 public class settingDialog extends JDialog {
 
@@ -334,6 +336,16 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(usernameTxt_1_1_1);
 
 		txtEphone = new JTextField();
+		txtEphone.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				try {
+					checkKeyTyped(e);					
+				} catch (Exception x) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		txtEphone.setBounds(new Rectangle(0, 0, 0, 25));
 		txtEphone.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtEphone.setEditable(false);
@@ -429,7 +441,7 @@ public class settingDialog extends JDialog {
 				}
 			}
 		});
-		btnEdit.setBounds(333, 0, 73, 23);
+		btnEdit.setBounds(326, 0, 80, 23);
 		panelEmployee.add(btnEdit);
 
 		radioFemale = new JRadioButton("Female");
@@ -635,6 +647,12 @@ public class settingDialog extends JDialog {
 		} else {
 			showMessenger("Image direction not path!");
 			return null;
+		}
+	}
+	
+	private void checkKeyTyped(KeyEvent e) {
+		if(e.getKeyChar() == ' ') {
+			e.consume();
 		}
 	}
 }

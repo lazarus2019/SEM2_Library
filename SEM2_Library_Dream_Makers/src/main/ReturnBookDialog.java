@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +36,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseMotionAdapter;
 
 public class ReturnBookDialog extends JDialog {
 
@@ -46,6 +48,7 @@ public class ReturnBookDialog extends JDialog {
 	private JTextField jtextFieldName;
 	private JTextField jtextFieldCompensationFee;
 	private JTable jtableListofBookReturn;
+	private int xPosition, yPosition, mouseX, mouseY;
 
 	public static String idCard;
 	public static Date date;
@@ -94,6 +97,24 @@ public class ReturnBookDialog extends JDialog {
 		contentPanel.setLayout(null);
 
 		JPanel panel = new JPanel();
+		panel.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_2_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_2_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		panel.setBackground(new Color(0, 102, 204));
 		panel.setBounds(0, 0, 407, 45);
 		contentPanel.add(panel);
@@ -304,5 +325,22 @@ public class ReturnBookDialog extends JDialog {
 	public void jbtnBack_actionPerformed(ActionEvent arg0) {
 		this.dispose();
 		setVisible(false);
+	}
+	
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+	
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
 	}
 }

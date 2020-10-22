@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import java.awt.event.MouseMotionAdapter;
 
 public class BorrowBookDialog extends JDialog {
 
@@ -54,6 +56,7 @@ public class BorrowBookDialog extends JDialog {
 	private JTable jtableListofBookBorrow;
 	private JTextField jtextFieldDepositFee;
 	private double depositFee = 0;
+	private int xPosition, yPosition, mouseX, mouseY;
 
 	DefaultTableModel defaultTableModelListBook = new DefaultTableModel() {
 		public boolean isCellEditable(int row, int column) {
@@ -101,6 +104,24 @@ public class BorrowBookDialog extends JDialog {
 		contentPanel.setLayout(null);
 
 		JPanel panel = new JPanel();
+		panel.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_2_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_2_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		panel.setBackground(new Color(0, 102, 204));
 		panel.setBounds(0, 0, 407, 45);
 		contentPanel.add(panel);
@@ -325,5 +346,22 @@ public class BorrowBookDialog extends JDialog {
 		jtableListofBookBorrow.removeAll();
 		this.dispose();
 		setVisible(false);
+	}
+	
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+	
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
 	}
 }

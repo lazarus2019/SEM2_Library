@@ -317,6 +317,7 @@ public class invoicePanel extends JPanel {
 		scrollPane.getViewport().setBackground(Color.WHITE);
 
 		tableBorrowBill = new JTable();
+		tableBorrowBill.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(tableBorrowBill);
 
 		JLabel lblListBill = new JLabel("List Bill");
@@ -1421,7 +1422,14 @@ public class invoicePanel extends JPanel {
 	public void loadWidthTable() {
 		String[] borrowColumn = { "No.", "Borrow ID", "Member Name", "Amount", "Borrow Date", "Term Date",
 				"Return Date", "Forfeit fee ", "Status" };
-		defaultTableModelBorrowBill = new DefaultTableModel();
+		defaultTableModelBorrowBill = new DefaultTableModel() {
+
+			@Override
+			public boolean isCellEditable(int arg0, int arg1) {
+				return false;
+			}
+			
+		};
 		for (String cl : borrowColumn) {
 			defaultTableModelBorrowBill.addColumn(cl);
 		}

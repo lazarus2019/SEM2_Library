@@ -20,6 +20,7 @@ import entities.Member;
 import model.generalClass;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,9 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class BorrowDetailDailog extends JDialog {
 
@@ -44,6 +47,7 @@ public class BorrowDetailDailog extends JDialog {
 	public static JLabel lblMemberName;
 	public static JLabel lblMemberID;
 	public static JLabel lblBorrowID;
+	private int xPosition, yPosition, mouseX, mouseY;
 	DefaultTableModel defaultTableModelListBook = new DefaultTableModel() {
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -80,6 +84,7 @@ public class BorrowDetailDailog extends JDialog {
 	public BorrowDetailDailog() {
 		setUndecorated(true);
 		setBounds(100, 100, 454, 555);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -199,15 +204,34 @@ public class BorrowDetailDailog extends JDialog {
 		contentPanel.add(btnOK);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 454, 73);
+		panel.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent arg0) {
+				try {
+					panel_2_mouseDragged(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				try {
+					panel_2_mouseMoved(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		panel.setBackground(new Color(0, 102, 204));
+		panel.setBounds(0, 0, 454, 50);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
 		JLabel label = new JLabel("Borrow Bill Book Details");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setForeground(Color.BLUE);
+		label.setForeground(Color.WHITE);
 		label.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		label.setBounds(44, 0, 334, 73);
+		label.setBounds(60, 0, 334, 50);
 		panel.add(label);
 		
 		loadDataBook() ;
@@ -288,5 +312,22 @@ public class BorrowDetailDailog extends JDialog {
 		JTableHeader header = tableBookBorrow.getTableHeader();
 		header.setBackground(new Color(223, 233, 242));
 		header.setForeground(Color.BLACK);
+	}
+	
+	// Drag & move window
+	private void panel_2_mouseDragged(MouseEvent e) {
+		xPosition = e.getXOnScreen();
+		yPosition = e.getYOnScreen();
+		this.setLocation(xPosition - mouseX, yPosition - mouseY);
+	}
+
+	private void panel_2_mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+	
+	// Show error message
+	private void showMessenger(String mess) {
+		JOptionPane.showMessageDialog(null, mess);
 	}
 }
