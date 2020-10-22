@@ -209,56 +209,8 @@ public class EmployeeModel {
 		}
 		return am_employee;
 	}
-
-	// Get issused book - NTS
-	public static int getAmountReturnBook() {
-		Connection con = ConnectDB.getConnection();
-		int am_returnBook = 0;
-		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 1";
-		try {
-			PreparedStatement preparedStatement = con.prepareStatement(sql);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.next();
-			am_returnBook = resultSet.getInt("amount");
-		} catch (Exception e) {
-			return am_returnBook;
-		} finally {
-			if (con != null)
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-		return am_returnBook;
-	}
-
-	// Get issused book - NTS
-	public static int getAmountIssuedBook() {
-		Connection con = ConnectDB.getConnection();
-		int am_issuedBook = 0;
-		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 2";
-		try {
-			PreparedStatement preparedStatement = con.prepareStatement(sql);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.next();
-			am_issuedBook = resultSet.getInt("amount");
-		} catch (Exception e) {
-			return am_issuedBook;
-		} finally {
-			if (con != null)
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-		return am_issuedBook;
-	}
-
-	// Get member - NTS
+	
+	// Get amount of member - NTS
 	public static int getAmountMember() {
 		Connection con = ConnectDB.getConnection();
 		int am_member = 0;

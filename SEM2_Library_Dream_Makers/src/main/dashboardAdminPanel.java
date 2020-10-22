@@ -231,8 +231,9 @@ public class dashboardAdminPanel extends JPanel {
 	// Load data
 	private void loadData() {
 		EmployeeModel emModel = new EmployeeModel();
-		bookIssuedAm.setText(String.valueOf(emModel.getAmountIssuedBook()));
-		bookReturnAm.setText(String.valueOf(emModel.getAmountReturnBook()));
+		BooksModel booksModel = new BooksModel();
+		bookIssuedAm.setText(String.valueOf(booksModel.getAmountIssuedBook()));
+		bookReturnAm.setText(String.valueOf(booksModel.getAmountReturnBook()));
 		employeeAm.setText(String.valueOf(emModel.getAmountEmployee()));
 		memberAm.setText(String.valueOf(emModel.getAmountMember()));
 		getBookChart();

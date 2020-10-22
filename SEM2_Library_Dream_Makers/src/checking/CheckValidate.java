@@ -54,6 +54,16 @@ public class CheckValidate {
 			return false;
 		}
 	}
+	
+	// Check phone validate - NTS
+	public static boolean checkNumber(String phone) {
+		// Or phone.contains("[a-zA-Z]+") == false
+		if (phone.matches("[0-9]+")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	// Check email validate - NTS
 	public static boolean checkEmail(String email) {

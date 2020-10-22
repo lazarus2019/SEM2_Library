@@ -575,4 +575,31 @@ public class MemberModel {
 		}
 		return start_date;
 	}
+	
+	// GET MEMBER NAME BY MEMBER ID
+	public static String getNameByID(String member_ID) {
+		String memberName = null;
+		Connection con = ConnectDB.getConnection();
+		sql = "SELECT name FROM member WHERE member_ID = ?";
+
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				memberName = resultSet.getString("name");
+			}
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return memberName;
+	}
 }
