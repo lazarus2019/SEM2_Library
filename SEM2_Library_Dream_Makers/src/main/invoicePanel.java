@@ -778,7 +778,7 @@ public class invoicePanel extends JPanel {
 				try {
 					searchBtn_mouseClicked(arg0);
 				} catch (Exception e) {
-					// TODO: handle exception
+					showMessenger("Something was wrong! Please try again");
 				}
 			}
 		});

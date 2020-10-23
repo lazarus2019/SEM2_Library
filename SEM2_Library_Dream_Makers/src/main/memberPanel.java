@@ -32,6 +32,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.Calendar;
 import java.util.Date;
 
 import java.util.Enumeration;
@@ -39,12 +41,18 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
+
+import checking.CheckValidate;
+
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+
 import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
 
 public class memberPanel extends JPanel {
 	private JTextField JSearch;
@@ -53,15 +61,15 @@ public class memberPanel extends JPanel {
 	private JTextField JtextAddress;
 	private JTextField JtextPhone;
 	private JTextField JtextCardNumber;
-	private JTextField JtextPhoto;
 	private final ButtonGroup buttonGender = new ButtonGroup();
+	private static SimpleDateFormat sdfm = new SimpleDateFormat("dd/MM/yyyy");
 	private static DefaultTableModel defaultTableModel = new DefaultTableModel() {
 
 		@Override
 		public boolean isCellEditable(int arg0, int arg1) {
 			return false;
 		}
-		
+
 	};
 	private JDateChooser JTextDate;
 	private JRadioButton male;
@@ -166,6 +174,7 @@ public class memberPanel extends JPanel {
 		panel_3.add(lblNewLabel);
 
 		JtextMember_ID = new JTextField();
+		JtextMember_ID.setEditable(false);
 		JtextMember_ID.setBackground(Color.WHITE);
 		JtextMember_ID.setBounds(136, 34, 198, 24);
 		panel_3.add(JtextMember_ID);
@@ -212,12 +221,19 @@ public class memberPanel extends JPanel {
 		panel_3.add(male);
 
 		female = new JRadioButton("Female");
+		female.setSelected(true);
 		female.setBackground(new Color(245, 244, 252));
 		buttonGender.add(female);
 		female.setBounds(538, 34, 86, 25);
 		panel_3.add(female);
 
 		JtextPhone = new JTextField();
+		JtextPhone.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				checkKeyTyped(arg0);
+			}
+		});
 		JtextPhone.setColumns(10);
 		JtextPhone.setBounds(459, 79, 214, 24);
 		panel_3.add(JtextPhone);
@@ -227,14 +243,10 @@ public class memberPanel extends JPanel {
 		panel_3.add(lblPhoto);
 
 		JtextCardNumber = new JTextField();
+		JtextCardNumber.setEditable(false);
 		JtextCardNumber.setColumns(10);
 		JtextCardNumber.setBounds(459, 130, 214, 24);
 		panel_3.add(JtextCardNumber);
-
-		JtextPhoto = new JTextField();
-		JtextPhoto.setColumns(10);
-		JtextPhoto.setBounds(459, 178, 214, 24);
-		panel_3.add(JtextPhoto);
 
 		JTextDate = new JDateChooser();
 		JTextFieldDateEditor editor2 = (JTextFieldDateEditor) JTextDate.getDateEditor();
@@ -259,6 +271,22 @@ public class memberPanel extends JPanel {
 		lblDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblDetails.setBounds(344, 3, 86, 29);
 		panel_3.add(lblDetails);
+
+		JButton btnUpload = new JButton("Upload");
+		btnUpload.setForeground(Color.WHITE);
+		btnUpload.setBackground(new Color(30, 106, 210));
+		btnUpload.setBounds(459, 178, 86, 24);
+		panel_3.add(btnUpload);
+
+		JButton btnExtend = new JButton("Extend");
+		btnExtend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnExtend.setForeground(Color.WHITE);
+		btnExtend.setBackground(new Color(30, 106, 210));
+		btnExtend.setBounds(678, 169, 86, 33);
+		panel_3.add(btnExtend);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(245, 244, 252));
@@ -297,27 +325,25 @@ public class memberPanel extends JPanel {
 		defaultComboBoxModel.addElement("female");
 		JComboboxSearch.setModel(defaultComboBoxModel);
 	}
-	
 
 	// loadData
 	private void loadData() {
 		defaultTableModel.getDataVector().removeAllElements();
 		defaultTableModel.fireTableDataChanged();
 		MemberModel memberModel = new MemberModel();
-		String[] colums = { "No. ", "Member_ID", "Name", "Gender", "Phone", "Card_Number"};
-		
+		String[] colums = { "No. ", "Member_ID", "Name", "Gender", "Phone", "Card_Number" };
+
 		defaultTableModel.setColumnIdentifiers(colums);
-		
+
 		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
 		defaultComboBoxModel.addElement("Male");
 		defaultComboBoxModel.addElement("Female");
 		JComboboxSearch.setModel(defaultComboBoxModel);
-		
+
 		int no = 1;
 		for (Member member : memberModel.findAll()) {
-			defaultTableModel.addRow(
-					new Object[] { no, member.getMember_ID(), member.getName(), member.isGender() ? "Male" : "Female",
-							member.getPhone(), member.getCard_number()});
+			defaultTableModel.addRow(new Object[] { no, member.getMember_ID(), member.getName(),
+					member.isGender() ? "Male" : "Female", member.getPhone(), member.getCard_number() });
 			no++;
 		}
 		JTablemember.setModel(defaultTableModel);
@@ -333,93 +359,167 @@ public class memberPanel extends JPanel {
 		JTableHeader tableHeader = JTablemember.getTableHeader();
 		tableHeader.setBackground(new Color(223, 233, 242));
 		tableHeader.setForeground(Color.BLACK);
+		setUneditable(JtextMember_ID);
+
+		generateID();
+		cardNumberID();
+	}
+
+	private void generateID() {
 		// Generate ID - NTanh
+		MemberModel memberModel = new MemberModel();
 		int id = 1;
 		String member_ID = "member1";
 		List<Member> members = memberModel.findAll();
 		for (int i = 0; i < members.size(); i++) {
 			if (member_ID.equals(members.get(i).getMember_ID())) {
 				id++;
-					member_ID = "member" + id;
+				member_ID = "member" + id;
 			}
 		}
 		JtextMember_ID.setText(member_ID);
-		setUneditable(JtextMember_ID);
+	}
+
+	private void cardNumberID() {
+		// Generate Card number ID - NTanh
+		MemberModel memberModel = new MemberModel();
+		int id = 0;
+		String cardNum = "";
+		boolean flag = false;
+		int count = 0;
+		List<Member> members = memberModel.findAll();
+		while (count < members.size()) {
+			id = (int) (Math.random() * (8999998) + 1000000);
+			cardNum = "Std" + id;
+			for (Member member : members) {
+				if (!cardNum.equals(member.getCard_number())) {
+					count++;
+				}
+			}
+		}
+		JtextCardNumber.setText(cardNum);
 	}
 
 	// Add - NTanh
 	public void Create_actionPerformed(ActionEvent arg0) {
 		MemberModel memberModel = new MemberModel();
-		Member member = new Member();
-		member.setMember_ID(JtextMember_ID.getText().trim());
-		member.setName(JtextName.getText().trim());
-		member.setDob(JTextDate.getDate());
-		if (getGenderSelected(buttonGender).equalsIgnoreCase("female")) {
-			member.setGender(false);
+		String memberID = JtextMember_ID.getText();
+		String name = JtextName.getText().trim();
+		String address = JtextAddress.getText().trim();
+		String phone = JtextPhone.getText().trim();
+		String cardNumber = JtextCardNumber.getText();
+		boolean isMale = male.isSelected() ? true : false;
+		Date dateOB = JTextDate.getDate();
+		if (name.isEmpty() || address.isEmpty() || phone.isEmpty() || dateOB == null) {
+			JOptionPane.showMessageDialog(null, "Please fill out all fields");
 		} else {
-			member.setGender(true);
-		}
-		member.setAddress(JtextAddress.getText().trim());
-		member.setPhone(JtextPhone.getText().trim());
-		member.setCard_number(JtextCardNumber.getText().trim());
-		member.setPhoto(JtextPhoto.getText().trim());
-		
-		if (memberModel.Add(member)) {
-			JOptionPane.showMessageDialog(null, "Completed");
-			loadData();
-			setEditable(JtextCardNumber);
-			JtextName.setText("");
-			JtextAddress.setText("");
-			JtextPhone.setText("");
-			JtextPhoto.setText("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Faild");
-		}
+			if (name.length() < 5) {
+				JOptionPane.showMessageDialog(null, "Name must at least 5 characters");
+			} else {
+				if (address.length() < 5) {
+					JOptionPane.showMessageDialog(null, "Address too short, please give us details address");
+				} else {
+					if (!CheckValidate.checkPhone(phone)) {
+						JOptionPane.showMessageDialog(null, "Phone must be a number and at least 9 characters");
+					} else {
+						if (!CheckValidate.checkDate10(dateOB)) {
+							JOptionPane.showMessageDialog(null, "Member age must than 10 years old");
+						} else {
+							if (checkMemberID(memberID)) {
+								Member member = new Member(memberID, name, dateOB, isMale, address,
+										String.valueOf(phone), cardNumber, "", getStartDate(),
+										getExpiredDate(getStartDate()));
+								if (memberModel.Add(member)) {
+									JOptionPane.showMessageDialog(null, "Completed");
+									resetEverything();
+									loadData();
+								} else {
+									JOptionPane.showMessageDialog(null, "Failed");
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "This info must update not create");
+							}
+						}
 
+					}
+				}
+			}
+		}
+	}
+
+	private Date getStartDate() {
+		return new Date();
+	}
+
+	private Date getExpiredDate(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.YEAR, 3);
+		Date newDate = c.getTime();
+		return newDate;
+	}
+
+	private boolean checkMemberID(String id) {
+		MemberModel memberModel = new MemberModel();
+		List<Member> members = memberModel.findAll();
+		for (int i = 0; i < members.size(); i++) {
+			if (id.equals(members.get(i).getMember_ID())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	// Update - NTanh
 	public void Update_actionPerformed(ActionEvent arg0) {
 		int selectedIndex = JTablemember.getSelectedRow();
-		String member_IDs = JTablemember.getValueAt(selectedIndex, 1).toString();
-		MemberModel memberModel = new MemberModel();
-		Member member = memberModel.findByID(member_IDs);
-		if (JtextName.getText().trim() != null) {
-			member.setName(JtextName.getText().trim());
-		}
-		if (JTextDate.getDate() != null) {
-			member.setDob(JTextDate.getDate());
-		}
-		String genders = getGenderSelected(buttonGender);
-		if (genders != null) {
-			if(genders.equalsIgnoreCase("female")) {
-				member.setGender(false);
-			}else {
-				member.setGender(true);
-			}
-		}
-		if (JtextPhone.getText().trim() != null) {
-			member.setPhone(JtextPhone.getText().trim());
-		}
-		if (JtextAddress.getText().trim() != null) {
-			member.setAddress(JtextAddress.getText().trim());
-		}
-		if (JtextPhoto.getText().trim() != null) {
-			member.setPhoto(JtextPhoto.getText().trim());
-		}
-		if (JtextCardNumber.getText().trim() != null) {
-			member.setCard_number(JtextCardNumber.getText().trim());
-		}
-		if (member_IDs == null) {
-			JOptionPane.showMessageDialog(null, "Please select a book !");
+		if (selectedIndex == -1) {
+			JOptionPane.showMessageDialog(null, "Please select a member before push update");
 		} else {
-			if (memberModel.update(member, member_IDs)) {
-				loadData();
+			MemberModel memberModel = new MemberModel();
+			String memberID = JtextMember_ID.getText();
+			String name = JtextName.getText().trim();
+			String address = JtextAddress.getText().trim();
+			String phone = JtextPhone.getText().trim();
+			String cardNumber = JtextCardNumber.getText();
+			boolean isMale = male.isSelected() ? true : false;
+			Date dateOB = JTextDate.getDate();
+			if (name.isEmpty() || address.isEmpty() || phone.isEmpty() || dateOB == null) {
+				JOptionPane.showMessageDialog(null, "Please fill out all fields");
 			} else {
-				JOptionPane.showMessageDialog(null, "Faild");
+				if (name.length() < 5) {
+					JOptionPane.showMessageDialog(null, "Name must at least 5 characters");
+				} else {
+					if (address.length() < 5) {
+						JOptionPane.showMessageDialog(null, "Address too short, please give us details address");
+					} else {
+						if (!CheckValidate.checkPhone(phone)) {
+							JOptionPane.showMessageDialog(null, "Phone must be a number and at least 9 characters");
+						} else {
+							if (!CheckValidate.checkDate10(dateOB)) {
+								JOptionPane.showMessageDialog(null, "Member age must than 10 years old");
+							} else {
+								if (checkMemberID(memberID)) {
+									Member member = new Member(memberID, name, dateOB, isMale, address,
+											String.valueOf(phone), cardNumber, "", getStartDate(),
+											getExpiredDate(getStartDate()));
+									if (memberModel.Add(member)) {
+										JOptionPane.showMessageDialog(null, "Completed");
+										resetEverything();
+										loadData();
+									} else {
+										JOptionPane.showMessageDialog(null, "Failed");
+									}
+								} else {
+									JOptionPane.showMessageDialog(null, "This info must update not create");
+								}
+							}
+
+						}
+					}
+				}
 			}
 		}
-
 	}
 
 	// delete - NT
@@ -427,21 +527,25 @@ public class memberPanel extends JPanel {
 		try {
 			MemberModel memberModel = new MemberModel();
 			int selectedIndex = JTablemember.getSelectedRow();
-			String id = JTablemember.getValueAt(selectedIndex, 1).toString();
-			if (id == null) {
-				JOptionPane.showMessageDialog(null, "Please select a member !");
+			if (selectedIndex == -1) {
+				JOptionPane.showMessageDialog(null, "Please select a member before push delete");
 			} else {
-				int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm",
-						JOptionPane.YES_NO_OPTION);
-				if (result == JOptionPane.YES_OPTION) {
-					if (memberModel.delete(id)) {
-						loadData();
-					} else {
-						JOptionPane.showMessageDialog(null, "Failed");
+				String id = JTablemember.getValueAt(selectedIndex, 1).toString();
+				if (id == null) {
+					JOptionPane.showMessageDialog(null, "Please select a member !");
+				} else {
+					int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm",
+							JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						if (memberModel.delete(id)) {
+							resetEverything();
+							loadData();
+						} else {
+							JOptionPane.showMessageDialog(null, "Failed");
+						}
 					}
 				}
 			}
-
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, e2.getMessage());
 		}
@@ -456,30 +560,28 @@ public class memberPanel extends JPanel {
 		String key = JSearch.getText();
 		int no = 1;
 		for (Member member : memberModel.searchMember(key)) {
-			defaultTableModel.addRow(
-					new Object[] { no, member.getMember_ID(), member.getName(), member.isGender() ? "Male" : "Female",
-							member.getPhone(), member.getCard_number()});
+			defaultTableModel.addRow(new Object[] { no, member.getMember_ID(), member.getName(),
+					member.isGender() ? "Male" : "Female", member.getPhone(), member.getCard_number() });
 			no++;
 		}
 		JTablemember.setModel(defaultTableModel);
 	}
-	
+
 	public void Search_Gender_actionPerformed(ActionEvent arg0) {
 		defaultTableModel.getDataVector().removeAllElements();
 		defaultTableModel.fireTableDataChanged();
 		MemberModel memberModel = new MemberModel();
 		int keyf;
 		String keys = JComboboxSearch.getSelectedItem().toString().toLowerCase();
-		if(keys.equalsIgnoreCase("male")) {
+		if (keys.equalsIgnoreCase("male")) {
 			keyf = 1;
 		} else {
 			keyf = 0;
 		}
 		int no = 1;
 		for (Member member : memberModel.searchMemberGender(keyf)) {
-			defaultTableModel.addRow(
-					new Object[] { no, member.getMember_ID(), member.getName(), member.isGender() ? "Male" : "Female",
-							member.getPhone(), member.getCard_number()});
+			defaultTableModel.addRow(new Object[] { no, member.getMember_ID(), member.getName(),
+					member.isGender() ? "Male" : "Female", member.getPhone(), member.getCard_number() });
 			no++;
 		}
 		JTablemember.setModel(defaultTableModel);
@@ -487,15 +589,12 @@ public class memberPanel extends JPanel {
 	// Click
 
 	public void Click_mouseClicked(MouseEvent arg0) {
-		setUneditable(JtextCardNumber);
 		int selectedIndex = JTablemember.getSelectedRow();
 		String member_ID = JTablemember.getValueAt(selectedIndex, 1).toString();
 
 		MemberModel memberModel = new MemberModel();
 		Member member = memberModel.findByID(member_ID);
-		
-		setUneditable(JtextMember_ID);
-		//setUneditable(JtextCardNumber);
+
 		JtextMember_ID.setText(member.getMember_ID());
 		JtextName.setText(member.getName());
 		JTextDate.setDate(member.getDob());
@@ -507,16 +606,18 @@ public class memberPanel extends JPanel {
 		JtextAddress.setText(member.getAddress());
 		JtextPhone.setText(member.getPhone());
 		JtextCardNumber.setText(member.getCard_number());
-		JtextPhoto.setText(member.getPhoto());
 	}
-	//Reset
+
+	// Reset
 	public void BtnReset_actionPerformed(ActionEvent arg0) {
+		resetEverything();
+	}
+
+	private void resetEverything() {
 		JtextCardNumber.setText("");
-		setEditable(JtextCardNumber);
 		JtextName.setText("");
 		JtextAddress.setText("");
 		JtextPhone.setText("");
-		JtextPhoto.setText("");
 		loadData();
 	}
 
@@ -534,10 +635,15 @@ public class memberPanel extends JPanel {
 
 	// Set edit
 	private void setUneditable(JTextField j) {
-		j.setEditable(false);
 	}
 
 	private void setEditable(JTextField ji) {
 		ji.setEditable(true);
+	}
+
+	private void checkKeyTyped(KeyEvent e) {
+		if (e.getKeyChar() == ' ') {
+			e.consume();
+		}
 	}
 }

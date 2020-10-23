@@ -44,6 +44,23 @@ public class CheckValidate {
 			return true;
 		}
 	}
+	
+	// Check date validate - NTS ver2
+	public static boolean checkDate10(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DATE);
+		LocalDate l1 = LocalDate.of(year, month, day);
+		LocalDate nowDate = LocalDate.now();
+		Period diff = Period.between(l1, nowDate);
+		if (diff.getYears() < 10) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	// Check phone validate - NTS
 	public static boolean checkPhone(String phone) {

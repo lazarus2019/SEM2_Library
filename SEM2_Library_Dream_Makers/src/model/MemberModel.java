@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hpsf.Blob;
+
 import connect.ConnectDB;
 import entities.Author;
 import entities.FamousBook;
@@ -52,7 +54,7 @@ public class MemberModel {
 
 	// Create - NTanh
 	public static boolean Add(Member member) {
-		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, photo) values(?,?,?,?,?,?,?,?)";
+		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, start_date, expiration_date, photo, src, isDelete) values(?,?,?,?,?,?,?, ?, ?, null, null, 0)";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, member.getMember_ID());
@@ -62,7 +64,8 @@ public class MemberModel {
 			preparedStatement.setString(5, member.getAddress());
 			preparedStatement.setString(6, member.getPhone());
 			preparedStatement.setString(7, member.getCard_number());
-			preparedStatement.setString(8, member.getPhoto());
+			preparedStatement.setDate(8, new java.sql.Date(member.getStart_date().getTime()));
+			preparedStatement.setDate(9, new java.sql.Date(member.getExp_date().getTime()));
 			return preparedStatement.executeUpdate() > 0;
 
 		} catch (Exception e) {

@@ -37,6 +37,21 @@ public class Member {
 		this.exp_date = exp_date;
 		this.src = src;
 	}
+	
+	public Member(String member_ID, String name, Date dob, boolean gender, String address, String phone,
+			String card_number, String photo, Date start_date, Date exp_date) {
+		super();
+		this.member_ID = member_ID;
+		this.name = name;
+		this.dob = dob;
+		this.gender = gender;
+		this.address = address;
+		this.phone = phone;
+		this.card_number = card_number;
+		this.photo = photo;
+		this.start_date = start_date;
+		this.exp_date = exp_date;
+	}
 
 	public String getMember_ID() {
 		return member_ID;
