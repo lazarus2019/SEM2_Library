@@ -5,9 +5,20 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -22,11 +33,14 @@ import com.toedter.calendar.JYearChooser;
 
 import checking.CheckValidate;
 import entities.Author;
+import entities.BookBorrow;
 import entities.Books;
 import entities.Borrow_bill;
 import entities.Employee;
 import entities.Member;
+import entities.ObseleteBook;
 import model.AuthorModel;
+import model.BookBorrowModel;
 import model.BooksModel;
 import model.Bor_bookModel;
 import model.Borrow_billModel;
@@ -35,13 +49,16 @@ import model.MemberModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.RowFilter.Entry;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
+import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
@@ -52,11 +69,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.awt.Cursor;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -99,6 +122,12 @@ public class invoicePanel extends JPanel {
 	public static List<String> bookID = new ArrayList<String>();
 	public static Member member = null;
 
+	// Next, previous pageIndex
+	private static TableRowSorter<TableModel> sorter = null;
+	private final int itemsPerPage = 22;
+	private int maxPageIndex;
+	private int currentPageIndex = 1;
+
 	DefaultTableModel defaultTableModelFindBook = new DefaultTableModel() {
 		public boolean isCellEditable(int arg0, int arg1) {
 			return false;
@@ -111,6 +140,7 @@ public class invoicePanel extends JPanel {
 	};
 	private static String[] columnsBookBorrow = { "No", "Bill ID", "Employee ID", "Member name", "Title", "Borrow date",
 			"Return date", "Status" };
+	private static List<BookBorrow> bookbookss = null;
 	DefaultTableModel defaultTableModelSelectedBook = new DefaultTableModel() {
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -135,7 +165,7 @@ public class invoicePanel extends JPanel {
 	private JDateChooser jdateChooserReturnDate;
 	private JTable tableBookBorrow;
 	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
-	private JTextField textField;
+	private JTextField numPage;
 	private JRadioButton returnedRadio;
 	private JRadioButton notReturnRadio;
 	private JRadioButton lostRadio;
@@ -145,6 +175,11 @@ public class invoicePanel extends JPanel {
 	private JCheckBox monthCheck;
 	private JTextField inputBillID;
 	private JLabel getByBillID;
+	private JButton firstBtn;
+	private JButton preBtn;
+	private JLabel maxIndex;
+	private JButton nextBtn;
+	private JButton lastBtn;
 
 	/**
 	 * Create the panel.
@@ -737,6 +772,16 @@ public class invoicePanel extends JPanel {
 		panel_10.add(getAllBtn);
 
 		JLabel searchBtn = new JLabel("Search");
+		searchBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					searchBtn_mouseClicked(arg0);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		});
 		searchBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		searchBtn.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/icon/Search.png")));
 		searchBtn.setOpaque(true);
@@ -818,6 +863,27 @@ public class invoicePanel extends JPanel {
 		inputBillID.setBounds(511, 11, 139, 29);
 		panel_10.add(inputBillID);
 		inputBillID.setColumns(10);
+		
+		JLabel exportBtn = new JLabel("Export");
+		exportBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		exportBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					openDialogAndCheck();
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
+		exportBtn.setIcon(new ImageIcon(invoicePanel.class.getResource("/data/Main/export.png")));
+		exportBtn.setOpaque(true);
+		exportBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		exportBtn.setForeground(Color.WHITE);
+		exportBtn.setFont(new Font("Arial", Font.BOLD, 15));
+		exportBtn.setBackground(new Color(30, 106, 210));
+		exportBtn.setBounds(511, 51, 113, 30);
+		panel_10.add(exportBtn);
 
 		JPanel panel_11 = new JPanel();
 		panel_11.setBackground(new Color(245, 244, 252));
@@ -839,42 +905,78 @@ public class invoicePanel extends JPanel {
 		lblNewLabel_7.setBounds(285, 0, 208, 47);
 		panel_11.add(lblNewLabel_7);
 
-		JButton firstBtn = new JButton("|<");
+		firstBtn = new JButton("|<");
+		firstBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					firstBtn_actionPerformed(arg0);
+				} catch (Exception e) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		firstBtn.setBackground(new Color(30, 106, 210));
 		firstBtn.setForeground(Color.WHITE);
 		firstBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		firstBtn.setBounds(477, 428, 50, 25);
 		panel_11.add(firstBtn);
 
-		JButton lastBtn = new JButton(">|");
+		lastBtn = new JButton(">|");
+		lastBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					lastBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		lastBtn.setForeground(Color.WHITE);
 		lastBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lastBtn.setBackground(new Color(30, 106, 210));
 		lastBtn.setBounds(716, 428, 50, 25);
 		panel_11.add(lastBtn);
 
-		JButton nextBtn = new JButton(">");
+		nextBtn = new JButton(">");
+		nextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					nextBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		nextBtn.setForeground(Color.WHITE);
 		nextBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		nextBtn.setBackground(new Color(30, 106, 210));
 		nextBtn.setBounds(658, 428, 50, 25);
 		panel_11.add(nextBtn);
 
-		JButton preBtn = new JButton("<");
+		preBtn = new JButton("<");
+		preBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					preBtn_actionPerformed(e);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again");
+				}
+			}
+		});
 		preBtn.setForeground(Color.WHITE);
 		preBtn.setFont(new Font("Tahoma", Font.BOLD, 11));
 		preBtn.setBackground(new Color(30, 106, 210));
 		preBtn.setBounds(535, 428, 50, 25);
 		panel_11.add(preBtn);
 
-		JLabel lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setBounds(620, 428, 34, 25);
-		panel_11.add(lblNewLabel_8);
+		maxIndex = new JLabel("");
+		maxIndex.setBounds(620, 428, 34, 25);
+		panel_11.add(maxIndex);
 
-		textField = new JTextField();
-		textField.setBounds(590, 428, 27, 25);
-		panel_11.add(textField);
-		textField.setColumns(10);
+		numPage = new JTextField();
+		numPage.setBounds(590, 428, 27, 25);
+		panel_11.add(numPage);
+		numPage.setColumns(10);
 
 		loadDataFindBook();
 		loadDataSelectedBook();
@@ -1435,7 +1537,6 @@ public class invoicePanel extends JPanel {
 		int selectedIndex = tableBorrowBill.getSelectedRow();
 		if (selectedIndex != -1) {
 			int borrow_ID = (int) tableBorrowBill.getValueAt(selectedIndex, 1);
-			System.out.println(borrow_ID);
 
 			Borrow_billModel borrow_billModel = new Borrow_billModel();
 			Borrow_bill bill = borrow_billModel.findByID(borrow_ID);
@@ -1564,9 +1665,54 @@ public class invoicePanel extends JPanel {
 		}
 	}
 
+	// ========Book Borrow=======
+	
+	// Go to first page
+	private void firstBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex = 1;
+		initFilterAndButton();
+	}
+
+	// Go to previous page
+	private void preBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex -= 1;
+		initFilterAndButton();
+	}
+
+	// Go to next page
+	private void nextBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex += 1;
+		initFilterAndButton();
+	}
+
+	// Go to last page
+	private void lastBtn_actionPerformed(ActionEvent e) {
+		currentPageIndex = maxPageIndex;
+		initFilterAndButton();
+	}
+
+	// Change value of table
+	private void initFilterAndButton() {
+		sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+			@Override
+			public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+				int ti = currentPageIndex - 1;
+				int ei = entry.getIdentifier();
+				return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
+			}
+		});
+		firstBtn.setEnabled(currentPageIndex > 1);
+		preBtn.setEnabled(currentPageIndex > 1);
+		nextBtn.setEnabled(currentPageIndex < maxPageIndex);
+		lastBtn.setEnabled(currentPageIndex < maxPageIndex);
+		numPage.setText(Integer.toString(currentPageIndex));
+	}
+
+	// Load table book borrow
 	private void loadTableBookBorrow() {
 		// Set table book borrow columns
 		defaultTableModelBookBorrow.setColumnIdentifiers(columnsBookBorrow);
+		sorter = new TableRowSorter<TableModel>(defaultTableModelBookBorrow);
 		// Set table book borrow model
 		tableBookBorrow.setModel(defaultTableModelBookBorrow);
 		tableBookBorrow.getTableHeader().setReorderingAllowed(false);
@@ -1579,52 +1725,246 @@ public class invoicePanel extends JPanel {
 		columnModel.getColumn(2).setPreferredWidth(90);
 		columnModel.getColumn(3).setPreferredWidth(110);
 		columnModel.getColumn(4).setPreferredWidth(220);
-		columnModel.getColumn(5).setPreferredWidth(93);
-		columnModel.getColumn(6).setPreferredWidth(92);
-		columnModel.getColumn(7).setPreferredWidth(58);
+		columnModel.getColumn(5).setPreferredWidth(85);
+		columnModel.getColumn(6).setPreferredWidth(85);
+		columnModel.getColumn(7).setPreferredWidth(73);
 		// set color
 		JTableHeader header = tableBookBorrow.getTableHeader();
 		header.setBackground(new Color(223, 233, 242));
 		header.setForeground(Color.BLACK);
+
+		tableBookBorrow.setFillsViewportHeight(true);
+		tableBookBorrow.setRowSorter(sorter);
+		firstBtn.setEnabled(false);
+		preBtn.setEnabled(false);
+		nextBtn.setEnabled(false);
+		lastBtn.setEnabled(false);
+		numPage.setEditable(false);
 	}
 
+	// Get all book by status
 	private void getAllBtn_mouseClicked(MouseEvent e) {
 		// Get radio option
-		if (returnedRadio.isSelected()) {
-			option = 1;
+		option = getRadioOption();
+		List<Borrow_bill> bills = Borrow_billModel.findAll();
+		if (bills.size() != 0) {
+			bookbookss = BookBorrowModel.getAllBookBorrows(bills, option);
+			addDataTableBookBorrow(bookbookss);
+		} else {
+			showMessenger("Dont have any record");
 		}
-		if (notReturnRadio.isSelected()) {
-			option = 2;
-		}
-		if (lostRadio.isSelected()) {
-			option = 3;
-		}
-		if (allRadio.isSelected()) {
-			option = 4;
-		}
-
 	}
 
+	// Get book by bill ID
 	private void getByBillID_mouseClicked(MouseEvent e) {
 		findBookByBillID();
 	}
 
 	private void findBookByBillID() {
 		Borrow_billModel billModel = new Borrow_billModel();
+		BookBorrowModel bbModel = new BookBorrowModel();
 		if (inputBillID.getText().isEmpty()) {
 			showMessenger("Please enter bill ID");
 		} else {
+			// Check input value
 			if (CheckValidate.checkNumber(inputBillID.getText())) {
 				int billID = Integer.parseInt(inputBillID.getText());
-				
+				// Find bill by id
 				Borrow_bill billx = billModel.findByID(billID);
-			} else {
+				// Find list book by bill id
+				bookbookss = bbModel.getListBookBorrows(billx, 4);
+				if (bookbookss.size() != 0) {
+					addDataTableBookBorrow(bookbookss);
+				} else {
+					showMessenger("Dont have any record");
+				}
+//			} else {
 				showMessenger("Bill ID must be a number");
 			}
 		}
-
 	}
 
+	// Get book by month, year and status
+	private void  searchBtn_mouseClicked(MouseEvent e) {
+		option = getRadioOption();
+		
+		int month = monthCho.getMonth() + 1;
+		int year = yearCho.getYear();
+		List<Borrow_bill> bills = null;
+		if(monthCheck.isSelected()) {
+			bills = Borrow_billModel.findByDate(month, year);			
+		}else {
+			bills = Borrow_billModel.findByYear(year);
+		}
+		
+		if (bills.size() != 0) {
+			bookbookss = BookBorrowModel.getAllBookBorrows(bills, option);
+			addDataTableBookBorrow(bookbookss);
+		} else {
+			showMessenger("Dont have any record");
+		}
+	}
+	
+	// Add data after query to table
+	private void addDataTableBookBorrow(List<BookBorrow> books) {
+		// Reset table model
+		defaultTableModelBookBorrow.getDataVector().removeAllElements();
+		defaultTableModelBookBorrow.fireTableDataChanged();
+		String returnDate = "";
+		for (BookBorrow book : books) {
+			// Add row to table model
+			if (book.isStatus()) {
+				returnDate = simpleDateFormat.format(book.getReturn_date());
+			} else {
+				returnDate = "--------------------";
+			}
+			defaultTableModelBookBorrow.addRow(new Object[] { defaultTableModelBookBorrow.getRowCount() + 1,
+					book.getBorrow_ID(), book.getEmployee_ID(), book.getMemberName(), book.getTitle(),
+					simpleDateFormat.format(book.getBorrow_date()), returnDate, book.getStatusOk() });
+		}
+		// Set table model
+		tableBookBorrow.setModel(defaultTableModelBookBorrow);
+		int rowCount = defaultTableModelBookBorrow.getRowCount();
+		int v = rowCount % itemsPerPage == 0 ? 0 : 1;
+		maxPageIndex = rowCount / itemsPerPage + v;
+		initFilterAndButton();
+		maxIndex.setText(String.format("/ %d", maxPageIndex));
+		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		numPage.setEditable(true);
+		numPage.setText("1");
+		numPage.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
+		numPage.getActionMap().put("Enter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (CheckValidate.checkNumber(numPage.getText())) {
+						int v1 = Integer.parseInt(numPage.getText());
+						if (v1 > 0 && v1 <= maxPageIndex) {
+							currentPageIndex = v1;
+							initFilterAndButton();
+						} else {
+							showMessenger("Please input number between 1 to " + maxPageIndex);
+						}
+					} else {
+						showMessenger("Must be a number");
+					}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
+	}
+
+	// Get option by book status
+	private int getRadioOption() {
+		int op = 0;
+		// Get radio option
+		if (returnedRadio.isSelected()) {
+			op = 1;
+		}
+		if (notReturnRadio.isSelected()) {
+			op = 2;
+		}
+		if (lostRadio.isSelected()) {
+			op = 3;
+		}
+		if (allRadio.isSelected()) {
+			op = 4;
+		}
+		return op;
+	}
+	
+	//====EXPORT EXCEL FILE=====
+	private void openDialogAndCheck() {
+		if (tableBookBorrow.getModel().getRowCount() > 0) {
+			JFileChooser exChooser = new JFileChooser();
+			// Change box title
+			exChooser.setDialogTitle("Export to excel file");
+			// Only filter files with extension "xls", "xlsx", "xlsm"
+			FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILE - xls, xlsx", "xls", "xlsx");
+			exChooser.setFileFilter(fnef);
+			int result = exChooser.showSaveDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				// Get file path
+				String filePath = exChooser.getSelectedFile().getAbsolutePath();
+				if (filePath.endsWith(".xls") || filePath.endsWith(".XLS") || filePath.endsWith(".xlsx")
+						|| filePath.endsWith(".XLSX")) {
+					if (exportToFile(filePath)) {
+						showMessenger("Exported! Please check your file");
+					} else {
+						showMessenger("Can't save export file! Please try again");
+					}
+				} else {
+					showMessenger("Wrong file type\n Sample: .xls or .xlsx");
+				}
+			}
+		} else {
+			showMessenger("Empty data, can't export!");
+		}
+	}
+
+	private boolean exportToFile(String filePath) {
+		Workbook workbook = new XSSFWorkbook();
+		String sheetName = "Books Borrow";
+		Sheet sheet = workbook.createSheet(sheetName);
+		org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+		headerFont.setBold(true);
+		headerFont.setFontHeightInPoints((short) 14);
+		headerFont.setColor(IndexedColors.RED.getIndex());
+
+		// Create a CellStyle with the font
+		CellStyle headerCellStyle = workbook.createCellStyle();
+		headerCellStyle.setFont((org.apache.poi.ss.usermodel.Font) headerFont);
+
+		Row createdDate = sheet.createRow(0);
+		Cell date = createdDate.createCell(0);
+		date.setCellValue("Created date: " + simpleDateFormat.format(new Date()));
+
+		Row headerRow = sheet.createRow(1);
+
+		for (int i = 0; i < columnsBookBorrow.length; i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(columnsBookBorrow[i]);
+			cell.setCellStyle(headerCellStyle);
+		}
+
+		int rowNum = 2;
+		int No = 1;
+
+		String returnDate = "";
+		for (BookBorrow book : bookbookss) {
+			Row row = sheet.createRow(rowNum++);
+			if (book.isStatus()) {
+				returnDate = simpleDateFormat.format(book.getReturn_date());
+			} else {
+				returnDate = "--------------------";
+			}
+			row.createCell(0).setCellValue(No++);
+			row.createCell(0).setCellValue(book.getBorrow_ID());
+			row.createCell(0).setCellValue(book.getEmployee_ID());
+			row.createCell(0).setCellValue(book.getMemberName());
+			row.createCell(0).setCellValue(book.getTitle());
+			row.createCell(0).setCellValue(simpleDateFormat.format(book.getBorrow_date()));
+			row.createCell(0).setCellValue(returnDate);
+			row.createCell(0).setCellValue(book.getStatusOk());
+		}
+
+		for (int i = 0; i < columnsBookBorrow.length; i++) {
+			sheet.autoSizeColumn(i);
+		}
+
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream(filePath);
+			workbook.write(fileOut);
+			fileOut.close();
+			workbook.close();
+			return true;
+		} catch (Exception e1) {
+			return false;
+		}
+	}
+	
 	// Resize Image
 	private ImageIcon resizeImg(String imgPath, JLabel jName) {
 		if (imgPath != null) {

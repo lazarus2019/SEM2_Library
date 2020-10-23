@@ -590,6 +590,7 @@ public class reportPanel extends JPanel {
 		preBtn.setEnabled(false);
 		nextBtn.setEnabled(false);
 		lastBtn.setEnabled(false);
+		numPage.setEditable(false);
 	}
 
 	// Go to first page
@@ -735,12 +736,14 @@ public class reportPanel extends JPanel {
 			maxIndex.setText(String.format("/ %d", maxPageIndex));
 			// Goto index when input number of page
 			KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+			numPage.setEditable(true);
+			numPage.setText("1");
 			numPage.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
 			numPage.getActionMap().put("Enter", new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						int v = Integer.parseInt(maxIndex.getText());
+						int v = Integer.parseInt(numPage.getText());
 						if (v > 0 && v <= maxPageIndex) {
 							currentPageIndex = v;
 						}

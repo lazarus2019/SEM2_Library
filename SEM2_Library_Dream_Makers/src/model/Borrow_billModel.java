@@ -18,7 +18,7 @@ public class Borrow_billModel {
 
 	static String sql;
 
-	public List<Borrow_bill> findAll() {
+	public static List<Borrow_bill> findAll() {
 		Connection con = ConnectDB.getConnection();
 		try {
 			List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
@@ -342,7 +342,7 @@ public class Borrow_billModel {
 	}
 
 	// Start NVT
-	public List<Borrow_bill> findByDate(int month, int year) {
+	public static List<Borrow_bill> findByDate(int month, int year) {
 		Connection con = ConnectDB.getConnection();
 		try {
 			List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
@@ -428,5 +428,45 @@ public class Borrow_billModel {
 			return false;
 		}
 	}
+
 	// End NVT
+
+	// GET BILL BY YEAR - NTS
+	public static List<Borrow_bill> findByYear(int year) {
+		Connection con = ConnectDB.getConnection();
+		List<Borrow_bill> borrow_bills = new ArrayList<Borrow_bill>();
+		sql = "SELECT * FROM borrow_bill WHERE YEAR(borrow_date) = ? ";
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			preparedStatement.setInt(1, year);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Borrow_bill borrow_bill = new Borrow_bill();
+				borrow_bill.setBorrow_ID(resultSet.getInt("borrow_ID"));
+				borrow_bill.setMember_ID(resultSet.getString("member_ID"));
+				borrow_bill.setEmployee_ID(resultSet.getString("employee_ID"));
+				borrow_bill.setDescription(resultSet.getString("description"));
+				borrow_bill.setStatus(resultSet.getBoolean("status"));
+				borrow_bill.setBorrow_date(resultSet.getDate("borrow_date"));
+				borrow_bill.setTerm_date(resultSet.getDate("term_date"));
+				borrow_bill.setReturn_date(resultSet.getDate("return_date"));
+				borrow_bill.setDeposit_fee(resultSet.getDouble("deposit_fee"));
+				borrow_bill.setLate_fee(resultSet.getDouble("late_fee"));
+				borrow_bill.setCompensation_fee(resultSet.getDouble("compen_fee"));
+				
+				borrow_bills.add(borrow_bill);
+			}
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return borrow_bills;
+	}
 }
