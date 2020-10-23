@@ -1778,7 +1778,7 @@ public class invoicePanel extends JPanel {
 				} else {
 					showMessenger("Dont have any record");
 				}
-//			} else {
+			} else {
 				showMessenger("Bill ID must be a number");
 			}
 		}
@@ -1940,13 +1940,13 @@ public class invoicePanel extends JPanel {
 				returnDate = "--------------------";
 			}
 			row.createCell(0).setCellValue(No++);
-			row.createCell(0).setCellValue(book.getBorrow_ID());
-			row.createCell(0).setCellValue(book.getEmployee_ID());
-			row.createCell(0).setCellValue(book.getMemberName());
-			row.createCell(0).setCellValue(book.getTitle());
-			row.createCell(0).setCellValue(simpleDateFormat.format(book.getBorrow_date()));
-			row.createCell(0).setCellValue(returnDate);
-			row.createCell(0).setCellValue(book.getStatusOk());
+			row.createCell(1).setCellValue(book.getBorrow_ID());
+			row.createCell(2).setCellValue(book.getEmployee_ID());
+			row.createCell(3).setCellValue(book.getMemberName());
+			row.createCell(4).setCellValue(book.getTitle());
+			row.createCell(5).setCellValue(simpleDateFormat.format(book.getBorrow_date()));
+			row.createCell(6).setCellValue(returnDate);
+			row.createCell(7).setCellValue(book.getStatusOk());
 		}
 
 		for (int i = 0; i < columnsBookBorrow.length; i++) {

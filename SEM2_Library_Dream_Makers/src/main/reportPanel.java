@@ -743,7 +743,7 @@ public class reportPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						int v = Integer.parseInt(numPage.getText());
+						int v = Integer.parseInt(maxIndex.getText());
 						if (v > 0 && v <= maxPageIndex) {
 							currentPageIndex = v;
 						}
