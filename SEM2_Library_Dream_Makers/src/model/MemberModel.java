@@ -55,7 +55,7 @@ public class MemberModel {
 
 	// Create - NTanh
 	public static boolean Add(Member member) {
-		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, start_date, expiration_date, photo, src, isDelete) values(?,?,?,?,?,?,?, ?, ?, null, ?, 0)";
+		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, start_date, expiration_date, photo, src) values(?,?,?,?,?,?,?, ?, ?, null, ?)";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, member.getMember_ID());
@@ -120,7 +120,7 @@ public class MemberModel {
 
 	// Update - NTanh
 	public static boolean update(Member member, String member_ID) {
-		sql = " update member set member_ID = ? , name = ? , dob = ? , gender = ? , address = ? , phone = ? , card_number = ? , photo = ? where member_ID = ? ";
+		sql = " update member set member_ID = ? , name = ? , dob = ? , gender = ? , address = ? , phone = ? , card_number = ?, src = ? where member_ID = ? ";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 
@@ -131,7 +131,7 @@ public class MemberModel {
 			preparedStatement.setString(5, member.getAddress());
 			preparedStatement.setString(6, member.getPhone());
 			preparedStatement.setString(7, member.getCard_number());
-			preparedStatement.setString(8, member.getPhoto());
+			preparedStatement.setBytes(8, member.getSrc());
 			preparedStatement.setString(9, member_ID);
 			return preparedStatement.executeUpdate() > 0;
 

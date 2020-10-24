@@ -575,7 +575,6 @@ public class settingDialog extends JDialog {
 		employee_tmp.setDob(dob);
 		employee_tmp.setAddress(address);
 		employee_tmp.setPhone(phone);
-		employee_tmp.setPhoto("abc.png"); // Unfinish
 		CheckValidate check = new CheckValidate();
 		if (getRadioSelected(genderGroup).equalsIgnoreCase("female")) {
 			employee_tmp.setGender(false);

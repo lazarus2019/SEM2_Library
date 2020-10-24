@@ -526,7 +526,7 @@ public class memberPanel extends JPanel {
 								JOptionPane.showMessageDialog(null, "Member age must than 10 years old");
 							} else {
 								Member member = new Member(memberID, name, dateOB, isMale, address,
-										String.valueOf(phone), cardNumber, "", null, null, null);
+										String.valueOf(phone), cardNumber, "", null, null, imageInByte);
 								if (memberModel.update(member, memberID)) {
 									if (imageInByte != null) {
 										if (memberModel.savePhoto(member.getMember_ID(), imageType)) {

@@ -25,6 +25,8 @@ import javax.swing.JComboBox;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -229,13 +231,16 @@ public class authorPanel extends JPanel {
 		defaultTableModel.getDataVector().removeAllElements();
 		defaultTableModel.fireTableDataChanged();
 		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
-		String[] list = { "Ireland", "American", "China", "Viet Nam", "Japan" };
-		for (String cs : list) {
-			defaultComboBoxModel.addElement(cs);
+		AuthorModel authorModel = new AuthorModel();
+		List<Author> authors = authorModel.findAll();
+
+		for (Author author : authors) {
+			//jcomboBoxSearch.addItem(author.getNation());
+			defaultComboBoxModel.addElement(author.getNation());
 		}
 		jcomboBoxSearch.setModel(defaultComboBoxModel);
 
-		AuthorModel authorModel = new AuthorModel();
+		//AuthorModel authorModel1 = new AuthorModel();
 		String[] columns = { "No. ", "Author_ID", "Name", "Nation" };
 		defaultTableModel.setColumnIdentifiers(columns);
 		int no = 1;
@@ -267,7 +272,8 @@ public class authorPanel extends JPanel {
 			JOptionPane.showMessageDialog(null, "Please input Name");
 			f = false;
 		}
-		if (jNation.getText().trim() != null) {
+		String nation = jNation.getText().trim();
+		if (nation != null && nation.length() >= 2) {
 			author.setNation(jNation.getText().trim());
 			f = true;
 		} else {
@@ -276,6 +282,7 @@ public class authorPanel extends JPanel {
 		}
 		if (f) {
 			if (authorModel.create(author)) {
+				JOptionPane.showMessageDialog(null, "Complete");
 				loadData();
 			} else {
 				JOptionPane.showMessageDialog(null, "Faild");
@@ -304,26 +311,42 @@ public class authorPanel extends JPanel {
 
 			AuthorModel authorModel = new AuthorModel();
 			Author author = authorModel.getById(author_ID);
-			if (jAuthor_ID.getText().trim() != null) {
-				author.setAuthor_ID(jAuthor_ID.getText().trim());
-			}
-			if (jName.getText().trim() != null) {
-				if (CheckValidate.checkAuthorName(jName.getText().trim())) {
-					author.setName(jName.getText().trim());
-					f = true;
-				} else {
-					JOptionPane.showMessageDialog(null, "Author' name : Firt name + Last name !  ");
+
+			try {
+				if (jAuthor_ID.getText().trim() != null) {
+					author.setAuthor_ID(jAuthor_ID.getText().trim());
 				}
-			} else {
+				if (jName.getText().trim() != null) {
+					if (CheckValidate.checkAuthorName(jName.getText().trim())) {
+						author.setName(jName.getText().trim());
+						f = true;
+					} else {
+						JOptionPane.showMessageDialog(null, "Author' name : Firt name + Last name !  ");
+					}
+				} else {
+					f = false;
+				}
+
+				try {
+
+					String nation = jNation.getText().trim();
+					if (nation != null && nation.length() >= 2) {
+						author.setNation(jNation.getText().trim());
+						f = true;
+					} else {
+						JOptionPane.showMessageDialog(null, "Please input Nation");
+						f = false;
+					}
+
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Please Insert Nation");
+					f = false;
+				}
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "Please Insert Name");
 				f = false;
 			}
-			if (jNation.getText().trim() != null) {
-				author.setNation(jNation.getText().trim());
-				f = true;
-			} else {
-				JOptionPane.showMessageDialog(null, "Please input Nation");
-				f = false;
-			}
+
 			if (author_ID == null) {
 				JOptionPane.showMessageDialog(null, "Please select an author !");
 			} else {
@@ -347,7 +370,6 @@ public class authorPanel extends JPanel {
 		try {
 			int selectedIndex = jtableAuthor.getSelectedRow();
 			String author_ID = jtableAuthor.getValueAt(selectedIndex, 1).toString();
-			System.out.println(author_ID);
 			int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				if (AuthorModel.delete(author_ID)) {

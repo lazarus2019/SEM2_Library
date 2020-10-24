@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +13,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import connect.ConnectDB;
 import entities.Employee;
-import main.bookPanel;
 
 public class EmployeeModel {
 	static String sql;
@@ -65,7 +63,7 @@ public class EmployeeModel {
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			PreparedStatement preparedStatement = con
-					.prepareStatement("select * from employee where employee_ID like ?");
+					.prepareStatement("select * from employee where level = 'librarian' and name like ?");
 			preparedStatement.setString(1, "%" + keyword + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -209,8 +207,56 @@ public class EmployeeModel {
 		}
 		return am_employee;
 	}
-	
-	// Get amount of member - NTS
+
+	// Get issused book - NTS
+	public static int getAmountReturnBook() {
+		Connection con = ConnectDB.getConnection();
+		int am_returnBook = 0;
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 1";
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_returnBook = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_returnBook;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return am_returnBook;
+	}
+
+	// Get issused book - NTS
+	public static int getAmountIssuedBook() {
+		Connection con = ConnectDB.getConnection();
+		int am_issuedBook = 0;
+		sql = "SELECT COUNT(status) as amount FROM bor_book WHERE status = 2";
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			am_issuedBook = resultSet.getInt("amount");
+		} catch (Exception e) {
+			return am_issuedBook;
+		} finally {
+			if (con != null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return am_issuedBook;
+	}
+
+	// Get member - NTS
 	public static int getAmountMember() {
 		Connection con = ConnectDB.getConnection();
 		int am_member = 0;
@@ -280,7 +326,7 @@ public class EmployeeModel {
 				employee.setAddress(resultSet.getString("address"));
 				employee.setPhone(resultSet.getString("phone"));
 				employee.setName(resultSet.getString("name"));
-				employee.setPhoto(resultSet.getString("photo"));
+				//employee.setPhoto(resultSet.getString("photo"));
 				employee.setGender(resultSet.getBoolean("gender"));
 				return employee;
 			} else {
@@ -327,7 +373,7 @@ public class EmployeeModel {
 			preparedStatement.setString(3, employee.getAddress());
 			preparedStatement.setBoolean(4, employee.isGender());
 			preparedStatement.setString(5, employee.getPhone());
-			preparedStatement.setString(6, employee.getPhoto());
+	//		preparedStatement.setString(6, employee.getPhoto());
 			preparedStatement.setString(7, employee.getEmployee_ID());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
@@ -381,7 +427,7 @@ public class EmployeeModel {
 				employee.setAddress(resultSet.getString("address"));
 				employee.setPhone(resultSet.getString("phone"));
 				employee.setName(resultSet.getString("name"));
-				employee.setPhoto(resultSet.getString("photo"));
+			//	employee.setPhoto(resultSet.getString("photo"));
 				employee.setGender(resultSet.getBoolean("gender"));
 				return employee;
 			} else {

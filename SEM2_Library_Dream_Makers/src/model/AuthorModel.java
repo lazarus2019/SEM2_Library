@@ -71,6 +71,7 @@ public class AuthorModel {
 			return false;
 		}
 	}
+	
 
 	// Update - NTanh
 	public static boolean update(Author author, String author_ID) {
