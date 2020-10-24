@@ -1,5 +1,7 @@
 package model;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.poi.hpsf.Blob;
+import java.sql.Blob;
 
 import connect.ConnectDB;
 import entities.Author;
@@ -54,7 +55,7 @@ public class MemberModel {
 
 	// Create - NTanh
 	public static boolean Add(Member member) {
-		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, start_date, expiration_date, photo, src, isDelete) values(?,?,?,?,?,?,?, ?, ?, null, null, 0)";
+		sql = "INSERT into member(member_ID, name, dob, gender, address, phone, card_number, start_date, expiration_date, photo, src, isDelete) values(?,?,?,?,?,?,?, ?, ?, null, ?, 0)";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, member.getMember_ID());
@@ -66,12 +67,55 @@ public class MemberModel {
 			preparedStatement.setString(7, member.getCard_number());
 			preparedStatement.setDate(8, new java.sql.Date(member.getStart_date().getTime()));
 			preparedStatement.setDate(9, new java.sql.Date(member.getExp_date().getTime()));
+			preparedStatement.setBytes(10, member.getSrc());
 			return preparedStatement.executeUpdate() > 0;
 
 		} catch (Exception e) {
 			return false;
 		}
 
+	}
+
+	// Save image
+	public static boolean savePhoto(String member_ID, String imageType) {
+		byte b[];
+		Blob blob;
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement("SELECT src FROM member WHERE member_ID = ?");
+			preparedStatement.setString(1, member_ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				String url = "src/data/member/" + member_ID + "."  + imageType;
+				File f = new File(url);
+				FileOutputStream fs = new FileOutputStream(f);
+				blob = resultSet.getBlob("src");
+				b = blob.getBytes(1, (int) blob.length());
+				fs.write(b);
+				if (saveURLPhoto(member_ID, url)) {
+					return true;
+				} else {
+					return false;
+				}
+			}else {
+				return false;			
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// Save url image
+	public static boolean saveURLPhoto(String member_ID, String url) {
+		String insertImageSql = "UPDATE member set photo = ? WHERE member_ID = ?";
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection().prepareStatement(insertImageSql);
+			preparedStatement.setString(1, url);
+			preparedStatement.setString(2, member_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	// Update - NTanh
@@ -270,7 +314,7 @@ public class MemberModel {
 		}
 		return member_ID;
 	}
-	
+
 	public static Date getCreatedByIDCard(String ID_Card) {
 		Connection con = ConnectDB.getConnection();
 		Date created = new Date();
@@ -340,7 +384,6 @@ public class MemberModel {
 				member.setAddress(resultSet.getString("address"));
 				member.setPhone(resultSet.getString("phone"));
 				member.setCard_number(resultSet.getString("card_number"));
-				member.setPhoto(resultSet.getString("photo"));
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -578,7 +621,7 @@ public class MemberModel {
 		}
 		return start_date;
 	}
-	
+
 	// GET MEMBER NAME BY MEMBER ID
 	public static String getNameByID(String member_ID) {
 		String memberName = null;

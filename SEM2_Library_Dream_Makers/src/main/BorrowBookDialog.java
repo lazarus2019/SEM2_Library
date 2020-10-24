@@ -3,6 +3,7 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -75,6 +77,7 @@ public class BorrowBookDialog extends JDialog {
 	private JButton jbtnBack;
 
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private JLabel jlabelImage;
 
 	/**
 	 * Launch the application.
@@ -145,7 +148,7 @@ public class BorrowBookDialog extends JDialog {
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
-		JLabel jlabelImage = new JLabel("");
+		jlabelImage = new JLabel("");
 		jlabelImage.setBorder(new LineBorder(Color.WHITE));
 		jlabelImage.setBackground(Color.WHITE);
 		jlabelImage.setBounds(215, 10, 138, 127);
@@ -325,6 +328,9 @@ public class BorrowBookDialog extends JDialog {
 		jtextFieldDepositFee.setText("$" + depositFee);
 		jtextFieldDateBorrow.setText(createDate);
 		jtextFieldTermDate.setText(termDate);
+		String photo = member.getPhoto().toString();
+		ImageIcon icon = resizeImg(photo, jlabelImage);
+		jlabelImage.setIcon(icon);
 		for (int i = 0; i < idBook.size(); i++) {
 			idBookString = idBook.get(i);
 			titleString = title.get(i);
@@ -363,5 +369,19 @@ public class BorrowBookDialog extends JDialog {
 	// Show error message
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
+	}
+	
+	// Resize Image
+	private ImageIcon resizeImg(String imgPath, JLabel jName) {
+		if (imgPath != null) {
+			ImageIcon myImg = null;
+			myImg = new ImageIcon(imgPath);
+			Image img = myImg.getImage();
+			Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon icon = new ImageIcon(img2);
+			return icon;
+		} else {
+			return null;
+		}
 	}
 }

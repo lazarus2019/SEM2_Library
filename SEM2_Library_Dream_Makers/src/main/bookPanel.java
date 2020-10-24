@@ -48,6 +48,7 @@ import java.awt.Component;
 import javax.swing.JMenuItem;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.SwingConstants;
 
 public class bookPanel extends JPanel {
 
@@ -91,6 +92,22 @@ public class bookPanel extends JPanel {
 		}
 
 	};
+
+	private static DefaultTableModel defaultTableModelCate = new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int arg0, int arg1) {
+			return false;
+		}
+
+	};
+
+	private static DefaultTableModel defaultTableModelPublish = new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int arg0, int arg1) {
+			return false;
+		}
+
+	};
 	int noAddAuthor = 1;
 	private JButton btnAddAuthor;
 	private JComboBox comboBoxAuthor;
@@ -99,6 +116,26 @@ public class bookPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JButton btnAddRefresh;
 	private JButton btnReset_1;
+	private JLabel lblCreateCategory;
+	private JTextField textFieldAddPublisher;
+	private JTextField textFieldAddAddressPub;
+	private JTextField textFieldAddPhonePublish;
+	private JButton btnCreateCate;
+	private JButton btnCreateAuthor;
+	private JButton btnAddPublisher;
+	private JTextField textFieldCateID;
+	private JTextField textFieldCateName;
+	private JTextField textFieldPublishID;
+	private JTextField textFieldPublishName;
+	private JTextField textFieldPublishPhone;
+	private JTextField textFieldPublishAddress;
+	private JTable tableCategory;
+	private JTable tablePublisher;
+	private JButton btnUpdateCategory;
+	private JButton btnUpdatePublish;
+	private JButton btnDeletePublish;
+	private JButton btnResetPublish;
+	private JTextField textFieldCreateCate;
 
 	/**
 	 * Create the panel.
@@ -242,10 +279,6 @@ public class bookPanel extends JPanel {
 		comboBoxCategory1 = new JComboBox();
 		comboBoxCategory1.setBackground(Color.WHITE);
 		comboBoxCategory1.setBounds(558, 122, 208, 25);
-		comboBoxCategory1.addItem("");
-		for (Category category : categories) {
-			comboBoxCategory1.addItem(category.getName());
-		}
 		panel_3.add(comboBoxCategory1);
 
 		PublishModel publishModel = new PublishModel();
@@ -253,10 +286,6 @@ public class bookPanel extends JPanel {
 		comboBoxPublish = new JComboBox();
 		comboBoxPublish.setBackground(Color.WHITE);
 		comboBoxPublish.setBounds(558, 82, 208, 25);
-		comboBoxPublish.addItem("");
-		for (Publish_house publish : publishes) {
-			comboBoxPublish.addItem(publish.getName());
-		}
 
 		panel_3.add(comboBoxPublish);
 
@@ -325,7 +354,7 @@ public class bookPanel extends JPanel {
 		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRefresh.setForeground(Color.WHITE);
 		btnRefresh.setBackground(new Color(30, 106, 210));
-		
+
 		btnReset_1 = new JButton("Reset");
 		btnReset_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -377,6 +406,211 @@ public class bookPanel extends JPanel {
 				btnRefresh_actionPerformed(e);
 			}
 		});
+		JPanel panel_7 = new JPanel();
+		tabbedPane.addTab("Manage Cate & Publish", null, panel_7, null);
+		panel_7.setLayout(null);
+
+		JPanel panel_8 = new JPanel();
+		panel_8.setLayout(null);
+		panel_8.setBackground(new Color(245, 244, 252));
+		panel_8.setBounds(10, 315, 385, 263);
+		panel_7.add(panel_8);
+
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBackground(new Color(245, 244, 252));
+		scrollPane_2.setBounds(10, 35, 365, 217);
+		panel_8.add(scrollPane_2);
+
+		tableCategory = new JTable();
+		tableCategory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tableCategory_mouseClicked(e);
+			}
+		});
+
+		scrollPane_2.setViewportView(tableCategory);
+
+		JLabel lblListCat = new JLabel("List Category");
+		lblListCat.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListCat.setBounds(111, 0, 214, 29);
+		panel_8.add(lblListCat);
+
+		JPanel panel_9 = new JPanel();
+		panel_9.setLayout(null);
+		panel_9.setBackground(new Color(245, 244, 252));
+		panel_9.setBounds(10, 11, 385, 293);
+		panel_7.add(panel_9);
+
+		JLabel lblCategoryId = new JLabel("Category ID :");
+		lblCategoryId.setBounds(10, 62, 75, 16);
+		panel_9.add(lblCategoryId);
+
+		textFieldCateID = new JTextField();
+		textFieldCateID.setEditable(false);
+		textFieldCateID.setColumns(10);
+		textFieldCateID.setBounds(97, 56, 236, 28);
+		panel_9.add(textFieldCateID);
+
+		JLabel lblName_1 = new JLabel("Name : ");
+		lblName_1.setBounds(10, 112, 83, 16);
+		panel_9.add(lblName_1);
+
+		textFieldCateName = new JTextField();
+		textFieldCateName.setColumns(10);
+		textFieldCateName.setBounds(97, 106, 236, 28);
+		panel_9.add(textFieldCateName);
+
+		btnUpdateCategory = new JButton("Update");
+		btnUpdateCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUpdateCategory_actionPerformed(e);
+			}
+		});
+		btnUpdateCategory.setForeground(Color.WHITE);
+		btnUpdateCategory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnUpdateCategory.setBackground(new Color(30, 106, 210));
+		btnUpdateCategory.setBounds(10, 249, 107, 23);
+		panel_9.add(btnUpdateCategory);
+
+		JButton btnDeleteCategory = new JButton("Delete");
+		btnDeleteCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDeleteCategory_actionPerformed(e);
+			}
+		});
+		btnDeleteCategory.setForeground(Color.WHITE);
+		btnDeleteCategory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDeleteCategory.setBackground(new Color(30, 106, 210));
+		btnDeleteCategory.setBounds(133, 249, 107, 23);
+		panel_9.add(btnDeleteCategory);
+
+		JLabel lblCategoryDetails = new JLabel("Category Details");
+		lblCategoryDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblCategoryDetails.setBounds(86, 11, 259, 29);
+		panel_9.add(lblCategoryDetails);
+
+		JButton btnResetCategory = new JButton("Reset");
+		btnResetCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnResetCategory_actionPerformed(e);
+			}
+		});
+		btnResetCategory.setForeground(Color.WHITE);
+		btnResetCategory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnResetCategory.setBackground(new Color(30, 106, 210));
+		btnResetCategory.setBounds(250, 249, 83, 23);
+		panel_9.add(btnResetCategory);
+
+		JPanel panel_10 = new JPanel();
+		panel_10.setLayout(null);
+		panel_10.setBackground(new Color(245, 244, 252));
+		panel_10.setBounds(405, 11, 383, 293);
+		panel_7.add(panel_10);
+
+		JLabel lblPublisherId = new JLabel("Publisher ID : ");
+		lblPublisherId.setBounds(10, 62, 75, 16);
+		panel_10.add(lblPublisherId);
+
+		textFieldPublishID = new JTextField();
+		textFieldPublishID.setEditable(false);
+		textFieldPublishID.setColumns(10);
+		textFieldPublishID.setBounds(97, 56, 236, 28);
+		panel_10.add(textFieldPublishID);
+
+		JLabel label_3 = new JLabel("Name : ");
+		label_3.setBounds(10, 112, 83, 16);
+		panel_10.add(label_3);
+
+		textFieldPublishName = new JTextField();
+		textFieldPublishName.setColumns(10);
+		textFieldPublishName.setBounds(97, 106, 236, 28);
+		panel_10.add(textFieldPublishName);
+
+		btnUpdatePublish = new JButton("Update");
+		btnUpdatePublish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUpdatePublish_actionPerformed(e);
+			}
+		});
+		btnUpdatePublish.setForeground(Color.WHITE);
+		btnUpdatePublish.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnUpdatePublish.setBackground(new Color(30, 106, 210));
+		btnUpdatePublish.setBounds(10, 249, 107, 23);
+		panel_10.add(btnUpdatePublish);
+
+		btnDeletePublish = new JButton("Delete");
+		btnDeletePublish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDeletePublish_actionPerformed(e);
+			}
+		});
+		btnDeletePublish.setForeground(Color.WHITE);
+		btnDeletePublish.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnDeletePublish.setBackground(new Color(30, 106, 210));
+		btnDeletePublish.setBounds(133, 249, 107, 23);
+		panel_10.add(btnDeletePublish);
+
+		JLabel lblPublisherDetails = new JLabel("Publisher Details");
+		lblPublisherDetails.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPublisherDetails.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblPublisherDetails.setBounds(10, 11, 355, 29);
+		panel_10.add(lblPublisherDetails);
+
+		btnResetPublish = new JButton("Reset");
+		btnResetPublish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnResetPublish_actionPerformed(e) ; 
+			}
+		});
+		btnResetPublish.setForeground(Color.WHITE);
+		btnResetPublish.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnResetPublish.setBackground(new Color(30, 106, 210));
+		btnResetPublish.setBounds(250, 249, 83, 23);
+		panel_10.add(btnResetPublish);
+
+		textFieldPublishPhone = new JTextField();
+		textFieldPublishPhone.setColumns(10);
+		textFieldPublishPhone.setBounds(97, 145, 236, 28);
+		panel_10.add(textFieldPublishPhone);
+
+		JLabel lblPhone_1 = new JLabel("Phone : ");
+		lblPhone_1.setBounds(10, 151, 75, 16);
+		panel_10.add(lblPhone_1);
+
+		JLabel lblAddress_1 = new JLabel("Address :");
+		lblAddress_1.setBounds(10, 201, 83, 16);
+		panel_10.add(lblAddress_1);
+
+		textFieldPublishAddress = new JTextField();
+		textFieldPublishAddress.setColumns(10);
+		textFieldPublishAddress.setBounds(97, 195, 236, 28);
+		panel_10.add(textFieldPublishAddress);
+
+		JPanel panel_11 = new JPanel();
+		panel_11.setLayout(null);
+		panel_11.setBackground(new Color(245, 244, 252));
+		panel_11.setBounds(405, 315, 383, 263);
+		panel_7.add(panel_11);
+
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBackground(new Color(245, 244, 252));
+		scrollPane_3.setBounds(10, 35, 363, 217);
+		panel_11.add(scrollPane_3);
+
+		tablePublisher = new JTable();
+		tablePublisher.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tablePublisher_mouseClicked(e);
+			}
+		});
+		scrollPane_3.setViewportView(tablePublisher);
+
+		JLabel lblListPublisher = new JLabel("List Publisher");
+		lblListPublisher.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblListPublisher.setBounds(111, 0, 214, 29);
+		panel_11.add(lblListPublisher);
 
 		JPanel panelAdd = new JPanel();
 		panelAdd.setBackground(Color.WHITE);
@@ -385,7 +619,7 @@ public class bookPanel extends JPanel {
 
 		panel_4 = new JPanel();
 		panel_4.setBackground(new Color(245, 244, 252));
-		panel_4.setBounds(10, 11, 393, 563);
+		panel_4.setBounds(10, 11, 393, 567);
 		panelAdd.add(panel_4);
 		panel_4.setLayout(null);
 
@@ -406,9 +640,6 @@ public class bookPanel extends JPanel {
 		comboBoxAddCate.setBackground(Color.WHITE);
 		comboBoxAddCate.setBounds(10, 128, 161, 22);
 		comboBoxAddCate.addItem("");
-		for (Category category : categories) {
-			comboBoxAddCate.addItem(category.getName());
-		}
 		panel_4.add(comboBoxAddCate);
 
 		JLabel lblPublisher = new JLabel("Publisher : ");
@@ -419,9 +650,6 @@ public class bookPanel extends JPanel {
 		comboBoxAddPublish.setBackground(Color.WHITE);
 		comboBoxAddPublish.setBounds(208, 128, 161, 22);
 		comboBoxAddPublish.addItem("");
-		for (Publish_house publish : publishes) {
-			comboBoxAddPublish.addItem(publish.getName());
-		}
 		panel_4.add(comboBoxAddPublish);
 
 		textFieldAddPrice = new JTextField();
@@ -511,7 +739,7 @@ public class bookPanel extends JPanel {
 
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(new Color(245, 244, 252));
-		panel_5.setBounds(413, 11, 362, 237);
+		panel_5.setBounds(413, 11, 362, 222);
 		panelAdd.add(panel_5);
 		panel_5.setLayout(null);
 
@@ -521,19 +749,19 @@ public class bookPanel extends JPanel {
 
 		textFieldAddAuthor = new JTextField();
 		textFieldAddAuthor.setColumns(10);
-		textFieldAddAuthor.setBounds(10, 69, 306, 23);
+		textFieldAddAuthor.setBounds(10, 69, 342, 23);
 		panel_5.add(textFieldAddAuthor);
 
 		textFieldAddNation = new JTextField();
 		textFieldAddNation.setColumns(10);
-		textFieldAddNation.setBounds(10, 128, 306, 23);
+		textFieldAddNation.setBounds(10, 128, 342, 23);
 		panel_5.add(textFieldAddNation);
 
 		JLabel lblNation = new JLabel("Nation : ");
 		lblNation.setBounds(10, 103, 104, 23);
 		panel_5.add(lblNation);
 
-		JButton btnCreateAuthor = new JButton("Create ");
+		btnCreateAuthor = new JButton("Create ");
 		btnCreateAuthor.setForeground(Color.WHITE);
 		btnCreateAuthor.setBackground(new Color(30, 106, 210));
 		btnCreateAuthor.addActionListener(new ActionListener() {
@@ -548,6 +776,88 @@ public class bookPanel extends JPanel {
 		lblCreateAuthor.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		lblCreateAuthor.setBounds(100, 3, 162, 29);
 		panel_5.add(lblCreateAuthor);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBackground(new Color(245, 244, 252));
+		panel_1.setBounds(413, 244, 362, 133);
+		panelAdd.add(panel_1);
+
+		JLabel label = new JLabel("Name :");
+		label.setBounds(10, 35, 104, 23);
+		panel_1.add(label);
+
+		btnCreateCate = new JButton("Create ");
+		btnCreateCate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCreateCate_actionPerformed(e);
+			}
+		});
+		btnCreateCate.setForeground(Color.WHITE);
+		btnCreateCate.setBackground(new Color(30, 106, 210));
+		btnCreateCate.setBounds(114, 95, 131, 29);
+		panel_1.add(btnCreateCate);
+
+		lblCreateCategory = new JLabel("Create Category");
+		lblCreateCategory.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCreateCategory.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblCreateCategory.setBounds(0, 3, 362, 29);
+		panel_1.add(lblCreateCategory);
+
+		textFieldCreateCate = new JTextField();
+		textFieldCreateCate.setColumns(10);
+		textFieldCreateCate.setBounds(10, 61, 342, 23);
+		panel_1.add(textFieldCreateCate);
+
+		JPanel panel_6 = new JPanel();
+		panel_6.setLayout(null);
+		panel_6.setBackground(new Color(245, 244, 252));
+		panel_6.setBounds(413, 386, 362, 192);
+		panelAdd.add(panel_6);
+
+		JLabel label_1 = new JLabel("Name :");
+		label_1.setBounds(10, 35, 104, 23);
+		panel_6.add(label_1);
+
+		textFieldAddPublisher = new JTextField();
+		textFieldAddPublisher.setColumns(10);
+		textFieldAddPublisher.setBounds(10, 57, 181, 23);
+		panel_6.add(textFieldAddPublisher);
+
+		textFieldAddAddressPub = new JTextField();
+		textFieldAddAddressPub.setColumns(10);
+		textFieldAddAddressPub.setBounds(10, 115, 342, 23);
+		panel_6.add(textFieldAddAddressPub);
+
+		JLabel lblAddress = new JLabel("Address : ");
+		lblAddress.setBounds(10, 91, 104, 23);
+		panel_6.add(lblAddress);
+
+		btnAddPublisher = new JButton("Create ");
+		btnAddPublisher.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddPublisher_actionPerformed(e);
+			}
+		});
+		btnAddPublisher.setForeground(Color.WHITE);
+		btnAddPublisher.setBackground(new Color(30, 106, 210));
+		btnAddPublisher.setBounds(116, 149, 131, 29);
+		panel_6.add(btnAddPublisher);
+
+		JLabel lblCreatePublisher = new JLabel("Create Publisher ");
+		lblCreatePublisher.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCreatePublisher.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblCreatePublisher.setBounds(10, 3, 342, 29);
+		panel_6.add(lblCreatePublisher);
+
+		JLabel lblPhone = new JLabel("Phone : ");
+		lblPhone.setBounds(209, 35, 104, 23);
+		panel_6.add(lblPhone);
+
+		textFieldAddPhonePublish = new JTextField();
+		textFieldAddPhonePublish.setColumns(10);
+		textFieldAddPhonePublish.setBounds(209, 57, 143, 23);
+		panel_6.add(textFieldAddPhonePublish);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDelete_actionPerformed(e);
@@ -563,9 +873,272 @@ public class bookPanel extends JPanel {
 		loadDataAddFirst();
 		loadData();
 		loadDataAdd();
+		
+		loadDataAddCategory();
+		loadDataCateWidth();
+		loadDataCate();
+		
+		loadDataAddPublisher();
+		loadDataPublishWidth();
+		loadDataPublisher();
+	}
+	// Manage Cate & Publish
+
+	public void tableCategory_mouseClicked(MouseEvent e) {
+		int selectedIndex = tableCategory.getSelectedRow();
+		int category_ID = (int) tableCategory.getValueAt(selectedIndex, 0);
+
+		CategoryModel categoryModel = new CategoryModel();
+		Category category = categoryModel.find(category_ID);
+		textFieldCateID.setText(category_ID + "");
+		textFieldCateName.setText(category.getName());
+
 	}
 
+	public void tablePublisher_mouseClicked(MouseEvent e) {
+		int selectedIndex = tablePublisher.getSelectedRow();
+		int publish_ID = (int) tablePublisher.getValueAt(selectedIndex, 0);
+
+		PublishModel publishModel = new PublishModel();
+		Publish_house publish_house = publishModel.find(publish_ID);
+		textFieldPublishID.setText(publish_ID + "");
+		textFieldPublishName.setText(publish_house.getName());
+		textFieldPublishPhone.setText(publish_house.getPhone());
+		textFieldPublishAddress.setText(publish_house.getAddress());
+
+	}
+
+	public void btnUpdateCategory_actionPerformed(ActionEvent e) {
+		boolean flag = true;
+		int selectedIndex = tableCategory.getSelectedRow();
+		if (selectedIndex == -1) {
+			JOptionPane.showMessageDialog(null, "Please select a category !");
+		} else {
+			int category_ID = (int) tableCategory.getValueAt(selectedIndex, 0);
+			CategoryModel categoryModel = new CategoryModel();
+			Category category = categoryModel.find(category_ID);
+
+			if (textFieldCateName.getText().trim() != null) {
+				category.setName(textFieldCateName.getText().trim());
+			} else {
+				flag = false;
+				JOptionPane.showMessageDialog(null, "Name must be enter !");
+			}
+			if (flag) {
+				if (categoryModel.update(category, category_ID)) {
+					JOptionPane.showMessageDialog(null, "Update Sucessfully ");
+					comboBoxAddCate.removeAllItems();
+					comboBoxCateSearch.removeAllItems();
+					comboBoxCategory1.removeAllItems();
+					loadDataAddCategory();
+					loadDataCate();
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed");
+				}
+			}
+		}
+	}
+
+	public void btnDeleteCategory_actionPerformed(ActionEvent e) {
+		try {
+			CategoryModel categoryModel = new CategoryModel();
+			int selectedIndex = tableCategory.getSelectedRow();
+			int category_ID = (int) tableCategory.getValueAt(selectedIndex, 0);
+
+			if (category_ID == -1) {
+				JOptionPane.showMessageDialog(null, "Please select a category !");
+			} else {
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+
+					if (categoryModel.delete(category_ID)) {
+						JOptionPane.showMessageDialog(null, "Successfully !");
+						comboBoxAddCate.removeAllItems();
+						comboBoxCateSearch.removeAllItems();
+						comboBoxCategory1.removeAllItems();
+						loadDataAddCategory();
+						loadDataCate();
+						btnResetCategory_actionPerformed(e);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Failed ");
+					}
+
+				}
+			}
+
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null, e2.getMessage());
+		}
+
+	}
+
+	public void btnResetCategory_actionPerformed(ActionEvent e) {
+		textFieldCateID.setText("");
+		textFieldCateName.setText("");
+	}
+
+	public void btnUpdatePublish_actionPerformed(ActionEvent e) {
+		boolean flag = true;
+		int selectedIndex = tablePublisher.getSelectedRow();
+		if (selectedIndex == -1) {
+			JOptionPane.showMessageDialog(null, "Please select a category !");
+		} else {
+			int publish_ID = (int) tablePublisher.getValueAt(selectedIndex, 0);
+			PublishModel publishModel = new PublishModel();
+			Publish_house publish_house = publishModel.find(publish_ID);
+
+			if (textFieldPublishName.getText().trim() != null) {
+				publish_house.setName(textFieldPublishName.getText().trim());
+				if (textFieldPublishPhone.getText().trim() != null) {
+					publish_house.setPhone(textFieldPublishPhone.getText().trim());
+					if (textFieldPublishAddress.getText().trim() != null) {
+						publish_house.setAddress(textFieldPublishAddress.getText().trim());
+					} else {
+						flag = false;
+						JOptionPane.showMessageDialog(null, "Address must be enter !");
+					}
+				} else {
+					flag = false;
+					JOptionPane.showMessageDialog(null, "Phone must be enter !");
+				}
+			} else {
+				flag = false;
+				JOptionPane.showMessageDialog(null, "Name must be enter !");
+			}
+			if (flag) {
+				if (publishModel.update(publish_house, publish_ID)) {
+					JOptionPane.showMessageDialog(null, "Update Sucessfully ");
+					comboBoxAddPublish.removeAllItems();
+					comboBoxPublish.removeAllItems();
+					loadDataAddPublisher();
+					loadDataPublisher();
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed");
+				}
+			}
+		}
+	}
+
+	public void btnDeletePublish_actionPerformed(ActionEvent e) {
+		try {
+			PublishModel publishModel = new PublishModel();
+			int selectedIndex = tablePublisher.getSelectedRow();
+			int publish_ID = (int) tablePublisher.getValueAt(selectedIndex, 0);
+
+			if (publish_ID == -1) {
+				JOptionPane.showMessageDialog(null, "Please select a publisher !");
+			} else {
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure ? ", "Comfirm",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+
+					if (publishModel.delete(publish_ID)) {
+						JOptionPane.showMessageDialog(null, "Successfully !");
+						comboBoxAddPublish.removeAllItems();
+						comboBoxPublish.removeAllItems();
+						loadDataAddPublisher();
+						loadDataPublisher();
+						btnResetPublish_actionPerformed(e);
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Failed ");
+					}
+				}
+			}
+
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null, e2.getMessage());
+		}
+	}
+
+	public void btnResetPublish_actionPerformed(ActionEvent e) {
+		textFieldPublishID.setText("");
+		textFieldPublishName.setText("");
+		textFieldPublishAddress.setText("");
+		textFieldPublishPhone.setText("");
+	}
 	// Add Book
+
+	public void btnAddPublisher_actionPerformed(ActionEvent e) {
+		String phone = null;
+		String name = null;
+		String address = null;
+		PublishModel publishModel = new PublishModel();
+		boolean flag = true;
+		if (!textFieldAddPublisher.getText().trim().isEmpty()) {
+			name = textFieldAddPublisher.getText().trim();
+			if (!textFieldAddPhonePublish.getText().trim().isEmpty()) {
+				if (Pattern.matches("[0]+[1-9]{9}", textFieldAddPhonePublish.getText().trim())) {
+					phone = textFieldAddPhonePublish.getText().trim();
+					if (!textFieldAddAddressPub.getText().trim().isEmpty()) {
+						address = textFieldAddAddressPub.getText().trim();
+					} else {
+						JOptionPane.showMessageDialog(null, "You must enter address !");
+						flag = false;
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Phone must be number !");
+					flag = false;
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "You must enter phone ! ");
+				flag = false;
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "You must enter name ! ");
+			flag = false;
+		}
+
+		if (name == null || address == null || phone == null) {
+			flag = false;
+		}
+		if (flag) {
+			Publish_house publish_house = new Publish_house(name, address, phone);
+			if (publishModel.create(publish_house)) {
+				comboBoxAddPublish.removeAllItems();
+				comboBoxPublish.removeAllItems();
+				textFieldAddAddressPub.setText("");
+				textFieldAddPublisher.setText("");
+				textFieldAddPhonePublish.setText("");
+
+				JOptionPane.showMessageDialog(null, "Add Successfully ! ");
+				loadDataAddPublisher();
+				loadDataPublisher();
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
+			}
+		}
+	}
+
+	public void btnCreateCate_actionPerformed(ActionEvent e) {
+		String name = null;
+		CategoryModel categoryModel = new CategoryModel();
+		boolean flag = true;
+		if (!textFieldCreateCate.getText().trim().isEmpty()) {
+			name = textFieldCreateCate.getText().trim();
+		} else {
+			JOptionPane.showMessageDialog(null, "You must enter Category's name ! ");
+			flag = false;
+		}
+		if (flag) {
+			Category category = new Category();
+			category.setName(name);
+			if (categoryModel.create(category)) {
+				comboBoxAddCate.removeAllItems();
+				comboBoxCateSearch.removeAllItems();
+				comboBoxCategory1.removeAllItems();
+				textFieldCreateCate.setText("");
+				JOptionPane.showMessageDialog(null, "Add Successfully ! ");
+				loadDataAddCategory();
+				loadDataCate();
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
+			}
+		}
+	}
 
 	public void mnDeleteAuthor_actionPerformed(ActionEvent e) {
 
@@ -578,10 +1151,23 @@ public class bookPanel extends JPanel {
 	}
 
 	public void btnAddAuthor_actionPerformed(ActionEvent e) {
+		boolean flag = true;
 		if (comboBoxAddAuthor.getSelectedIndex() != 0) {
 			String name = (String) comboBoxAddAuthor.getSelectedItem();
-			defaultTableModelAuthor.addRow(new Object[] { defaultTableModelAuthor.getRowCount() + 1, name });
-			tableAddAuthor.setModel(defaultTableModelAuthor);
+			for (int i = 0; i < defaultTableModelAuthor.getRowCount(); i++) {
+				String n_temp = (String) defaultTableModelAuthor.getValueAt(i, 1);
+				if (name == n_temp) {
+					flag = false;
+					JOptionPane.showMessageDialog(null, "Duplicate author !");
+					break;
+				}
+			}
+			if (flag) {
+				defaultTableModelAuthor.addRow(new Object[] { defaultTableModelAuthor.getRowCount() + 1, name });
+				tableAddAuthor.setModel(defaultTableModelAuthor);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Please select an author !");
 		}
 
 	}
@@ -630,6 +1216,7 @@ public class bookPanel extends JPanel {
 			Author author = new Author(author_ID, name, nation);
 			if (authorModel.create(author)) {
 				comboBoxAddAuthor.removeAllItems();
+				comboBoxAuthor.removeAllItems();
 				textFieldAddAuthor.setText("");
 				textFieldAddNation.setText("");
 				JOptionPane.showMessageDialog(null, "Add Successfully ! ");
@@ -756,6 +1343,90 @@ public class bookPanel extends JPanel {
 
 	}
 
+	private void loadDataAddCategory() {
+		// cbBox Author
+		CategoryModel categoryModel = new CategoryModel();
+		List<Category> categories2 = categoryModel.findAll();
+		comboBoxAddCate.addItem("");
+		comboBoxCateSearch.addItem("");
+		comboBoxCategory1.addItem("");
+		for (Category cate : categories2) {
+			comboBoxAddCate.addItem(cate.getName());
+			comboBoxCateSearch.addItem(cate.getName());
+			comboBoxCategory1.addItem(cate.getName());
+		}
+		// tableCategory.setModel(defaultTableModelCate);
+	}
+
+	private void loadDataAddPublisher() {
+		// cbBox Author
+		PublishModel publishModel = new PublishModel();
+		List<Publish_house> publish_houses = publishModel.findAll();
+		comboBoxAddPublish.addItem("");
+		comboBoxPublish.addItem("");
+		for (Publish_house publish : publish_houses) {
+			comboBoxAddPublish.addItem(publish.getName());
+			comboBoxPublish.addItem(publish.getName());
+		}
+		// tableCategory.setModel(defaultTableModelCate);
+	}
+
+	private void loadDataCateWidth() {
+
+		String[] columns = { "ID ", "Name" };
+		defaultTableModelCate.setColumnIdentifiers(columns);
+		tableCategory.setModel(defaultTableModelCate);
+		TableColumnModel columnModelFB = tableCategory.getColumnModel();
+		columnModelFB.getColumn(0).setPreferredWidth(100);
+		columnModelFB.getColumn(1).setPreferredWidth(282);
+		tableCategory.getTableHeader().setReorderingAllowed(false);
+		tableCategory.getTableHeader().setResizingAllowed(false);
+		JTableHeader tableHeader = tableCategory.getTableHeader();
+		tableHeader.setBackground(new Color(223, 233, 242));
+		tableHeader.setForeground(Color.BLACK);
+
+	}
+
+	private void loadDataPublishWidth() {
+
+		String[] columns = { "ID ", "Name", "Phone", "Address" };
+		defaultTableModelPublish.setColumnIdentifiers(columns);
+		tablePublisher.setModel(defaultTableModelPublish);
+		TableColumnModel columnModelFB = tablePublisher.getColumnModel();
+		columnModelFB.getColumn(0).setPreferredWidth(50);
+		columnModelFB.getColumn(1).setPreferredWidth(150);
+		columnModelFB.getColumn(2).setPreferredWidth(100);
+		columnModelFB.getColumn(3).setPreferredWidth(200);
+
+		tablePublisher.getTableHeader().setReorderingAllowed(false);
+		tablePublisher.getTableHeader().setResizingAllowed(false);
+		JTableHeader tableHeader = tablePublisher.getTableHeader();
+		tableHeader.setBackground(new Color(223, 233, 242));
+		tableHeader.setForeground(Color.BLACK);
+
+	}
+
+	private void loadDataCate() {
+		CategoryModel categoryModel = new CategoryModel();
+		defaultTableModelCate.getDataVector().removeAllElements();
+		defaultTableModelCate.fireTableDataChanged();
+		for (Category category : categoryModel.findAll()) {
+			defaultTableModelCate.addRow(new Object[] { category.getCategory_ID(), category.getName() });
+		}
+		tableCategory.setModel(defaultTableModelCate);
+	}
+
+	private void loadDataPublisher() {
+		PublishModel publishModel = new PublishModel();
+		defaultTableModelPublish.getDataVector().removeAllElements();
+		defaultTableModelPublish.fireTableDataChanged();
+		for (Publish_house publish : publishModel.findAll()) {
+			defaultTableModelPublish.addRow(new Object[] { publish.getPublish_ID(), publish.getName(),
+					publish.getPhone(), publish.getAddress() });
+		}
+		tablePublisher.setModel(defaultTableModelPublish);
+	}
+
 	private void loadDataAdd() {
 		// cbBox Author
 		AuthorModel authorModel = new AuthorModel();
@@ -763,8 +1434,9 @@ public class bookPanel extends JPanel {
 		comboBoxAddAuthor.addItem("");
 		for (Author author1 : authors) {
 			comboBoxAddAuthor.addItem(author1.getName());
+			comboBoxAuthor.addItem(author1.getName());
 		}
-		tableAddAuthor.setModel(defaultTableModelAuthor);
+		// tableAddAuthor.setModel(defaultTableModelAuthor);
 	}
 
 	private void loadDataAddFirst() {
@@ -786,12 +1458,25 @@ public class bookPanel extends JPanel {
 
 	// Manage Book
 	public void btnAuthor_actionPerformed(ActionEvent e) {
+		boolean flag = true;
 		String name = (String) comboBoxAuthor.getSelectedItem();
+		String[] names = textFieldAuthor.getText().split("&");
 		if (name != "") {
-			if (textFieldAuthor.getText().isEmpty()) {
-				textFieldAuthor.setText(textFieldAuthor.getText() + name);
-			} else {
-				textFieldAuthor.setText(textFieldAuthor.getText() + " & " + name);
+			for (int i = 0; i < names.length; i++) {
+				String n_temp = names[i].trim();
+				System.out.println(name + " = ? " + n_temp);
+				if (name.trim().equals(n_temp)) {
+					flag = false;
+					JOptionPane.showMessageDialog(null, "Duplicate author !");
+					break;
+				}
+			}
+			if (flag) {
+				if (textFieldAuthor.getText().isEmpty()) {
+					textFieldAuthor.setText(textFieldAuthor.getText() + name);
+				} else {
+					textFieldAuthor.setText(textFieldAuthor.getText() + " & " + name);
+				}
 			}
 		}
 	}
@@ -803,13 +1488,14 @@ public class bookPanel extends JPanel {
 		textFieldIsbn.setText("");
 		comboBoxCategory1.setSelectedIndex(0);
 		comboBoxPublish.setSelectedIndex(0);
+		comboBoxAuthor.setSelectedIndex(0);
 		textFieldPrice.setText("");
 		textFieldQuantity.setText("");
 		textFieldAuthor.setText("");
 	}
 
 	public void btnUpdate_eactionPerformed(ActionEvent arg0) {
-		boolean flag = false;
+		boolean flag = true;
 		int selectedIndex = jtableBooks.getSelectedRow();
 		if (selectedIndex == -1) {
 			JOptionPane.showMessageDialog(null, "Please select a book !");
@@ -820,59 +1506,53 @@ public class bookPanel extends JPanel {
 
 			if (textFieldCallnumber.getText().trim() != null) {
 				book.setCall_number(textFieldCallnumber.getText().trim());
-				flag = true;
+				if (textFieldIsbn.getText().trim() != null) {
+					book.setIsbn(textFieldIsbn.getText().trim());
+					if (textFieldTitle.getText().trim() != null) {
+						book.setTitle(textFieldTitle.getText().trim());
+						if (comboBoxCategory1.getSelectedIndex() != 0) {
+							book.setCategory_ID(comboBoxCategory1.getSelectedIndex());
+							if (comboBoxPublish.getSelectedIndex() != 0) {
+								book.setPublish_ID(comboBoxPublish.getSelectedIndex());
+								if (textFieldPrice.getText().trim() != null) {
+									try {
+										Double price = Double.parseDouble(textFieldPrice.getText().trim());
+										book.setPrice(price);
+										if (textFieldQuantity.getText().trim() != null) {
+											try {
+												String quantityStr = textFieldQuantity.getText().trim();
+												int quantity = Integer.parseInt(quantityStr);
+												book.setQuantity(quantity);
+											} catch (NumberFormatException e) {
+												JOptionPane.showMessageDialog(null,
+														"You must enter a number in quantity ! ");
+												textFieldQuantity.setText("");
+											}
+										}
+									} catch (NumberFormatException e) {
+										JOptionPane.showMessageDialog(null, "You must enter a number in price ! ");
+										textFieldPrice.setText("");
+									}
+								}
+							} else {
+								flag = false;
+								JOptionPane.showMessageDialog(null, "Publish house must be select !");
+							}
+						} else {
+							flag = false;
+							JOptionPane.showMessageDialog(null, "Category must be select !");
+						}
+					} else {
+						flag = false;
+						JOptionPane.showMessageDialog(null, "Title must be enter !");
+					}
+				} else {
+					flag = false;
+					JOptionPane.showMessageDialog(null, "ISBN must be enter !");
+				}
 			} else {
 				flag = false;
 				JOptionPane.showMessageDialog(null, "Call number must be enter !");
-			}
-			if (textFieldIsbn.getText().trim() != null) {
-				book.setIsbn(textFieldIsbn.getText().trim());
-				flag = true;
-			} else {
-				flag = false;
-				JOptionPane.showMessageDialog(null, "ISBN must be enter !");
-			}
-			if (textFieldTitle.getText().trim() != null) {
-				book.setTitle(textFieldTitle.getText().trim());
-				flag = true;
-			} else {
-				flag = false;
-				JOptionPane.showMessageDialog(null, "Title must be enter !");
-			}
-			if (comboBoxCategory1.getSelectedIndex() != 0) {
-				book.setCategory_ID(comboBoxCategory1.getSelectedIndex());
-				flag = true;
-			} else {
-				flag = false;
-				JOptionPane.showMessageDialog(null, "Category must be select !");
-			}
-			if (comboBoxPublish.getSelectedIndex() != 0) {
-				book.setPublish_ID(comboBoxPublish.getSelectedIndex());
-				flag = true;
-			} else {
-				flag = false;
-				JOptionPane.showMessageDialog(null, "Publish house must be select !");
-			}
-			if (textFieldPrice.getText().trim() != null) {
-				try {
-					Double price = Double.parseDouble(textFieldPrice.getText().trim());
-					book.setPrice(price);
-					flag = true;
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "You must enter a number in price ! ");
-					textFieldPrice.setText("");
-				}
-			}
-			if (textFieldQuantity.getText().trim() != null) {
-				try {
-					String quantityStr = textFieldQuantity.getText().trim();
-					int quantity = Integer.parseInt(quantityStr);
-					book.setQuantity(quantity);
-					flag = true;
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "You must enter a number in quantity ! ");
-					textFieldQuantity.setText("");
-				}
 			}
 			if (textFieldAuthor.getText().trim() != null) {
 				AuthorModel authorModel = new AuthorModel();
@@ -884,7 +1564,7 @@ public class bookPanel extends JPanel {
 
 					Author author = new Author();
 					String author_ID = authorModel.findAuthorbyName(a).getAuthor_ID();
-					if (author_ID == null) {
+					if (author_ID == null && flag) {
 						String[] w = a.trim().split("\\s");
 						author_ID = "";
 						for (int i = 0; i < 2; i++) {

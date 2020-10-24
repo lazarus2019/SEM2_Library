@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,6 +28,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 import entities.Borrow_bill;
+import entities.Member;
 import model.BooksModel;
 import model.Bor_bookModel;
 import model.Borrow_billModel;
@@ -53,6 +55,7 @@ public class ReturnBookDialog extends JDialog {
 	public static String idCard;
 	public static Date date;
 	public static String name;
+	public static Member member;
 	public static double lateFee;
 	public static String status;
 	public static double compensationFee;
@@ -68,6 +71,7 @@ public class ReturnBookDialog extends JDialog {
 	};
 
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private JLabel jlabelImage;
 
 	/**
 	 * Launch the application.
@@ -138,7 +142,7 @@ public class ReturnBookDialog extends JDialog {
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
-		JLabel jlabelImage = new JLabel("");
+		jlabelImage = new JLabel("");
 		jlabelImage.setBorder(new LineBorder(Color.WHITE));
 		jlabelImage.setBackground(Color.WHITE);
 		jlabelImage.setBounds(215, 10, 138, 127);
@@ -312,6 +316,9 @@ public class ReturnBookDialog extends JDialog {
 		jtextFieldDateReturn.setText(simpleDateFormat.format(date));
 		jtextFieldLateFee.setText("$" + lateFeeString);
 		jtextFieldCompensationFee.setText("$" + compensationFeeString);
+		String photo = member.getPhoto().toString();
+		ImageIcon icon = resizeImg(photo, jlabelImage);
+		jlabelImage.setIcon(icon);
 		for (int i = 0; i < idBook.size(); i++) {
 			idBookc = idBook.get(i);
 			titlec = title.get(i);
@@ -342,5 +349,19 @@ public class ReturnBookDialog extends JDialog {
 	// Show error message
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
+	}
+	
+	// Resize Image
+	private ImageIcon resizeImg(String imgPath, JLabel jName) {
+		if (imgPath != null) {
+			ImageIcon myImg = null;
+			myImg = new ImageIcon(imgPath);
+			Image img = myImg.getImage();
+			Image img2 = img.getScaledInstance(jName.getWidth(), jName.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon icon = new ImageIcon(img2);
+			return icon;
+		} else {
+			return null;
+		}
 	}
 }

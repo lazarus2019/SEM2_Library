@@ -1183,6 +1183,7 @@ public class invoicePanel extends JPanel {
 					ReturnBookDialog.idBook = new ArrayList<String>();
 					ReturnBookDialog.title = new ArrayList<String>();
 					ReturnBookDialog.bookLost = new ArrayList<String>();
+					ReturnBookDialog.member = member;
 					for (int i = 0; i < bookLost.size(); i++) {
 						ReturnBookDialog.bookLost.add(bookLost.get(i));
 					}

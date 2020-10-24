@@ -46,13 +46,13 @@ public class PublishModel {
 		return publishes;
 	}
 
-	public Publish_house find(String publish_ID) {
+	public Publish_house find(int publish_ID) {
 		Connection con = ConnectDB.getConnection();
 		Publish_house publish = new Publish_house();
 		try {
 			PreparedStatement preparedStatement = con
 					.prepareStatement("SELECT * FROM publish_house where publish_ID = ?  ");
-			preparedStatement.setString(1, publish_ID);
+			preparedStatement.setInt(1, publish_ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -78,4 +78,36 @@ public class PublishModel {
 		return publish;
 	}
 
+	public static boolean create(Publish_house publish_house ) {
+
+		try {
+			PreparedStatement preparedStatement = new ConnectDB().getConnection()
+					.prepareStatement(" insert into publish_house( name , address , phone )  values(?, ? , ?) ");
+			preparedStatement.setString(1, publish_house.getName());
+			preparedStatement.setString(2, publish_house.getAddress());
+			preparedStatement.setString(3, publish_house.getPhone());
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+
+	public static boolean update(Publish_house publish_house, int publish_ID) {
+		// TODO Auto-generated method stub
+		
+		return false;
+	}
+	public static boolean delete(int publish_ID) {
+		
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement("delete from publish_house where publish_ID = ?");
+			preparedStatement.setInt(1, publish_ID);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
 }

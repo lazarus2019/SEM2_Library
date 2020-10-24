@@ -30,9 +30,8 @@ public class Publish_house {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Publish_house(int publish_ID, String name, String address, String phone) {
+	public Publish_house(String name, String address, String phone) {
 		super();
-		this.publish_ID = publish_ID;
 		this.name = name;
 		this.address = address;
 		this.phone = phone;

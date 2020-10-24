@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
@@ -22,11 +23,13 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -47,6 +50,11 @@ import checking.CheckValidate;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ListSelectionModel;
@@ -62,6 +70,8 @@ public class memberPanel extends JPanel {
 	private JTextField JtextPhone;
 	private JTextField JtextCardNumber;
 	private final ButtonGroup buttonGender = new ButtonGroup();
+	private static byte[] imageInByte = null;
+	private static String imageType = null;
 	private static SimpleDateFormat sdfm = new SimpleDateFormat("dd/MM/yyyy");
 	private static DefaultTableModel defaultTableModel = new DefaultTableModel() {
 
@@ -273,6 +283,11 @@ public class memberPanel extends JPanel {
 		panel_3.add(lblDetails);
 
 		JButton btnUpload = new JButton("Upload");
+		btnUpload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnUpload_actionPerformed(arg0);
+			}
+		});
 		btnUpload.setForeground(Color.WHITE);
 		btnUpload.setBackground(new Color(30, 106, 210));
 		btnUpload.setBounds(459, 178, 86, 24);
@@ -425,23 +440,34 @@ public class memberPanel extends JPanel {
 						if (!CheckValidate.checkDate10(dateOB)) {
 							JOptionPane.showMessageDialog(null, "Member age must than 10 years old");
 						} else {
+
 							if (checkMemberID(memberID)) {
-								Member member = new Member(memberID, name, dateOB, isMale, address,
-										String.valueOf(phone), cardNumber, "", getStartDate(),
-										getExpiredDate(getStartDate()));
-								if (memberModel.Add(member)) {
-									JOptionPane.showMessageDialog(null, "Completed");
-									resetEverything();
-									loadData();
+								if (imageInByte != null) {
+									Member member = new Member(memberID, name, dateOB, isMale, address,
+											String.valueOf(phone), cardNumber, "", getStartDate(),
+											getExpiredDate(getStartDate()), imageInByte);
+									if (memberModel.Add(member)) {
+										if (memberModel.savePhoto(member.getMember_ID(), imageType)) {
+											JOptionPane.showMessageDialog(null, "Completed");
+											resetEverything();
+											loadData();
+											imageType = null;
+											imageInByte = null;
+										} else {
+											JOptionPane.showMessageDialog(null, "Cant upload photo");
+										}
+									} else {
+										JOptionPane.showMessageDialog(null, "Failed");
+									}
 								} else {
-									JOptionPane.showMessageDialog(null, "Failed");
+									JOptionPane.showMessageDialog(null, "Please upload photo for member");
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "This info must update not create");
 							}
 						}
-
 					}
+
 				}
 			}
 		}
@@ -474,7 +500,7 @@ public class memberPanel extends JPanel {
 	public void Update_actionPerformed(ActionEvent arg0) {
 		int selectedIndex = JTablemember.getSelectedRow();
 		if (selectedIndex == -1) {
-			JOptionPane.showMessageDialog(null, "Please select a member before push update");
+			JOptionPane.showMessageDialog(null, "Please select a member before press update");
 		} else {
 			MemberModel memberModel = new MemberModel();
 			String memberID = JtextMember_ID.getText();
@@ -499,23 +525,27 @@ public class memberPanel extends JPanel {
 							if (!CheckValidate.checkDate10(dateOB)) {
 								JOptionPane.showMessageDialog(null, "Member age must than 10 years old");
 							} else {
-								if (checkMemberID(memberID)) {
-									Member member = new Member(memberID, name, dateOB, isMale, address,
-											String.valueOf(phone), cardNumber, "", getStartDate(),
-											getExpiredDate(getStartDate()));
-									if (memberModel.Add(member)) {
-										JOptionPane.showMessageDialog(null, "Completed");
-										resetEverything();
-										loadData();
-									} else {
-										JOptionPane.showMessageDialog(null, "Failed");
+								Member member = new Member(memberID, name, dateOB, isMale, address,
+										String.valueOf(phone), cardNumber, "", null, null, null);
+								if (memberModel.update(member, memberID)) {
+									if (imageInByte != null) {
+										if (memberModel.savePhoto(member.getMember_ID(), imageType)) {
+											JOptionPane.showMessageDialog(null, "Completed");
+										} else {
+											JOptionPane.showMessageDialog(null, "Cant upload photo");
+										}
 									}
+									JOptionPane.showMessageDialog(null, "Completed");
+									resetEverything();
+									loadData();
+									imageType = null;
+									imageInByte = null;
 								} else {
-									JOptionPane.showMessageDialog(null, "This info must update not create");
+									JOptionPane.showMessageDialog(null, "Failed");
 								}
 							}
-
 						}
+
 					}
 				}
 			}
@@ -606,6 +636,41 @@ public class memberPanel extends JPanel {
 		JtextAddress.setText(member.getAddress());
 		JtextPhone.setText(member.getPhone());
 		JtextCardNumber.setText(member.getCard_number());
+	}
+
+	// Upload image
+	private void btnUpload_actionPerformed(ActionEvent e) {
+
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Update Image");
+		FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGE FILE - jpg, png", "jpg", "png");
+		chooser.setFileFilter(fnef);
+		int result = chooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String filePath = chooser.getSelectedFile().getAbsolutePath();
+			if (filePath.endsWith(".png") || filePath.endsWith(".PNG") || filePath.endsWith(".JPG")
+					|| filePath.endsWith(".jpg")) {
+				try {
+					BufferedImage originalImage = ImageIO.read(new File(filePath));
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					if (filePath.endsWith(".png") || filePath.endsWith(".PNG")) {
+						ImageIO.write(originalImage, "png", baos);
+						imageType = "png";
+					}
+					if (filePath.endsWith(".JPG") || filePath.endsWith(".jpg")) {
+						ImageIO.write(originalImage, "jpg", baos);
+						imageType = "jpg";
+					}
+					baos.flush();
+					imageInByte = baos.toByteArray();
+					JOptionPane.showMessageDialog(null, "Upload photo success");
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage());
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Please choose file have type [png, jpg]");
+			}
+		}
 	}
 
 	// Reset
