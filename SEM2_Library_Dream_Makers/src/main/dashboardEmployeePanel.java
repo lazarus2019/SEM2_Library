@@ -23,7 +23,7 @@ public class dashboardEmployeePanel extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(dashboardEmployeePanel.class.getResource("/data/Main/background2.png")));
-		lblNewLabel.setBounds(0, 0, 803, 606);
+		lblNewLabel.setBounds(0, 0, 803, 617);
 		panel.add(lblNewLabel);
 	}
 }
