@@ -37,7 +37,7 @@ public class infoDialog extends JDialog {
 	private JLabel logo;
 	private Image logoImage = new ImageIcon("src/data/Main/logo_Library.png").getImage();
 	private final JLabel lblNewLabel = new JLabel(
-			"<html><body>Monica Library V1.0<br>© 2020 Dream Makers Team. All rights reserved.<br><br>Aim of application is help Monica managing the things more effectively and also save her time. She can manage issued books, manage employees, statistical about rating how many the books get back and member who usually borrow book. The app will automatic</body></html>");
+			"<html><body>Mohan's Library V1.0<br>© 2020 Dream Makers Team. All rights reserved.<br><br>Aim of application is help Monica managing the things more effectively and also save her time. She can manage issued books, manage employees, statistical about rating how many the books get back and member who usually borrow book. The app will automatic</body></html>");
 	private final JLabel lblNewLabel_1 = new JLabel("Go to source ->");
 
 	/**

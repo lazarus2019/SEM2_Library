@@ -108,7 +108,7 @@ public class LoginFrame extends JFrame {
 		loginImage.setBounds(26, 36, 190, 179);
 		panel.add(loginImage);
 
-		JLabel lblNewLabel_5 = new JLabel("Monica's Library");
+		JLabel lblNewLabel_5 = new JLabel("Mohan's Library");
 		lblNewLabel_5.setForeground(new Color(255, 255, 255));
 		lblNewLabel_5.setFont(new Font("Arial", Font.BOLD, 21));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);

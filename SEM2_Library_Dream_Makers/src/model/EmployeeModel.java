@@ -72,7 +72,7 @@ public class EmployeeModel {
 				employee.setName(resultSet.getString("name"));
 				employee.setAddress(resultSet.getString("address"));
 				employee.setEmail(resultSet.getString("email"));
-				employee.setLevel(resultSet.getString("level"));
+				employee.setPhone(resultSet.getString("phone"));
 				employees.add(employee);
 			}
 		} catch (Exception e) {
