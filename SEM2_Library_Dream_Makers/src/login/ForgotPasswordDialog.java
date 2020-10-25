@@ -26,11 +26,13 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.KeyAdapter;
 
 public class ForgotPasswordDialog extends JDialog {
 
@@ -92,6 +94,22 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(lblNewLabel_1);
 
 		emailField = new JTextField();
+		emailField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				try {
+					checkKeyTyped(arg0);
+				} catch (Exception e2) {
+					showMessenger("Something was wrong! Please try again Please try again");
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					sendToMail();
+				}
+			}
+		});
 		emailField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		emailField.setBorder(null);
 		emailField.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -223,6 +241,10 @@ public class ForgotPasswordDialog extends JDialog {
 
 	// Send password to email
 	private void btnSend_actionPerformed(ActionEvent e) {
+		sendToMail();
+	}
+	
+	private void sendToMail() {
 		email = emailField.getText().trim();
 		if (email.isEmpty()) {
 			showMessenger("You must fill out all fields to get password back!");
@@ -264,5 +286,11 @@ public class ForgotPasswordDialog extends JDialog {
 	private void panel_mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
+	}
+	
+	private void checkKeyTyped(KeyEvent e) {
+		if(e.getKeyChar() == ' ') {
+			e.consume();
+		}
 	}
 }
