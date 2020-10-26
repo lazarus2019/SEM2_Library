@@ -99,7 +99,7 @@ public class CheckValidate {
 	
 	// Check username validate - NTS
 	public static boolean checkUsername(String username) {
-		if (username.length() > 18) {
+		if (username.length() > 5) {
 			return Pattern.matches("^emp[\\d]{1,}$", username);
 		} else {
 			return false;

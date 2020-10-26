@@ -134,7 +134,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				try {
-					checkKeyTyped(arg0);					
+					checkKeyTyped(arg0);
 				} catch (Exception e) {
 					showMessenger("Something was wrong! Please try again");
 				}
@@ -204,10 +204,11 @@ public class LoginFrame extends JFrame {
 					loginApp();
 				}
 			}
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				try {
-					checkKeyTyped(e);					
+					checkKeyTyped(e);
 				} catch (Exception x) {
 					showMessenger("Something was wrong! Please try again");
 				}
@@ -355,33 +356,37 @@ public class LoginFrame extends JFrame {
 		if (username.isEmpty() || password.isEmpty()) {
 			showMessenger("Please fill out all fields!");
 		} else {
-			Employee employee = employeeModel.checkLogin(username);
-			if (employee == null) {
-				showMessenger("Username does not exist!");
-			} else {
-				if (CheckValidate.checkPassword(password)) {
-					String password_hash = employee.getPassword();
-					if (BCrypt.checkpw(password, password_hash)) {
-						String level = employee.getLevel();
-						if (level.equals("admin")) {
-							this.setVisible(false);
-							AdminJFrame.employeeMain = employee;
-							AdminJFrame adminJFrame = new AdminJFrame();
-							adminJFrame.setVisible(true);
-							this.dispose();
-						} else if (level.equals("librarian")) {
-							this.setVisible(false);
-							EmployeeJFrame.employeeMain = employee;
-							EmployeeJFrame employeeJFrame = new EmployeeJFrame();
-							employeeJFrame.setVisible(true);
-							this.dispose();
+			if (username.length() >= 5) {
+				Employee employee = employeeModel.checkLogin(username);
+				if (employee == null) {
+					showMessenger("Username does not exist!");
+				} else {
+					if (CheckValidate.checkPassword(password)) {
+						String password_hash = employee.getPassword();
+						if (BCrypt.checkpw(password, password_hash)) {
+							String level = employee.getLevel();
+							if (level.equals("admin")) {
+								this.setVisible(false);
+								AdminJFrame.employeeMain = employee;
+								AdminJFrame adminJFrame = new AdminJFrame();
+								adminJFrame.setVisible(true);
+								this.dispose();
+							} else if (level.equals("librarian")) {
+								this.setVisible(false);
+								EmployeeJFrame.employeeMain = employee;
+								EmployeeJFrame employeeJFrame = new EmployeeJFrame();
+								employeeJFrame.setVisible(true);
+								this.dispose();
+							}
+						} else {
+							showMessenger("Wrong password!");
 						}
 					} else {
-						showMessenger("Wrong password!");
+						showMessenger("Password must at least 5 characters");
 					}
-				} else {
-					showMessenger("Password must at least 5 characters");		
 				}
+			}else {
+				showMessenger("Username must at least 5 characters");
 			}
 		}
 	}
@@ -435,9 +440,9 @@ public class LoginFrame extends JFrame {
 	private void showMessenger(String mess) {
 		JOptionPane.showMessageDialog(null, mess);
 	}
-	
+
 	private void checkKeyTyped(KeyEvent e) {
-		if(e.getKeyChar() == ' ') {
+		if (e.getKeyChar() == ' ') {
 			e.consume();
 		}
 	}
