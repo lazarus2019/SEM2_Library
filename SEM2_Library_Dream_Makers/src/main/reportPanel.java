@@ -130,7 +130,7 @@ public class reportPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(null);
-		tabbedPane.addTab("Obsolete Books", null, panel, null);
+		tabbedPane.addTab("Expired Books", null, panel, null);
 		panel.setLayout(null);
 
 		JLabel btnSendToMail = new JLabel("Send to mail");
@@ -244,7 +244,7 @@ public class reportPanel extends JPanel {
 		tableObsolete = new JTable();
 		scrollPane.setViewportView(tableObsolete);
 
-		tableTitle = new JLabel("Obsolete Books");
+		tableTitle = new JLabel("Expired Books");
 		tableTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		tableTitle.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		tableTitle.setBounds(268, 5, 239, 34);
@@ -637,7 +637,7 @@ public class reportPanel extends JPanel {
 	// Load Status Combobox
 	private void loadStatusBox() {
 		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>();
-		comboBoxModel.addElement("Obselete");
+		comboBoxModel.addElement("Expired");
 		comboBoxModel.addElement("Lost");
 		statusBox.setModel(comboBoxModel);
 	}
@@ -711,7 +711,7 @@ public class reportPanel extends JPanel {
 			op = 2;
 		}
 		if (status == 1) {
-			tableTitle.setText("Obselete Books");
+			tableTitle.setText("Expired Books");
 		}
 		if (status == 3) {
 			tableTitle.setText("Lost Books");
@@ -834,7 +834,7 @@ public class reportPanel extends JPanel {
 		Workbook workbook = new XSSFWorkbook();
 		String sheetName = "";
 		if (statusBox.getSelectedIndex() == 0) {
-			sheetName = "Obselete Books";
+			sheetName = "Expired Books";
 		} else {
 			sheetName = "Lost Books";
 		}

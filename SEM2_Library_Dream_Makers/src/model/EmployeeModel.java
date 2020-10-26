@@ -326,7 +326,6 @@ public class EmployeeModel {
 				employee.setAddress(resultSet.getString("address"));
 				employee.setPhone(resultSet.getString("phone"));
 				employee.setName(resultSet.getString("name"));
-				//employee.setPhoto(resultSet.getString("photo"));
 				employee.setGender(resultSet.getBoolean("gender"));
 				return employee;
 			} else {
@@ -365,7 +364,7 @@ public class EmployeeModel {
 
 	// Update Info by id - NTS
 	public static boolean updateById(Employee employee) {
-		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ?, photo = ? WHERE employee_ID = ?";
+		sql = "UPDATE employee SET name = ?, dob = ?, address = ?, gender = ?, phone = ? WHERE employee_ID = ?";
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection().prepareStatement(sql);
 			preparedStatement.setString(1, employee.getName());
@@ -373,8 +372,7 @@ public class EmployeeModel {
 			preparedStatement.setString(3, employee.getAddress());
 			preparedStatement.setBoolean(4, employee.isGender());
 			preparedStatement.setString(5, employee.getPhone());
-	//		preparedStatement.setString(6, employee.getPhoto());
-			preparedStatement.setString(7, employee.getEmployee_ID());
+			preparedStatement.setString(6, employee.getEmployee_ID());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			return false;
@@ -427,7 +425,6 @@ public class EmployeeModel {
 				employee.setAddress(resultSet.getString("address"));
 				employee.setPhone(resultSet.getString("phone"));
 				employee.setName(resultSet.getString("name"));
-			//	employee.setPhoto(resultSet.getString("photo"));
 				employee.setGender(resultSet.getBoolean("gender"));
 				return employee;
 			} else {
