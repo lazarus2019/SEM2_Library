@@ -122,6 +122,7 @@ public class EmployeeJFrame extends JFrame {
 		panel.setLayout(null);
 
 		logo = new JLabel("");
+		logo.setIcon(new ImageIcon(EmployeeJFrame.class.getResource("/data/Main/app_logo.png")));
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		logo.setBounds(0, 2, 168, 42);
 		panel.add(logo);
@@ -132,6 +133,7 @@ public class EmployeeJFrame extends JFrame {
 		panel.add(panel_2);
 
 		setting = new JLabel("");
+		setting.setIcon(new ImageIcon(EmployeeJFrame.class.getResource("/data/icon/icon_employee1_small.png")));
 		setting.setHorizontalAlignment(SwingConstants.CENTER);
 		setting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setting.addMouseListener(new MouseAdapter() {
