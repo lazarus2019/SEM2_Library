@@ -136,6 +136,7 @@ public class ForgotPasswordDialog extends JDialog {
 		contentPanel.add(btnSend);
 
 		mailIcon = new JLabel("");
+		mailIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		mailIcon.setBounds(34, 86, 25, 25);
 		contentPanel.add(mailIcon);
 
@@ -211,12 +212,6 @@ public class ForgotPasswordDialog extends JDialog {
 		panel_1.setBounds(32, 153, 335, 2);
 		contentPanel.add(panel_1);
 
-		loadData();
-	}
-
-	private void loadData() {
-		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", mailIcon);
-		mailIcon.setIcon(imgUser);
 	}
 
 	// =====Resize Image=====

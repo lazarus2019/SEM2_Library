@@ -187,6 +187,8 @@ public class settingDialog extends JDialog {
 		panelAdmin.setLayout(null);
 
 		userIcon = new JLabel("");
+		userIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/user.png")));
+		userIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		userIcon.setBounds(36, 31, 25, 25);
 		panelAdmin.add(userIcon);
 
@@ -204,6 +206,8 @@ public class settingDialog extends JDialog {
 		usernameField.setColumns(10);
 
 		emailIcon = new JLabel("");
+		emailIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		emailIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/mail.png")));
 		emailIcon.setBounds(36, 120, 25, 25);
 		panelAdmin.add(emailIcon);
 
@@ -221,6 +225,8 @@ public class settingDialog extends JDialog {
 		panelAdmin.add(emailField);
 
 		editEmail = new JLabel("");
+		editEmail.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/edit.png")));
+		editEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		editEmail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -258,6 +264,8 @@ public class settingDialog extends JDialog {
 		panelInfo.add("employeeSetting", panelEmployee);
 
 		userIcon_1 = new JLabel("");
+		userIcon_1.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/user.png")));
+		userIcon_1.setHorizontalAlignment(SwingConstants.CENTER);
 		userIcon_1.setBounds(36, 6, 25, 25);
 		panelEmployee.add(userIcon_1);
 
@@ -276,6 +284,8 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEusername);
 
 		emailIcon_1 = new JLabel("");
+		emailIcon_1.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/mail.png")));
+		emailIcon_1.setHorizontalAlignment(SwingConstants.CENTER);
 		emailIcon_1.setBounds(36, 270, 25, 25);
 		panelEmployee.add(emailIcon_1);
 
@@ -294,6 +304,8 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEmail);
 
 		editEmail_1 = new JLabel("");
+		editEmail_1.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/edit.png")));
+		editEmail_1.setHorizontalAlignment(SwingConstants.CENTER);
 		editEmail_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		editEmail_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -309,6 +321,8 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(editEmail_1);
 
 		nameIcon = new JLabel("");
+		nameIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		nameIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/name.png")));
 		nameIcon.setBounds(36, 71, 25, 25);
 		panelEmployee.add(nameIcon);
 
@@ -327,6 +341,8 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEname);
 
 		phoneIcon = new JLabel("");
+		phoneIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/phone.png")));
+		phoneIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		phoneIcon.setBounds(36, 135, 25, 25);
 		panelEmployee.add(phoneIcon);
 
@@ -355,6 +371,8 @@ public class settingDialog extends JDialog {
 		panelEmployee.add(txtEphone);
 
 		calendarIcon = new JLabel("");
+		calendarIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/calendar.png")));
+		calendarIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		calendarIcon.setBounds(36, 199, 25, 25);
 		panelEmployee.add(calendarIcon);
 
@@ -409,6 +427,8 @@ public class settingDialog extends JDialog {
 		panelPW_1_1.add(btnSubmit);
 
 		addressIcon = new JLabel("");
+		addressIcon.setIcon(new ImageIcon(settingDialog.class.getResource("/data/loginForm/address.png")));
+		addressIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		addressIcon.setBounds(36, 335, 25, 25);
 		panelEmployee.add(addressIcon);
 
@@ -478,34 +498,16 @@ public class settingDialog extends JDialog {
 
 	private void loadData() {
 		employee = EmployeeModel.getById(employee_ID);
-		// Declare Image
-		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
-		ImageIcon imgMail = resizeImg("src/data/loginForm/mail.png", emailIcon);
-		ImageIcon imgEdit = resizeImg("src/data/loginForm/edit.png", editEmail);
-		ImageIcon imgName = resizeImg("src/data/loginForm/name.png", nameIcon);
-		ImageIcon imgAddress = resizeImg("src/data/loginForm/address.png", addressIcon);
-		ImageIcon imgCalendarIcon = resizeImg("src/data/loginForm/calendar.png", calendarIcon);
-		ImageIcon imgPhone = resizeImg("src/data/loginForm/phone.png", phoneIcon);
 		CardLayout cl_panelInfo = (CardLayout) (panelInfo.getLayout());
 		if (employee.getLevel().equals("admin")) {
 			titleLable.setText("Admin Info");
 			cl_panelInfo.show(panelInfo, "adminSetting");
 			usernameField.setText(employee.getUsername());
 			emailField.setText(employee.getEmail());
-			editEmail.setIcon(imgEdit);
-			emailIcon.setIcon(imgMail);
-			userIcon.setIcon(imgUser);
 		}
 		if (employee.getLevel().equals("librarian")) {
 			titleLable.setText("Employee Info");
 			cl_panelInfo.show(panelInfo, "employeeSetting");
-			editEmail_1.setIcon(imgEdit);
-			emailIcon_1.setIcon(imgMail);
-			userIcon_1.setIcon(imgUser);
-			calendarIcon.setIcon(imgCalendarIcon);
-			nameIcon.setIcon(imgName);
-			addressIcon.setIcon(imgAddress);
-			phoneIcon.setIcon(imgPhone);
 			txtEusername.setText(employee.getUsername());
 			txtEname.setText(employee.getName());
 			txtEphone.setText(employee.getPhone());

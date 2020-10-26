@@ -138,6 +138,7 @@ public class AdminJFrame extends JFrame {
 		panel.add(panel_2);
 
 		setting = new JLabel("");
+		setting.setHorizontalAlignment(SwingConstants.CENTER);
 		setting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setting.addMouseListener(new MouseAdapter() {
 			@Override
@@ -567,11 +568,6 @@ public class AdminJFrame extends JFrame {
 
 	// Load data
 	private void loadData() {
-		// Load logo
-		ImageIcon settingIcon = resizeImg("src/data/icon/admin.png", setting);
-		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
-		logo.setIcon(logoImage);
-		setting.setIcon(settingIcon);
 		// When user login success
 		usernameTxt.setText(employeeMain.getUsername());
 		levelTxt.setText(employeeMain.getLevel());

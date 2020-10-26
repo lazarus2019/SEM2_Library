@@ -180,6 +180,7 @@ public class ChangeEmail extends JDialog {
 		panelSubmit.add(btnSubmit);
 
 		mailIcon = new JLabel("");
+		mailIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		mailIcon.setBounds(24, 11, 25, 25);
 		panel.add(mailIcon);
 
@@ -209,6 +210,7 @@ public class ChangeEmail extends JDialog {
 		panel.add(txtPW);
 
 		lockIcon = new JLabel("");
+		lockIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		lockIcon.setBounds(24, 88, 25, 25);
 		panel.add(lockIcon);
 
@@ -231,16 +233,6 @@ public class ChangeEmail extends JDialog {
 		newEmail.setBounds(24, 47, 258, 25);
 		panel.add(newEmail);
 		newEmail.setColumns(10);
-
-		loadData();
-	}
-
-	// Load data
-	private void loadData() {
-		ImageIcon lockIconn = resizeImg("src/data/loginForm/lock.png", lockIcon);
-		lockIcon.setIcon(lockIconn);
-		ImageIcon mailIconn = resizeImg("src/data/loginForm/mail.png", mailIcon);
-		mailIcon.setIcon(mailIconn);
 
 	}
 

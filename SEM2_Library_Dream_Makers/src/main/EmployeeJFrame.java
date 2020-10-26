@@ -132,6 +132,7 @@ public class EmployeeJFrame extends JFrame {
 		panel.add(panel_2);
 
 		setting = new JLabel("");
+		setting.setHorizontalAlignment(SwingConstants.CENTER);
 		setting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setting.addMouseListener(new MouseAdapter() {
 			@Override
@@ -504,11 +505,6 @@ public class EmployeeJFrame extends JFrame {
 
 	// Load data
 	private void loadData() {
-		// Load logo
-		ImageIcon settingIcon = resizeImg("src/data/icon/icon_employee1.png", setting);
-		ImageIcon logoImage = resizeImg("src/data/Main/logo_Library.png", logo);
-		logo.setIcon(logoImage);
-		setting.setIcon(settingIcon);
 		// When user login success
 		usernameTxt.setText(employeeMain.getUsername());
 		levelTxt.setText(employeeMain.getLevel());

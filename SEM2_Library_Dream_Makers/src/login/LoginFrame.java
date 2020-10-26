@@ -105,7 +105,7 @@ public class LoginFrame extends JFrame {
 		panel.setLayout(null);
 
 		loginImage = new JLabel("");
-		loginImage.setIcon(null);
+		loginImage.setIcon(new ImageIcon(LoginFrame.class.getResource("/data/loginForm/loginImage.png")));
 		loginImage.setBounds(26, 36, 190, 179);
 		panel.add(loginImage);
 
@@ -219,6 +219,8 @@ public class LoginFrame extends JFrame {
 		panel_1.add(passwordField);
 
 		userIcon = new JLabel("");
+		userIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		userIcon.setIcon(new ImageIcon(LoginFrame.class.getResource("/data/loginForm/user.png")));
 		userIcon.setBounds(31, 69, 25, 25);
 		panel_1.add(userIcon);
 
@@ -229,6 +231,8 @@ public class LoginFrame extends JFrame {
 		panel_1.add(lblPassword);
 
 		lockIcon = new JLabel("");
+		lockIcon.setIcon(new ImageIcon(LoginFrame.class.getResource("/data/loginForm/lock.png")));
+		lockIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		lockIcon.setBounds(31, 155, 25, 25);
 		panel_1.add(lockIcon);
 
@@ -336,20 +340,9 @@ public class LoginFrame extends JFrame {
 		btnClose.setBounds(0, 0, 36, 36);
 		panelClose.add(btnClose);
 
-		loadData();
 	}
 
 	// ======== Main Function ===========
-
-	// Load data
-	private void loadData() {
-		ImageIcon imgLogin = resizeImg("src/data/loginForm/loginImage.png", loginImage);
-		loginImage.setIcon(imgLogin);
-		ImageIcon imgUser = resizeImg("src/data/loginForm/user.png", userIcon);
-		userIcon.setIcon(imgUser);
-		ImageIcon imgLock = resizeImg("src/data/loginForm/lock.png", lockIcon);
-		lockIcon.setIcon(imgLock);
-	}
 
 	// Login to system
 	private void btnLogin_actionPerformed(ActionEvent e) {

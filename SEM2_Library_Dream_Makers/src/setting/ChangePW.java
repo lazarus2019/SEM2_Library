@@ -180,6 +180,8 @@ public class ChangePW extends JDialog {
 		panelSubmit.add(btnSubmit);
 
 		lockIcon3 = new JLabel("");
+		lockIcon3.setIcon(new ImageIcon(ChangePW.class.getResource("/data/loginForm/lock.png")));
+		lockIcon3.setHorizontalAlignment(SwingConstants.CENTER);
 		lockIcon3.setBounds(24, 11, 25, 25);
 		panel.add(lockIcon3);
 
@@ -217,6 +219,8 @@ public class ChangePW extends JDialog {
 		panel.add(newPW);
 
 		lockIcon2 = new JLabel("");
+		lockIcon2.setIcon(new ImageIcon(ChangePW.class.getResource("/data/loginForm/lock.png")));
+		lockIcon2.setHorizontalAlignment(SwingConstants.CENTER);
 		lockIcon2.setBounds(24, 88, 25, 25);
 		panel.add(lockIcon2);
 
@@ -246,6 +250,8 @@ public class ChangePW extends JDialog {
 		panel.add(repeatPW);
 
 		lockIcon1 = new JLabel("");
+		lockIcon1.setIcon(new ImageIcon(ChangePW.class.getResource("/data/loginForm/lock.png")));
+		lockIcon1.setHorizontalAlignment(SwingConstants.CENTER);
 		lockIcon1.setBounds(24, 166, 25, 25);
 		panel.add(lockIcon1);
 
@@ -267,15 +273,6 @@ public class ChangePW extends JDialog {
 		isShowPassword.setBounds(95, 245, 117, 23);
 		panel.add(isShowPassword);
 
-		loadData();
-	}
-
-	// Load data
-	private void loadData() {
-		ImageIcon lockIcon = resizeImg("src/data/loginForm/lock.png", lockIcon1);
-		lockIcon1.setIcon(lockIcon);
-		lockIcon2.setIcon(lockIcon);
-		lockIcon3.setIcon(lockIcon);
 	}
 
 	// Submit change password

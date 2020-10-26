@@ -87,8 +87,9 @@ public class infoDialog extends JDialog {
 		contentPanel.setLayout(null);
 
 		logo = new JLabel("");
+		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		logo.setBounds(40, 11, 370, 80);
-		logo.setIcon(new ImageIcon(logoImage.getScaledInstance(logo.getWidth(), logo.getHeight(), Image.SCALE_SMOOTH)));
+		logo.setIcon(new ImageIcon(infoDialog.class.getResource("/data/Main/info_logo.png")));
 		contentPanel.add(logo);
 
 		JSeparator separator = new JSeparator();
